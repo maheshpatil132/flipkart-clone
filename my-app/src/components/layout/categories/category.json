@@ -1,0 +1,84 @@
+
+[
+    {
+        "title":"men",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    },
+    {
+        "title":"Electronics",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    },
+    {
+        "title":"women"
+       
+    },
+    {
+        "title":"baby & kids",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    },
+    {
+        "title":"home and furniture",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    },
+    {
+        "title":"sports,books & more",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    },
+    {
+        "title":"flights",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    },
+    {
+        "title":"offerzone",
+        "sub":[
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1",
+            "sub category 1"
+        ]
+    }
+]

@@ -1,0 +1,36 @@
+.slick-prev,
+.slick-next {
+    height: 100px;
+    width: 50px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: .1px solid rgb(207, 205, 205); */
+    box-shadow: 2.5px 1px #f1f1f1;
+    z-index: 1;
+}
+
+.slick-prev:hover{
+    background-color: white;
+}
+.slick-next:hover{
+    background-color: white;
+}
+
+.slick-prev {
+    left: 0;
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+}
+
+.slick-next {
+    right: 0;
+    border-top-left-radius: .3rem;
+    border-bottom-left-radius: .3rem;
+}
+
+.slick-next::before,
+.slick-prev::before {
+    display: none;
+}

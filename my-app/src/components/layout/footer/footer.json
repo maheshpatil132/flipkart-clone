@@ -1,0 +1,114 @@
+[
+    {
+        "menu":"About",
+        "redirect":"/about",
+        "suboption":[
+            {
+                "title":"contact us",
+                "redirect":"/"
+            },
+            {
+                "title":"About us",
+                "redirect":"/"
+            },
+            {
+                "title":"careeries",
+                "redirect":"/"
+            },
+            {
+                "title":"flipkart stories",
+                "redirect":"/"
+            },
+            {
+                "title":"press",
+                "redirect":"/"
+            },
+            {
+                "title":"flipkart wholesales",
+                "redirect":"/"
+            },
+            {
+                "title":"Corporate Information",
+                "redirect":"/"
+            }
+
+        ]
+    },
+    {
+        "menu":"Help",
+        "redirect":"/about",
+        "suboption":[
+            {
+                "title":"payments",
+                "redirect":"/"
+            },
+            {
+                "title":"shipping",
+                "redirect":"/"
+            },
+            {
+                "title":"cancellations & returns",
+                "redirect":"/"
+            },
+            {
+                "title":"FAQ",
+                "redirect":"/"
+            },
+            {
+                "title":"report infrigement",
+                "redirect":"/"
+            }
+
+        ]
+    },
+    {
+        "menu":"Policy",
+        "redirect":"/about",
+        "suboption":[
+            {
+                "title":"return policy",
+                "redirect":"/"
+            },
+            {
+                "title":"terms of use",
+                "redirect":"/"
+            },
+            {
+                "title":"security",
+                "redirect":"/"
+            },
+            {
+                "title":"privacy",
+                "redirect":"/"
+            },
+            {
+                "title":"sitemap",
+                "redirect":"/"
+            },
+            {
+                "title":"EPR Complience",
+                "redirect":"/"
+            }
+
+        ]
+    },
+    {
+        "menu":"Social",
+        "redirect":"/about",
+        "suboption":[
+            {
+                "title":"Facebook",
+                "redirect":"/"
+            },
+            {
+                "title":"twitter",
+                "redirect":"/"
+            },
+            {
+                "title":"youtube",
+                "redirect":"/"
+            }
+
+        ]
+    }
+]
