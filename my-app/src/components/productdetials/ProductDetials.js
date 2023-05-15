@@ -189,7 +189,10 @@ const ProductDetials = () => {
 
                         </div>
 
+                        
+
                     </>)
+                
             }
 
         </>
