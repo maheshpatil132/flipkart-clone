@@ -64,7 +64,9 @@ app.use(GetAllOrders)
 
 
 
-
+app.use('/' ,(req,res,next)=>{
+    console.log("server in running");
+})
 
 app.use(errorhandle)
 
