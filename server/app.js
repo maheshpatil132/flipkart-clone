@@ -13,7 +13,7 @@ const { CreateOrder, UpdateOrder, DeleteOrder, MyOrders, Getorder, GetAllOrders 
 const app = express();
 
 const corsOptions ={
-    origin:'https://flipkart-clone-rpqp.vercel.app/', 
+    origin:'https://flipkart-clone-ui.vercel.app/', 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200
 }
