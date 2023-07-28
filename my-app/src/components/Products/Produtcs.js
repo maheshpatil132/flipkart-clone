@@ -1,5 +1,5 @@
-import { Checkbox, Pagination, Slider } from '@mui/material'
-import React from 'react'
+import { Checkbox, CircularProgress, Pagination, Slider } from '@mui/material'
+import React, { useEffect } from 'react'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
@@ -7,8 +7,10 @@ import { useState } from 'react';
 import Product from './Product';
 import './products.css'
 import MetaData from '../layout/MetaData';
-import { useParams } from 'react-router-dom';
+import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
 import Productslider from '../home/productslider/Productslider';
+import { useDispatch, useSelector } from 'react-redux';
+import { getproduct } from '../../actions/ProductActions';
 
 
 function valuetext(value) {
@@ -19,10 +21,18 @@ function valuetext(value) {
 const Produtcs = () => {
 
     const [value, setValue] = React.useState([20, 37]);
+    const [page, setPage] = useState(1)
+    const [min , setMin] = useState()
+    const [max , setMax] = useState()
     const [ratings, setRatings] = useState(true);
+    const [query , setQuery] = useSearchParams()
     const {keyword} = useParams()
+    const dispatch = useDispatch()
+    const {loading , products ,error , ProductCount }= useSelector(state => state.AllProducts)
     
-
+    const key = query.get('name')
+    
+    
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -30,10 +40,28 @@ const Produtcs = () => {
     const togglerating = ()=>{
         setRatings(!ratings)
     }
+
+    const changemin = (e)=>{
+      const val = e.target.value
+      setMin(val)
+    }
+    const changemax = (e)=>{
+        const val = e.target.value
+        setMax(val)
+      }
+
+      
+
+    useEffect(() => {
+       
+        dispatch(getproduct(key , min , max , page))
+
+    }, [min, dispatch , key ,page])
+    
     return (
         <>
         <div className=' flex gap-3 p-4'>
-           <MetaData title={"jsjs"}></MetaData>
+           <MetaData title={key}></MetaData>
             {/* <!-- left side part> */}
             <div className=' w-64 sticky top-20 bg-white h-fit'>
                 
@@ -61,17 +89,16 @@ const Produtcs = () => {
 
                     <div className=' flex items-center justify-between'>
                         <div className=' border w-fit p-1 capitalize '>
-                            <select name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
-                                <option value="min">min</option>
-                                <option value="one">5000</option>
-                                <option value="two">10000</option>
-                                <option value="three">100000</option>
+                            <select onChange={(e)=>changemin(e)} name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
+                                <option defaultValue={0}  >0</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="100000">100000</option>
                             </select>
                         </div>
                         <p>To</p>
                         <div className=' border w-fit p-1 capitalize '>
-                            <select name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
-                                <option value="min">Max</option>
+                            <select onChange={(e)=>changemax(e)} name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
                                 <option value="one">5000</option>
                                 <option value="two">10000</option>
                                 <option value="three">100000</option>
@@ -116,54 +143,71 @@ const Produtcs = () => {
             {/* <!-- left side part> */}
 
             {/* <!-- right side part> */}
+             {
+                loading ? 
+                <>
+                  <div className='flex-1 bg-white w-full flex justify-center items-center'>
+                     <CircularProgress/>
+                  </div>
+                </>
+                : 
+                <>
+                    <div className=' flex-1'>
 
-            <div className=' flex-1'>
+                    {/* <!-- Heading> */}
+                    <div className=' bg-white p-4 border-b'>
+                        <h1 className=' text-base font-bold'>Showing {page} - {page+4} of {ProductCount} results for "{key}"</h1>
+                    </div>
+                    {/* <!-- Heading> */}
 
-            {/* <!-- Heading> */}
-            <div className=' bg-white p-4 border-b'>
-                <h1 className=' text-base font-bold'>Showing 1 - 40 of 74,726 results for "cameras"</h1>
-            </div>
-            {/* <!-- Heading> */}
+                    {/* <!-- Products Conatiner> */}
+                    <div className='grid border-b bg-white grid-cols-4 p-4'>
+                    {
+                        products.length > 0  ?
+                        products.map((elem , index)=>{
+                            return(
+                                <NavLink to={`/product/${elem._id}`}>
+                                    <Product data={elem} />
+                                </NavLink>
+                            )
+                        })
+                        :
+                        <>
+                        <h1 className=' text-center'>No Products Available</h1>
+                        </>
+                    }
 
-            {/* <!-- Products Conatiner> */}
-            <div className='grid border-b bg-white grid-cols-4 p-4'>
-               <Product/>
-               <Product/>
-               <Product/>
-               <Product/>
-               <Product/>
-               <Product/>
-               <Product/>
-               <Product/>
-               <Product/>
+                    </div>
+                    {/* <!-- Products Conatiner> */}
 
-            </div>
-            {/* <!-- Products Conatiner> */}
+                    {/* <!-- Pagination bar> */}
+                    <div className=' p-4  bg-white flex items-center justify-between'>
+                        <div>
+                            <h1>Page {page} of { Math.ceil(ProductCount/5) }</h1>
+                        </div>
+                        <Pagination
+                            count={Math.ceil(ProductCount/5)}
+                            defaultPage={1}
+                            page={page}
+                            color="primary"
+                            onChange={(e , value)=>{setPage(value)}}
+                        />
+                    </div>
+                    {/* <!-- Pagination bar> */}
 
-            {/* <!-- Pagination bar> */}
-               <div className=' p-4  bg-white flex items-center justify-between'>
-                 <div>
-                    <h1>Page 1 of 1,870</h1>
-                 </div>
-                   <Pagination
-                    count={10}
-                    defaultPage={1}
-                    color="primary"
-                   />
-               </div>
-            {/* <!-- Pagination bar> */}
+                    {/* <!-- like container> */}
+                    <div className=' border mt-2 p-4 bg-white flex gap-8 items-center'>
+                        <h1 className=' font-semibold'>Did you find what you were looking for?</h1>
+                        <div className=' flex items-center gap-4'>
+                            <button className=' border px-8 py-1 bg-white font-bold'>Yes</button>
+                            <button className=' border px-8 py-1 bg-white font-bold'>No</button>
+                        </div>
+                    </div>
+                    {/* <!-- like container> */}
 
-            {/* <!-- like container> */}
-             <div className=' border mt-2 p-4 bg-white flex gap-8 items-center'>
-                <h1 className=' font-semibold'>Did you find what you were looking for?</h1>
-                <div className=' flex items-center gap-4'>
-                    <button className=' border px-8 py-1 bg-white font-bold'>Yes</button>
-                    <button className=' border px-8 py-1 bg-white font-bold'>No</button>
-                </div>
-             </div>
-            {/* <!-- like container> */}
-
-            </div>
+                    </div>
+                </>
+             }
 
             {/* <!-- right side part> */}
 

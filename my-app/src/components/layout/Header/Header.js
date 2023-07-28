@@ -6,12 +6,17 @@ import Primarydropdown from './Primarydropdown';
 import Secondarydropdown from './Secondarydropdown';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { Badge } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
 
   const [toggleprimary, setToggleprimary] = useState(false)
   const [togglesecondary, setToggleSecondary] = useState(false)
+
+  const { Products } = useSelector( state => state.Cart)
+
 
   const primarytoggle = () => {
     setToggleprimary(!toggleprimary)
@@ -21,10 +26,8 @@ const Header = () => {
   }
 
 
-  useEffect(() => {
-     
-  }, [])
   
+
   return (
     <div className=' sticky z-50 top-0 p-1.5 capitalize w-full justify-center gap-6 flex items-center text-white bg-primary '>
 
@@ -32,7 +35,7 @@ const Header = () => {
       {/* logo and search container starts */}
       <div className=' flex items-center gap-4'>
         <div className='italic font-bold'>
-           <Link to={'/'}><h1 className='font-extrabold text-[1.32rem]'>Flipkart</h1></Link>
+          <Link to={'/'}><h1 className='font-extrabold text-[1.32rem]'>Flipkart</h1></Link>
           <h6 className=' text-xs'>Explore <span className=' text-yellow-300'>plus <StarOutlineIcon fontSize='small' /></span>  </h6>
         </div>
         <SearchBar />
@@ -55,12 +58,11 @@ const Header = () => {
 
         {togglesecondary && <Secondarydropdown />}
 
-
-        <span className='cursor-pointer'>
-          <span className=' px-1'>
-            <ShoppingCartIcon fontSize='small' />
-          </span>
-          cart</span>
+        
+        <NavLink to={'/cart'} className='cursor-pointer'>
+            <span className=' px-1'> <Badge badgeContent = { Products ? Products.length : 1 } color='secondary'  ><ShoppingCartIcon fontSize='small'/></Badge> </span>
+             cart
+          </NavLink>
 
 
       </div>

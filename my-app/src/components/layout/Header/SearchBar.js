@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
+import { useSearchParams } from "react-router-dom";
 
 const SearchBar = () => {
    const [keyword, setKeyword] = useState('')
+   const [searchParams, setSearchParams] = useSearchParams();
+   const [query , setQuery] = useSearchParams();
+
    const navigate = useNavigate()
   const handlesubmit = (e)=>{
     e.preventDefault();
-    if(keyword){
-      navigate(`/search/${keyword}`)
-    }
+    navigate(`/search?name=${keyword}`)
   }
+
+  
 
   return (
     <form onSubmit={(e)=> handlesubmit(e)} className=' text-black flex w-[400px] px-4 p-1.5 rounded-sm  items-center bg-white '>

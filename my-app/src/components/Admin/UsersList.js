@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { DataGrid } from '@mui/x-data-grid';
+import { useDispatch, useSelector } from 'react-redux';
+import { AdminGetUsers } from '../../actions/UserActions';
 
 const UsersList = () => {
+
+  const {users} = useSelector(state => state.AllUser)
+  const dispatch = useDispatch();
+
+  console.log(users);
  
     const columns = [
         { field: 'id', headerName: 'ID', width: 70 },
@@ -35,7 +42,10 @@ const UsersList = () => {
         { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
         { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
       ];
-
+   
+      useEffect(()=>{
+        dispatch(AdminGetUsers())
+      },[dispatch])
   return (
     <div className=' h-96 bg-white'>
       <DataGrid

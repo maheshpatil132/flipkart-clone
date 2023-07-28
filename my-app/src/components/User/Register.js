@@ -1,8 +1,49 @@
 import { TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import register from '../../assets/register.png'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Clear_Errors, RegisterUser } from '../../actions/UserActions'
+ 
+
 
 const Register = () => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [mobile, setMobile] = useState('')
+  const [password, setPassword] = useState('')
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch();
+  const {loading , isAuthenticated , error } = useSelector(state => state.User)
+  
+  const submit = (e) => {
+
+    e.preventDefault();
+  
+   
+   const form = {
+    name:name,
+    email:email,
+    password:password,
+    mobile:mobile
+   }
+
+   dispatch(RegisterUser(form))
+  
+  }
+
+
+  useEffect(() => {
+    window.scrollTo(0,0)
+    if(error){
+      dispatch(Clear_Errors())
+    }
+   if(isAuthenticated){
+    navigate('/account')
+   }
+    
+   }, [])
   return (
     <div className='flex p-4 w-1/2 mx-auto rounded'>
 
@@ -22,24 +63,37 @@ const Register = () => {
        {/* <!-- right Part> */}
        <div className=' bg-white p-8 flex-1'>
          <h1 className=' text-2xl font-semibold mb-3'>Register</h1>
-        <form  action="" className=' flex flex-col gap-4'>
+        <form onSubmit={(e)=> submit(e)}  action="" className=' flex flex-col gap-4'>
             <TextField 
              id="standard-basic"
              label="Name"
-             variant="standard"/>
+             variant="standard"
+             value={name}
+             onChange={(e)=>setName(e.target.value)}
+             />
              <TextField 
              label="Email"
-             variant="standard"/>
+             variant="standard"
+             value={email}
+             onChange={(e)=>setEmail(e.target.value)}
+             />
               <TextField 
              label="Mobile"
-             variant="standard"/>
+             variant="standard"
+             value={mobile}
+             onChange={(e)=>setMobile(e.target.value)}
+             />
              <TextField 
              label="Password"
-             variant="standard"/>
+             variant="standard"
+             value={password}
+             onChange={(e)=>setPassword(e.target.value)}
+             />
              <button className='bg-[#fb641b] mt-6 font-bold p-2 px-6 text-white text-lg'>Submit</button>
         </form>
         <div className=' mt-5'>
-            <span className=' font-medium'> Already have Account ? <span className=' font-bold text-primary cursor-pointer'>Login</span></span>
+            <span className=' font-medium'> Already have Account ? <NavLink to={'/login'} ><span className=' font-bold text-primary cursor-pointer'>Login</span></NavLink>
+            </span>
         </div>
        </div>
        {/* <!-- right Part> */}

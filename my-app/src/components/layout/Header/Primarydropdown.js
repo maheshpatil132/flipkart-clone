@@ -6,13 +6,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import RedeemIcon from '@mui/icons-material/Redeem';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import { NavLink } from 'react-router-dom';
 
 const Primarydropdown = () => {
     const nav = [
         {
             title:"My Profile",
             icon:<AccountCircleIcon/>,
-            redirect:"kakakkakkakakk"
+            redirect:"/login"
         },
         {
             title:"Flipkart plus zone",
@@ -25,7 +26,7 @@ const Primarydropdown = () => {
         }, {
             title:"whislist",
             icon:<FavoriteIcon/>,
-            redirect:"kakakkakkakakk"
+            redirect:"/wishlist"
         }, {
             title:"rewards",
             icon:<EmojiEventsIcon/>,
@@ -45,11 +46,12 @@ const Primarydropdown = () => {
        
             nav.map((elem,index)=>{
                 return(
-                    
+                       <NavLink to={elem.redirect}>
                        <div className=' p-4 border-b font-semibold hover:bg-slate-100  gap-4 text-primary flex items-center'>
                             <div>{elem.icon}</div>
                             <h6 className=' text-[#212121]'>{elem.title}</h6>
                        </div>
+                       </NavLink>
                   
                 )
             })

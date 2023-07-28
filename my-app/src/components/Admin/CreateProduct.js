@@ -4,15 +4,80 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import dslr from '../../assets/dslr.webp'
 import './createproduct.css'
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { CreateProducts } from '../../actions/ProductActions';
+
+
 
 const CreateProduct = () => {
+
+  const [title, Title] = useState('')
+  const [category, Category] = useState('')
+  const [brand, Brand] = useState('')
+  const [stock, Stock] = useState('')
+  const [waranty, Waranty] = useState('')
+  const [decr, Decr] = useState('')
+  const [price, Price] = useState('')
+  const [curted, Curted] = useState('')
+  const [value, setValue] = useState([])
+  const [files, setFiles] = useState([])
+  const dispatch = useDispatch()
+
+
+
+
+
+
+
+
+  const submit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData()
+
+    formData.append("title", title)
+    formData.append("category", category)
+    formData.append("decr", decr)
+    formData.append("stock", stock)
+    formData.append("price", price)
+    formData.append("waranty", waranty)
+    formData.append("brand", brand)
+    formData.append("cureted_price", curted)
+
+    value.forEach((image) => {
+      formData.append("images", image);
+  });
+
+    dispatch(CreateProducts(formData))
+  }
+
+  const file = (e) => {
+
+    const files = Array.from(e.target.files)
+
+    const reader = new FileReader()
+
+    files.forEach((file) => {
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setFiles((old)=>[...old ,reader.result]);
+          setValue((old)=>[...old ,reader.result]);
+        }
+      };
+
+      reader.readAsDataURL(file)
+
+    })
+
+  }
+
   return (
-    <div className=' rounded'>
+    <form onSubmit={(e) => submit(e)} className=' rounded'>
       {/* <!-- Heading> */}
       <div className=' flex justify-between items-center my-2 mb-6'>
         <h1 className=' text-2xl font-medium'>Create Product</h1>
-        <button className=' bg-primary text-white py-2 px-10 font-bold rounded-sm hover:bg-blue-600'>Publish</button>
+        <button type='submit' className=' bg-primary text-white py-2 px-10 font-bold rounded-sm hover:bg-blue-600'>Publish</button>
       </div>
       {/* <!-- Heading> */}
 
@@ -28,34 +93,51 @@ const CreateProduct = () => {
               label="Product Name*"
               size='small'
               fullWidth
+              value={title}
+              onChange={(e) => Title(e.target.value)}
             />
             <div className=' flex items-center gap-5'>
               <TextField
                 label="category"
                 size='small'
+                value={category}
+                onChange={(e) => Category(e.target.value)}
               />
               <TextField
                 label="stock"
                 size='small'
+                type='number'
+                value={stock}
+                onChange={(e) => Stock(e.target.value)}
               />
 
               <TextField
                 label="Waruanty"
                 size='small'
+                value={waranty}
+                onChange={(e) => Waranty(e.target.value)}
               />
             </div>
             <div className='flex items-center gap-5'>
               <TextField
                 label="Brand"
                 size='small'
+                value={brand}
+                onChange={(e) => Brand(e.target.value)}
               />
               <TextField
                 label="Price"
                 size='small'
+                type='number'
+                value={price}
+                onChange={(e) => Price(e.target.value)}
               />
               <TextField
                 label="Cuted Price"
                 size='small'
+                type='number'
+                value={curted}
+                onChange={(e) => Curted(e.target.value)}
               />
             </div>
           </div>
@@ -69,6 +151,8 @@ const CreateProduct = () => {
               multiline
               label='Full Description'
               size={'small'}
+              value={decr}
+              onChange={(e) => Decr(e.target.value)}
             />
           </div>
           {/* <!-- description box> */}
@@ -77,58 +161,48 @@ const CreateProduct = () => {
           <div className=' bg-white p-5 flex flex-col gap-4'>
             <h1 className=' text-xl font-medium'> 3. Images</h1>
             <div className=' flex gap-4'>
-              <div className=' border border-t-0 grid grid-cols-5 gap-2'>
+              <div className=' border flex-1 border-t-0 grid grid-cols-5 gap-2'>
 
-                <div className='img relative overflow-hidden'>
-                  <img className='h-24 border p-3 rounded' src={dslr} alt="" />
-                  <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
-                    <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
-                    <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
-                  </div>
-                </div>
-                <div className='img relative overflow-hidden'>
-                  <img className='h-24 border p-3 rounded' src={dslr} alt="" />
-                  <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
-                    <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
-                    <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
-                  </div>
-                </div>
-                <div className='img relative overflow-hidden'>
-                  <img className='h-24 border p-3 rounded' src={dslr} alt="" />
-                  <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
-                    <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
-                    <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
-                  </div>
-                </div>
-                <div className='img relative overflow-hidden'>
-                  <img className='h-24 border p-3 rounded' src={dslr} alt="" />
-                  <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
-                    <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
-                    <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
-                  </div>
-                </div>
-                <div className='img relative overflow-hidden'>
-                  <img className='h-24 border p-3 rounded' src={dslr} alt="" />
-                  <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
-                    <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
-                    <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
-                  </div>
-                </div>
-                <div className='img relative overflow-hidden'>
-                  <img className='h-24 border p-3 rounded' src={dslr} alt="" />
-                  <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
-                    <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
-                    <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
-                  </div>
-                </div>
-                
+
+                {
+                  files.length > 0 ?
+                    files.map((elem ,index) => {
+                      return (
+
+                        <div className='img relative overflow-hidden'>
+                          <img className='h-24 border p-3 rounded' src={elem} alt="" />
+                          <div className=' delete absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2'>
+                            <DeleteIcon className=' mx-1 cursor-pointer text-red-500' />
+                            <RemoveRedEyeIcon className=' mx-1 cursor-pointer text-primary' />
+                          </div>
+                        </div>
+                      )
+                    })
+
+                    :
+                    <>
+                      <h1 className=' text-center text-cyan-900'>No Preview</h1>
+                    </>
+                }
+
+
+
+
+
+
 
               </div>
               <div className=' w-24 h-24 rounded-sm bg-[#f7f7f7] border flex flex-col justify-center items-center'>
-                <IconButton>
-                  <CloudUploadIcon color='primary' />
-                </IconButton>
-                <h1 className=' text-sm'>Upload</h1>
+                <input multiple={true} onChange={(e) => { file(e) }} type="file" id='file-input' className=' hidden ' />
+                <label htmlFor="file-input" className=' w-full block '>
+                  <div className=' flex flex-col justify-center items-center'>
+                    <IconButton>
+                      <CloudUploadIcon color='primary' />
+                    </IconButton>
+                    <h1 className=' text-sm'>Upload</h1>
+                  </div>
+                </label>
+
               </div>
             </div>
           </div>
@@ -179,7 +253,7 @@ const CreateProduct = () => {
 
       </div>
 
-    </div>
+    </form>
   )
 }
 

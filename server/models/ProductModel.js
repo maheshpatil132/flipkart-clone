@@ -22,9 +22,10 @@ const ProductModel = new mongoose.Schema({
     },
     images:[{
         url:{
-            type:String
+            type:String,
+            required:true
         },
-        id:{
+        public_id:{
             type:String
         }
     }],
@@ -51,8 +52,15 @@ const ProductModel = new mongoose.Schema({
         type:Number,
         default:0
     },
-    discount:{
-        type:Number
+    waranty:{
+        type:String
+    },
+    brand:{
+        type:String
+    },
+    cureted_price:{
+        type:Number,
+        required:true
     },
     price:{
       type:Number,

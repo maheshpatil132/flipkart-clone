@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Bar, Doughnut, Line, Pie } from "react-chartjs-2";
 import { Chart } from 'chart.js/auto';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -6,6 +6,9 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import { Avatar, IconButton } from '@mui/material'
 import Inventory from '@mui/icons-material/Inventory'
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import { useDispatch, useSelector } from 'react-redux';
+import { AdminGetProducts } from '../../actions/ProductActions';
+import { AdminGetUsers } from '../../actions/UserActions';
 
 
 
@@ -85,7 +88,21 @@ const MainData = () => {
 
       }
     ]
+
+    
   }
+
+  const dispatch = useDispatch()
+  const { ProductCount} = useSelector(state=>state.AllProducts)
+  const { users} = useSelector(state=>state.AllUser)
+
+
+
+  useEffect(()=>{
+    dispatch(AdminGetProducts())
+    dispatch(AdminGetUsers())
+  },[dispatch])
+
   return (
     <div className=' flex flex-col gap-4'>
 
@@ -129,7 +146,7 @@ const MainData = () => {
           </IconButton>
           <div>
             <h1 className='text-[1rem]'>Total Products</h1>
-            <h2 className='text-lg '>28000</h2>
+            <h2 className='text-lg '>{ProductCount}</h2>
           </div>
         </div>
         {/* <!-- box> */}
@@ -144,7 +161,7 @@ const MainData = () => {
           </IconButton>
           <div>
             <h1 className='text-[1rem]'>Total Users</h1>
-            <h2 className='text-lg '>28</h2>
+            <h2 className='text-lg '>{users.length}</h2>
           </div>
         </div>
         {/* <!-- box> */}

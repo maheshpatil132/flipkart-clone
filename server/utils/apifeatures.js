@@ -10,15 +10,13 @@ class ApiFeatures {
         
         const keyword = this.querystr.name ?
             {
-                name: {
+                title : {
                     $regex: this.querystr.name,
                     $options: 'i'
                 }
             }
             : {}
-
        this.query = this.query.find({...keyword})
-
        return this
     }
 

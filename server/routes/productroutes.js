@@ -1,5 +1,5 @@
 const express = require('express');
-const { getallproduct, createproduct, updateproduct, deleteproduct, getproduct, addreview, getallreview, deletereview } = require('../controllers/productcontroller');
+const { getallproduct, createproduct, updateproduct, deleteproduct, getproduct, addreview, getallreview, deletereview, Admingetallproducts } = require('../controllers/productcontroller');
 const {Authorization, authorizerole }= require('../middleware/auth')
 const app = express.Router();
 
@@ -12,3 +12,4 @@ exports.GetProduct = app.get('/product/:id', getproduct)
 exports.AddReview = app.post('/add/review', Authorization , addreview)
 exports.GetAllReview = app.get('/getall/review', getallreview)
 exports.DeleteReview = app.get('/delete/review', Authorization , deletereview)
+exports.AdminGetAllProducts = app.get('/admin/products', Authorization , authorizerole('admin'), Admingetallproducts)

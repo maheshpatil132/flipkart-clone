@@ -8,19 +8,27 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import { Avatar } from '@mui/material';
 import Category from '../layout/categories/Category';
 import Productslider from '../home/productslider/Productslider';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getproddetials } from '../../actions/ProductActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../layout/Loader/Loader';
 import MetaData from '../layout/MetaData';
+import { AddCart } from '../../actions/CartActions';
 const ProductDetials = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { product, loading } = useSelector(state => state.ProductDetial)
-    console.log(product.title);
+     
+
+    const AddToCart = () => {
+       dispatch(AddCart(product))
+       navigate('/cart')
+    }
+    
     useEffect(() => {
         dispatch(getproddetials(id))
-
+        window.scrollTo(0, 0)
     }, [dispatch, id])
 
     return (
@@ -38,9 +46,9 @@ const ProductDetials = () => {
                                     {/* img container */}
                                     
                                     <div className=' top-20 sticky'>
-                                        <img className=' mx-auto w-full' src={dslr} alt="" />
+                                        <img className=' mx-auto w-80' src={ product && product.images && product.images[0].url} alt="" />
                                         <div className=' my-8 flex items-center gap-2 justify-between'>
-                                            <button className='w-full bg-[#ff9f00] text-lg font-bold text-white py-3'> <ShoppingCartIcon /> Add to cart</button>
+                                            <button onClick={() =>AddToCart()} className='w-full bg-[#ff9f00] text-lg font-bold text-white py-3'> <ShoppingCartIcon /> Add to cart</button>
                                             <button className='w-full  bg-[#fb641b] text-lg font-bold py-3 text-white'><ShoppingBagIcon /> Buy Now</button>
                                         </div>
                                     </div>

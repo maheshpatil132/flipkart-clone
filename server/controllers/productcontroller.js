@@ -2,12 +2,36 @@ const aysnchandler = require("../middleware/aysnchandler");
 const ProductModel = require('../models/ProductModel');
 const ApiFeatures = require("../utils/apifeatures");
 const ErrorHandler = require('../utils/errorhandler')
+const cloudinary = require('cloudinary').v2
 
 
 exports.createproduct = aysnchandler(async(req,res,next)=>{
+    
+    let images = [];
+    if (typeof req.body.images === "string") {
+        images.push(req.body.images);
+    } else {
+        images = req.body.images;
+    }
 
-    const product = new ProductModel({...req.body})
+    const imagesLink = [];
+
+    for (let i = 0; i < images.length; i++) {
+        const result = await cloudinary.uploader.upload(images[i], {
+            folder: "products",
+        });
+
+        imagesLink.push({
+            public_id: result.public_id,
+            url: result.secure_url,
+        });
+    }
+
+     req.body.images = imagesLink
      
+    const product = new ProductModel({...req.body})
+
+    
     await product.save();
 
     res.status(200).json({
@@ -40,13 +64,20 @@ exports.getproduct = aysnchandler(async(req,res,next)=>{
 exports.getallproduct = aysnchandler(async(req,res,next)=>{
 
     const querystr = req.query
-
     const resultperpage = 5
+    
+    
+    const featured = new ApiFeatures( ProductModel.find(), querystr).search()
     
     const apifeatures = new ApiFeatures( ProductModel.find(), querystr).search().filter().pagination(resultperpage)
 
+    const featuredproducts = await featured.query;
+
+    const productCount = featuredproducts.length
+
     const products = await apifeatures.query
 
+    // const productCount = products.length
     
     if(!products){
         return next(new ErrorHandler('no products found',404))
@@ -54,7 +85,8 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
 
     res.status(200).json({
         sucess:true,
-        products:products
+        products:products,
+        productCount
     })
 })
 
@@ -111,8 +143,42 @@ exports.addreview = aysnchandler(async(req,res,next)=>{
 // update product
 exports.updateproduct = aysnchandler(async(req,res,next)=>{
     const id = req.params.id
+      
+    console.log(req.body);
+      let prod = await ProductModel.findById(req.params.id);
+      
+    //   console.log(req.body);
+    if (req.body.images !== undefined) {
+        let images = [];
 
-    const product = await ProductModel.findByIdAndUpdate(id,{...req.body},{new:true})
+        if (typeof req.body.images === "string") {
+            images.push(req.body.images);
+        } else {
+            images = req.body.images;
+        }
+
+        // for (let i = 0; i < prod.images.length; i++) {
+        //     await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+        // }
+
+        const imagesLink = [];
+
+        for (let i = 0; i < images.length; i++) {
+            await cloudinary.uploader.upload(images[i]).then((res)=>{
+                imagesLink.push({
+                    public_id: res.public_id,
+                    url: res.secure_url,
+                });
+            }).catch((err)=>{
+                console.log(err);
+            });
+
+            
+        }
+        req.body.images = [...prod.images , ...imagesLink];
+    }
+
+    const product = await ProductModel.findByIdAndUpdate(id,{...req.body}, {new:true} )
 
     if(!product){
         return next(new ErrorHandler("product not found",404))
@@ -197,3 +263,20 @@ exports.deletereview = aysnchandler(async(req,res,next)=>{
     })
 })
 
+exports.Admingetallproducts = aysnchandler(async(req,res,next)=>{
+
+    const products = await ProductModel.find({});
+
+
+    const productCount = products.length
+    
+    if(!products){
+        return next(new ErrorHandler('no products found',404))
+    }
+
+    res.status(200).json({
+        sucess:true,
+        productCount,
+        products:products,
+    })
+})

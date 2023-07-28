@@ -1,10 +1,14 @@
 import React from 'react'
 import CartItem from './CartItem'
 import EmptyCart from './EmptyCart'
+import { useSelector } from 'react-redux'
 
 
 
 const Cart = () => {
+  const { Products } = useSelector(state => state.Cart)
+   
+  
   return (
     <div className='flex p-4  gap-4'>
 
@@ -18,10 +22,20 @@ const Cart = () => {
 
         {/* <!-- cart container > */}
         <div className=' flex flex-col'>
-          <CartItem/>
-          <CartItem/>
-          <CartItem/>
-          <EmptyCart />
+          {
+            Products.length > 0 ? Products.map((elem ,index)=>{
+                   return(
+                     <CartItem key={index} data={elem}/>
+                   )
+            })  
+
+            :
+            <>
+              <EmptyCart />
+            </>
+
+          }
+         
         </div>
         {/* <!-- cart container > */}
 

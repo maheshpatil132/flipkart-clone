@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={ <Home/>}/>
         <Route path="/product/:id" element={<ProductDetials/>}/>
-        <Route path="/search/:keyword" element={<Produtcs/>}/>
+        <Route path="/search" element={<Produtcs/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
@@ -41,7 +41,7 @@ function App() {
         <Route path="/admin/updateorder" element={<Dashboard activeTab={1}><MainData/></Dashboard>}/>
         <Route path="/admin/products" element={<Dashboard activeTab={2}><ProductList/></Dashboard>}/>
         <Route path="/admin/add-product" element={<Dashboard activeTab={3} ><CreateProduct/></Dashboard>}/>
-        <Route path="/admin/update-product" element={<Dashboard activeTab={2} ><UpdateProduct/></Dashboard>}/>
+        <Route path="/admin/update-product/:id" element={<Dashboard activeTab={2} ><UpdateProduct/></Dashboard>}/>
         <Route path="/admin/users" element={<Dashboard activeTab={4}><UsersList/></Dashboard>}/>
         <Route path="/admin/all/reviews" element={<Dashboard activeTab={5}><MainData/></Dashboard>}/>
       </Routes>

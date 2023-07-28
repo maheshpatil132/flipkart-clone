@@ -11,7 +11,7 @@ const Category = () => {
     }
    
   return (
-    <div className=' overflow-x-scroll-scroll bg-white relative capitalize flex w-full gap-3 border p-3 font-semibold items-center justify-between px-4 lg:px-20'>
+    <div className=' bg-white relative capitalize flex w-full gap-3 border p-3 font-semibold items-center justify-between px-4 lg:px-20'>
         
          {
             categories.map((elem,index)=>{
@@ -25,11 +25,11 @@ const Category = () => {
                          {
                             elem.sub &&
 
-                            <div className=' bg-white z-10 p-4 w-48 border submenu absolute -left-10 top-9'>
+                            <div className=' bg-white z-10 p-4 w-40 border submenu absolute -left-6 top-9'>
                                 {
                                     elem.sub.map((e,i)=>{
                                         return(
-                                             <p className=' text-gray-400 text-sm font-light p-1'>{e}</p>
+                                             <p className=' text-gray-800 text-sm font-medium p-1'>{e}</p>
                                         )
                                     })
                                 }
