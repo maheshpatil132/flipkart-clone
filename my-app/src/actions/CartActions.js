@@ -19,4 +19,10 @@ export const RemoveCart = (id) => (dispatch , getState)=>{
             type:RemoveToCart,
             product:id
       })
+
+  
+      localStorage.setItem("cartItems" , JSON.stringify(getState().Cart.Products))
+
+     
+
 }

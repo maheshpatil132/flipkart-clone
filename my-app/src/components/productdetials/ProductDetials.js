@@ -25,6 +25,8 @@ const ProductDetials = () => {
        dispatch(AddCart(product))
        navigate('/cart')
     }
+
+    
     
     useEffect(() => {
         dispatch(getproddetials(id))
@@ -49,7 +51,7 @@ const ProductDetials = () => {
                                         <img className=' mx-auto w-80' src={ product && product.images && product.images[0].url} alt="" />
                                         <div className=' my-8 flex items-center gap-2 justify-between'>
                                             <button onClick={() =>AddToCart()} className='w-full bg-[#ff9f00] text-lg font-bold text-white py-3'> <ShoppingCartIcon /> Add to cart</button>
-                                            <button className='w-full  bg-[#fb641b] text-lg font-bold py-3 text-white'><ShoppingBagIcon /> Buy Now</button>
+                                            <button onClick={()=> navigate('/checkout')} className='w-full  bg-[#fb641b] text-lg font-bold py-3 text-white'><ShoppingBagIcon /> Buy Now</button>
                                         </div>
                                     </div>
 
