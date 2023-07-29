@@ -44,10 +44,10 @@ const BannerSlider = () => {
         <div className=" w-full rounded-sm relative overflow-hidden">
             <Slider {...settings}>
                 
-                    <img className=' h-[47vh] w-full object-cover' src={Banner1} alt="" />
-                    <img className=' h-[47vh] w-full object-cover' src={Banner1} alt="" />
-                    <img className=' h-[47vh] w-full object-cover' src={Banner1} alt="" />
-                    <img className=' h-[47vh] w-full object-cover' src={Banner1} alt="" />
+                    <img className=' h-72 w-full object-cover' src={Banner1} alt="" />
+                    <img className=' h-72 w-full object-cover' src={Banner1} alt="" />
+                    <img className=' h-72 w-full object-cover' src={Banner1} alt="" />
+                    <img className=' h-72 w-full object-cover' src={Banner1} alt="" />
               
             </Slider>
 
