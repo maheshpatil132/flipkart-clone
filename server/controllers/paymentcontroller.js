@@ -5,7 +5,7 @@ const crypto = require('crypto')
 
 
 exports.processpayment = aysnchandler(async(req,res, next)=>{
-    var instance = new Razorpay({ key_id: process.env.Razor_key , key_secret: process.env.Razor_secret })
+    var instance = new Razorpay({ key_id: process.env.Razor_key , key_secret: process.env.Razor_Secure })
      
     var options = {
         amount: Number(req.body.amount * 100),  // amount in the smallest currency unit
