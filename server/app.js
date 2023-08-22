@@ -11,13 +11,13 @@ const cookieParser = require('cookie-parser');
 const { CreateUser, UpdateUser, LoginUser, LogoutUser, AdminUpdateuser, GetAllUSer } = require('./routes/userroutes');
 const { CreateProduct, GetAllProduct, AddReview, UpdateProduct, GetProduct, DeleteReview , GetAllReview ,DeleteProduct, AdminGetAllProducts} = require('./routes/productroutes');
 const { CreateOrder, UpdateOrder, DeleteOrder, MyOrders, Getorder, GetAllOrders } = require('./routes/orderroutes');
-
+const { ProcessPayment, PublishKey, PaymentVerification, GenerateIvoice } = require('./routes/paymentroute');
 
 const app = express();
 
 const corsOptions ={
-    origin:'https://flipkart-clone-ui.vercel.app', 
-    // origin:'http://localhost:3000', 
+    // origin:'https://flipkart-clone-ui.vercel.app', 
+    origin:'http://localhost:3000', 
     credentials:true,            
     optionSuccessStatus:200,
     //access-control-allow-credentials:true
@@ -81,11 +81,16 @@ app.use(MyOrders)
 app.use(Getorder)
 app.use(GetAllOrders)
 
+// Pament
+app.use(ProcessPayment)
+app.use(PaymentVerification)
+app.use(PublishKey)
+app.use(GenerateIvoice)
 
 
-
-app.use('/' ,(req,res,next)=>{
+app.get('/' ,(req,res,next)=>{
     console.log("server in running");
+    
 })
 
 app.use(errorhandle)

@@ -6,7 +6,7 @@ import Primarydropdown from './Primarydropdown';
 import Secondarydropdown from './Secondarydropdown';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Badge } from '@mui/material';
 import { useSelector } from 'react-redux';
 
@@ -23,8 +23,16 @@ const Header = () => {
   }
   const secondarytoggle = () => {
     setToggleSecondary(!togglesecondary)
-  }
+  } 
 
+   const {pathname} =  useLocation()
+   
+  
+  useEffect(() => {
+     setToggleprimary(false)
+     setToggleSecondary(false)
+  }, [pathname])
+  
 
   
 
@@ -45,7 +53,7 @@ const Header = () => {
       {/* right container start */}
       <div className=' flex items-center gap-10 font-bold relative'>
         <button onClick={primarytoggle} className=' px-10 py-1 bg-white font-semibold rounded-sm text-primary'>Login</button>
-        {toggleprimary && <Primarydropdown />}
+        {toggleprimary && <Primarydropdown toggleprimary={toggleprimary} setToggleSecondary={setToggleprimary} />}
 
         <a href="/">Beacome a Seller</a>
 

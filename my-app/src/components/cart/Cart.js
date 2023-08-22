@@ -25,7 +25,7 @@ const Cart = () => {
           {
             Products.length > 0 ? Products.map((elem ,index)=>{
                    return(
-                     <CartItem key={index} data={elem}/>
+                     <CartItem key={index} data={elem.data} quantities={elem.quantity}/>
                    )
             })  
 
@@ -44,7 +44,7 @@ const Cart = () => {
 
       {/* <!-- price detials part> */}
 
-      <div className=' bg-white w-96 h-fit sticky top-20'>
+      {/* <div className=' bg-white w-96 h-fit sticky top-20'>
         <div className=' p-4 border-b'>
           <h1 className=' text-lg font-bold text-gray-500'>Price Description</h1>
         </div>
@@ -72,7 +72,7 @@ const Cart = () => {
             <p>you will save Rs.2000 on this order</p>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* <!-- price detials part> */}
 

@@ -1,23 +1,26 @@
 import { Axios } from "../Axios"
-import { AddToCart, RemoveToCart } from "../constants/CartConstants"
+import { AddToCart, ClearCartItems, RemoveToCart } from "../constants/CartConstants"
 
 
-export const AddCart = (data) => async(dispatch ,getState)=> {
-   
+export const AddCart = (data , quantity = 1) => async(dispatch ,getState)=> {
+      // console.log(data);
       dispatch({
          type:AddToCart,
-         product: data
+         product: {data , quantity}
         })   
+
+      //   console.log(getState().Cart.Products);
 
         localStorage.setItem("cartItems" , JSON.stringify(getState().Cart.Products))
       
 }
 
-export const RemoveCart = (id) => (dispatch , getState)=>{
+export const RemoveCart = (id , quatity = 1) => (dispatch , getState)=>{
 
       dispatch({
             type:RemoveToCart,
-            product:id
+            product:id, 
+            quatity
       })
 
   
@@ -26,3 +29,13 @@ export const RemoveCart = (id) => (dispatch , getState)=>{
      
 
 }
+
+
+export const ClearCart = () => (dispatch , getState)=>{
+      dispatch({
+            type:ClearCartItems
+      })
+      localStorage.removeItem("cartItems")
+}
+
+

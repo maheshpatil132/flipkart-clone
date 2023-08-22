@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { UpdateProducts, getproddetials } from '../../actions/ProductActions';
 import { useParams } from 'react-router-dom';
+import Loader from '../layout/Loader/Loader';
 
 const UpdateProduct = () => {
 
@@ -29,8 +30,9 @@ const UpdateProduct = () => {
   const { id } = useParams()
 
   const { product } = useSelector(state => state.ProductDetial)
+  const { isUpdated } = useSelector(state => state.Product)
 
-
+  let loading = true
 
   const submit = (e) => {
     e.preventDefault();
@@ -96,7 +98,9 @@ const UpdateProduct = () => {
          setOldimgs(product.images)
     }
 
-
+   if(isUpdated){
+    
+   }
 
     
   }, [id, dispatch , product])
@@ -104,6 +108,9 @@ const UpdateProduct = () => {
 
 
   return (
+    <>
+    { loading ? <Loader/> : 
+    
     <form onSubmit={(e) => submit(e)} className=' rounded'>
       {/* <!-- Heading> */}
       <div className=' flex justify-between items-center my-2 mb-6'>
@@ -290,6 +297,10 @@ const UpdateProduct = () => {
       </div>
 
     </form>
+    
+    }
+    
+    </>
   )
 }
 

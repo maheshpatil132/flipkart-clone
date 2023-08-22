@@ -1,22 +1,30 @@
 import { Admin_Product_FAil, Admin_Product_Request, Admin_Product_Success, Create_Product_Fail, Create_Product_Request, Create_Product_Success, Product_Detials_Fail, Product_Detials_Request, Product_Detials_Success, Product_Fail, Product_Request, Product_Success, Update_Product_Request ,Upadate_Product_Success , Update_Product_Fail } from "../constants/ProductConstants";
 
 
+
+// search products
+// electornics products
+// similar
     
-export const ProductReducer = ( state = { products : [] } , action  )=>{
+export const ProductsReducer = ( state = { products : [] } , action  )=>{
    switch(action.type){
     
     case Product_Request : return {
         loading : true,
-        products : []
+        products : {}
     }
     case Product_Success : return {
+        ...state,
         loading : false,
-        products : action.payload.products,
+        products : {
+          ...state.products,
+          [action.producttype] : action.payload.products
+        },
         ProductCount : action.payload.productCount
     }
     case Product_Fail : return {
         loading : false,
-        products : [],
+        products : {},
         error : action.payload
     }
     case Admin_Product_Request : return {
@@ -69,11 +77,13 @@ export const CreateProduct = (state = { product : {}},action)=>{
 
     case Create_Product_Success : return{
         ...state,
+        loading:false,
         product : action.payload
     }
 
     case Create_Product_Fail : return{
         ...state,
+        loading:false,
         error : action.payload
     }
 
@@ -85,7 +95,7 @@ export const CreateProduct = (state = { product : {}},action)=>{
 }
 
 
-export const UpdateProduct = (state = { product : {}},action)=>{
+export const ProductReducer = (state = { product : {}},action)=>{
     switch(action.type){
      case Update_Product_Request : return {
          loading : true,
@@ -93,11 +103,15 @@ export const UpdateProduct = (state = { product : {}},action)=>{
  
      case Upadate_Product_Success  : return{
          ...state,
+         loading:false,
+         isUpdated: true,
          product : action.payload
      }
  
      case Update_Product_Fail  : return{
          ...state,
+         loading:false,
+         isUpdated:false,
          error : action.payload
      }
  
@@ -108,3 +122,4 @@ export const UpdateProduct = (state = { product : {}},action)=>{
     
  }
 
+ 

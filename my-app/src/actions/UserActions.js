@@ -1,5 +1,5 @@
 import { Axios } from "../Axios"
-import { Login_Fail, Login_Req, Login_Success, Register_Fail, Register_Req, Register_Success ,Clear_Error ,All_User_Request , All_User_Success ,All_User_Fail } from "../constants/UserConstants";
+import { Login_Fail, Login_Req, Login_Success, Register_Fail, Register_Req, Register_Success ,Clear_Error ,All_User_Request , All_User_Success ,All_User_Fail, Load_User_Request, Load_User_Sucess, Load_User_Fail } from "../constants/UserConstants";
 
 
 export const LoginUser = ( form) => async(dispatch)=>{
@@ -16,10 +16,9 @@ export const LoginUser = ( form) => async(dispatch)=>{
     })
 
   } catch (error) {
-    console.log(error);
     dispatch({
         type: Login_Fail,
-        payload : error.response.data.message
+        payload : error.response.data.error
     })
   }
 }
@@ -55,6 +54,29 @@ export const RegisterUser = ( form) => async(dispatch)=>{
         type : Clear_Error
     })
   }
+
+
+  export const LoadUser = () => async(dispatch)=>{
+    try {
+      dispatch({
+          type: Load_User_Request
+      })
+     
+      const {data} = await Axios.get('/me/user')
+  
+      dispatch({
+          type: Load_User_Sucess,
+          payload : data.user
+      })
+  
+    } catch (error) {
+      dispatch({
+          type: Load_User_Fail,
+          payload : error.response.data.error
+      })
+    }
+  }
+  
 
 
   

@@ -64,7 +64,7 @@ exports.getproduct = aysnchandler(async(req,res,next)=>{
 exports.getallproduct = aysnchandler(async(req,res,next)=>{
 
     const querystr = req.query
-    const resultperpage = 5
+    const resultperpage = 10
     
     
     const featured = new ApiFeatures( ProductModel.find(), querystr).search()

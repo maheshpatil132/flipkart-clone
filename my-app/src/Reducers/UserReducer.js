@@ -1,4 +1,4 @@
-import { Login_Req , Login_Success , Login_Fail, Register_Req, Register_Success, Register_Fail , Clear_Error, Admin_User_Request, All_User_Request, All_User_Fail, All_User_Success} from '../constants/UserConstants'
+import { Login_Req , Login_Success , Login_Fail, Register_Req, Register_Success, Register_Fail , Clear_Error, Admin_User_Request, All_User_Request, All_User_Fail, All_User_Success, Load_User_Request, Load_User_Sucess, Load_User_Fail} from '../constants/UserConstants'
 
 export const UserReducer =  ( state = { user : {} } , action)=>{
    switch(action.type){
@@ -18,7 +18,8 @@ export const UserReducer =  ( state = { user : {} } , action)=>{
       case Login_Fail : return {
         ...state,
         loading : false,
-        error : action.payload
+        error : action.payload,
+        isAuthenticated : false
       }
 
       case Register_Req : 
@@ -39,6 +40,31 @@ export const UserReducer =  ( state = { user : {} } , action)=>{
         loading : false,
         error : action.payload.data
       }
+
+      case Load_User_Request : 
+      return{
+        loading : true,
+        isAuthenticated : false
+      }
+
+      case Load_User_Sucess : return{
+        ...state,
+        loading : false,
+        user : action.payload,
+        isAuthenticated : true
+      }
+
+      case Load_User_Fail : return {
+        ...state,
+        loading : false,
+        error : action.payload,
+        isAuthenticated : false
+      }
+
+
+
+
+
 
       case Clear_Error : return {
         loading : false,

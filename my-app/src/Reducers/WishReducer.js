@@ -6,7 +6,6 @@ const initialState = {
 
 export const wishReducer =(state = initialState , action) => {
     const item = action.payload
-    console.log(item);
   switch(action.type){
     case AddWishItem :
         const isExist = state.wishItems.find((e)=> e._id === item._id)

@@ -1,7 +1,9 @@
-import { Clear_Error, New_Order_Fail, New_Order_Request, New_Order_Success } from "../constants/OrderConstants";
+import { Admin_Orders_Fail, Admin_Orders_Request, Admin_Orders_Sucess, Clear_Error, My_Order_Fail, My_Order_Request, My_Order_Sucess, New_Order_Fail, New_Order_Request, New_Order_Success, Order_Detial_Fail, Order_Detial_Request, Order_Detial_Sucess } from "../constants/OrderConstants";
 
 
 export const NewOrderReducer = (state = { order:{}}  , action)=>{
+
+
   switch(action.type){
     
     case New_Order_Request :
@@ -33,4 +35,101 @@ export const NewOrderReducer = (state = { order:{}}  , action)=>{
 
     default : return state
   }
+}
+
+
+
+
+export const MyordersReducer = (state = { orders : [] } , action) =>{
+    switch(action.type){
+      
+        case My_Order_Request : 
+            return {
+                loading : true,
+            }
+
+        case My_Order_Sucess : {
+            return {
+                ...state,
+                loading : false,
+                orders : action.payload
+            }
+        }
+
+        case My_Order_Fail : {
+            return {
+                ...state,
+                loading : false,
+                error : action.payload
+            }
+        }
+
+        default : return state
+
+    }
+
+}
+
+
+export const OrderDetialReducer = (state = { order : {} } , action) =>{
+
+    switch(action.type){
+      
+        case Order_Detial_Request : 
+            return {
+                loading : true,
+            }
+
+        case Order_Detial_Sucess : {
+            return {
+                ...state,
+                loading : false,
+                order : action.payload
+            }
+        }
+
+        case Order_Detial_Fail : {
+            return {
+                ...state,
+                loading : false,
+                error : action.payload
+            }
+        }
+
+        default : return state
+
+    }
+
+}
+
+
+export const AdminOrdersReducer = (state = { orders : [] } , action) =>{
+    switch(action.type){
+      
+        case Admin_Orders_Request : 
+            return {
+                loading : true,
+                orders : []
+            }
+
+        case Admin_Orders_Sucess : {
+            return {
+                ...state,
+                loading : false,
+                orders : action.payload
+            }
+        }
+
+        case Admin_Orders_Fail : {
+            return {
+                ...state,
+                loading : false,
+                error : action.payload
+            }
+        }
+
+        default : return state
+
+    }
+
 }

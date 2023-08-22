@@ -1,59 +1,93 @@
 import { TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from './Sidebar'
+import { useSelector } from 'react-redux';
+import Loader from '../layout/Loader/Loader';
+import { useState } from 'react';
 
 const Account = () => {
+
+
+  const { user, loading } = useSelector(state => state.User)
+   const [name, setName] = useState('')
+   const [mobile, setMobile] = useState('')
+   const [email, setEmail] = useState('')
+   
+
+  useEffect(()=>{
+    if(user){
+     setName(user.name)
+     setEmail(user.email)
+     setMobile(user.mobile)
+    }
+  },[user])
+
   return (
-    <div className=' flex gap-4 p-8'>
-
-      <div>
-        <Sidebar />
-      </div>
 
 
-      {/* right part */}
-      <div className=' flex-1 p-6 bg-white rounded'>
+    <>
 
-        {/* <!-- Personal Information> */}
-        <div>
-          <h1 className=' text-xl font-bold capitalize'>Personal Information</h1>
+      {loading ? <Loader />
+        :
+        <>
+          <div className=' flex gap-4 p-8'>
 
-          <form action="" className=' mt-6 flex flex-col gap-8'>
-            <TextField
-              variant='standard'
-              label="Your Name"
-              className=' bg-white border  '
-            />
-            <TextField
-              variant='standard'
-              label="Mobile Number"
-              className=' bg-white border'
-            />
-            <TextField
-              variant='standard'
-              label="Email"
-              className=' bg-white border'
-            />
-            <TextField
-              variant='standard'
-              label="Password"
-              className=' bg-white border'
-            />
-            <button className=' w-fit mt-4 text-white bg-[#fb641b] py-3 px-14 rounded-sm'>Submit</button>
-          </form>
-        </div>
-        {/* <!-- Personal Information> */}
-
-        {/* <!-- Email Information> */}
-        {/* <!-- Email Information> */}
+            <div>
+              <Sidebar user={user} />
+            </div>
 
 
-        {/* <!-- Mobile Information> */}
-        {/* <!-- Mobile Information> */}
+            {/* right part */}
+            <div className=' flex-1 p-6 bg-white rounded'>
+
+              {/* <!-- Personal Information> */}
+              <div>
+                <h1 className=' text-xl font-bold capitalize'>Personal Information</h1>
+
+                <form action="" className=' mt-6 flex flex-col gap-8'>
+                  <TextField
+                    variant='standard'
+                    label="Your Name"
+                    className=' bg-white border capitalize  '
+                    value={name}
+                    onChange={(e)=>setName(e.target.value)}
+                  />
+                  <TextField
+                    variant='standard'
+                    label="Mobile Number"
+                    className=' bg-white border capitalize'
+                    value={mobile}
+                    onChange={(e)=>setMobile(e.target.value)}
+                  />
+                  <TextField
+                    variant='standard'
+                    label="Email"
+                    className=' bg-white border capitalize'
+                    value={email}
+                    onChange={(e)=>setEmail(e.target.value)}
+                  />
+                  <button className=' w-fit mt-4 text-white bg-[#fb641b] py-3 px-14 rounded-sm'>Submit</button>
+                </form>
+              </div>
+              {/* <!-- Personal Information> */}
+
+              {/* <!-- Email Information> */}
+              {/* <!-- Email Information> */}
 
 
-      </div>
-    </div>
+              {/* <!-- Mobile Information> */}
+              {/* <!-- Mobile Information> */}
+
+
+            </div>
+          </div>
+
+        </>
+      }
+
+
+
+    </>
   )
 }
 

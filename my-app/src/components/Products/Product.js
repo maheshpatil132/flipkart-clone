@@ -18,7 +18,7 @@ const Product = ({data}) => {
                     <h1>{data.rating}</h1>
                     <StarIcon fontSize='24px' />
                   </div>
-                  <h1 className=' text-gray-500 text-sm font-bold'>(31)</h1>
+                  <h1 className=' text-gray-500 text-sm font-bold'> Reviews ({data.reviews.length})</h1>
                 </div>
 
                 <h1 className=' font-bold text-base'>Rs. {data.price}

@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import dslr from '../../assets/dslr.webp'
 import StarIcon from '@mui/icons-material/Star';
 import { useDispatch } from 'react-redux';
-import { RemoveCart } from '../../actions/CartActions';
+import { AddCart, RemoveCart } from '../../actions/CartActions';
 
-const CartItem = ({data}) => {
+const CartItem = ({data , quantities}) => {
   const dispatch = useDispatch();
-  const [quantity , setQuantity] = useState(0)
-   console.log(data);
+  const [quantity , setQuantity] = useState(quantities)
   const removeitem = () => {
       dispatch(RemoveCart(data._id))
   }
@@ -15,13 +14,29 @@ const CartItem = ({data}) => {
   useEffect(()=>{
     window.scrollTo(0,0)
   }, [data])
+  
+
+  const increaseQuatity = () =>{
+    setQuantity(quantity + 1);
+    dispatch(AddCart(data , quantity))
+  }
+
+
+  // useEffect(() => {
+    
+  //   dispatch(AddCart(data , quantity));
+
+  // }, [quantity])
+  
+
+
   return (
     <div className=' flex  border p-2 gap-4'>
 
             <div className='  flex flex-col gap-3'>
               <img className=' mx-auto my-2 w-28' src={ data && data.images && data.images[0].url  } alt="" />
               <div className=' mx-auto w-1/2 rounded-2xl overflow-hidden flex'>
-                <button onClick={()=>{ setQuantity(quantity + 1)  }} className='  p-1 px-4 bg-slate-300 border-black'>+</button>
+                <button onClick={()=>{  increaseQuatity() }} className='  p-1 px-4 bg-slate-300 border-black'>+</button>
                 <input onChange={(e)=>setQuantity( Number(e.target.value))} value={quantity} type="text" className=' px-3 border w-full' />
                 <button onClick={()=>{ setQuantity(quantity - 1) }} className='p-1 px-4 bg-slate-300 border-black'>-</button>
               </div>

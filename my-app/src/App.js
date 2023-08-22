@@ -18,10 +18,23 @@ import ProductList from "./components/Admin/ProductList";
 import CreateProduct from "./components/Admin/CreateProduct";
 import UpdateProduct from "./components/Admin/UpdateProduct";
 import UsersList from "./components/Admin/UsersList";
+import PaymentSucess from "./components/orders/PaymentSucess";
+import OrderDetial from "./components/orders/OrderDetial";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { LoadUser } from "./actions/UserActions";
 
 
 
 function App() {
+
+   const dispatch = useDispatch();
+
+   useEffect(()=>{
+     dispatch(LoadUser())
+   })
+
+
   return (
     <div className="App">
       <Header/>
@@ -35,7 +48,9 @@ function App() {
         <Route path="/account" element={<Account/>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
         <Route path="/account/orders" element={<Orders/>}/>
+        <Route path="/account/order/:id" element={<OrderDetial/>}/>
         <Route path="/checkout" element={<CheckoutOrder/>}/>
+        <Route path="/paymentsucess" element={<PaymentSucess/>}/>
         <Route path="/admin/dashboard" element={<Dashboard activeTab={0} ><MainData/></Dashboard>}/>
         <Route path="/admin/orders" element={<Dashboard activeTab={1}><OrderList/></Dashboard>}/>
         <Route path="/admin/updateorder" element={<Dashboard activeTab={1}><MainData/></Dashboard>}/>
@@ -44,6 +59,7 @@ function App() {
         <Route path="/admin/update-product/:id" element={<Dashboard activeTab={2} ><UpdateProduct/></Dashboard>}/>
         <Route path="/admin/users" element={<Dashboard activeTab={4}><UsersList/></Dashboard>}/>
         <Route path="/admin/all/reviews" element={<Dashboard activeTab={5}><MainData/></Dashboard>}/>
+        
       </Routes>
       <Footer/>
     </div>

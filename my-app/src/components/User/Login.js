@@ -3,13 +3,17 @@ import React, { useEffect, useState } from 'react'
 import register from '../../assets/register.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Clear_Errors, LoginUser } from '../../actions/UserActions'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const { loading , isAuthenticated , user ,  error} = useSelector(state => state.User)
   const submit = (e) => {
@@ -21,28 +25,52 @@ const Login = () => {
    }
    
    dispatch(LoginUser(form))
+
+   
    
   //  setEmail('')
   //  setPassword('')
 
   }
 
+  const redirect = location.search ? location.search.split('=')[1] : 'account'
   useEffect(() => {
-  
     window.scrollTo(0,0)
     if(error){
+      toast.error(error)
       dispatch(Clear_Errors())
     }
 
     if(isAuthenticated){
-      navigate('/account')
+      toast("login successfully",{
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      })
+      navigate(`/${redirect}`)
     }
 
      
    }, [dispatch , error ,isAuthenticated])
   return (
     <div className='flex p-4 w-1/2 mx-auto rounded'>
-
+     <ToastContainer
+       position="bottom-center"
+       autoClose={5000}
+       hideProgressBar={false}
+       newestOnTop={false}
+       closeOnClick
+       rtl={false}
+       pauseOnFocusLoss
+       draggable
+       pauseOnHover
+       theme="light"
+    />
     {/* <!-- left Part> */}
      <div className=' w-72 flex flex-col gap-10 justify-between bg-primary p-7 text-white'>
          <div>

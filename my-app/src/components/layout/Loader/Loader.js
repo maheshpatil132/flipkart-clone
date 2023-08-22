@@ -1,13 +1,15 @@
 import React from 'react'
 import CircularProgress from '@mui/material/CircularProgress';
-import { Modal } from '@mui/material';
+import { Backdrop, Modal } from '@mui/material';
 
 const Loader = () => {
   return (
     <div className=" h-72 min-w-full flex items-center justify-center">
-          
-          <CircularProgress />
-
+          <Backdrop
+           open={true}
+          >
+            <CircularProgress color={'success'} />
+          </Backdrop>
         
       </div>
   )

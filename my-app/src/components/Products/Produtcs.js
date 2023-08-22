@@ -31,7 +31,8 @@ const Produtcs = () => {
     const {loading , products ,error , ProductCount }= useSelector(state => state.AllProducts)
     
     const key = query.get('name')
-    
+     
+    console.log(products);
     
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -55,6 +56,7 @@ const Produtcs = () => {
     useEffect(() => {
        
         dispatch(getproduct(key , min , max , page))
+        window.scrollTo(0,0)
 
     }, [min, dispatch , key ,page])
     
@@ -163,8 +165,8 @@ const Produtcs = () => {
                     {/* <!-- Products Conatiner> */}
                     <div className='grid border-b bg-white grid-cols-4 p-4'>
                     {
-                        products.length > 0  ?
-                        products.map((elem , index)=>{
+                      products && products.SearchProducts &&  products.SearchProducts.length > 0  ?
+                      products.SearchProducts.map((elem , index)=>{
                             return(
                                 <NavLink to={`/product/${elem._id}`}>
                                     <Product data={elem} />
@@ -183,10 +185,10 @@ const Produtcs = () => {
                     {/* <!-- Pagination bar> */}
                     <div className=' p-4  bg-white flex items-center justify-between'>
                         <div>
-                            <h1>Page {page} of { Math.ceil(ProductCount/5) }</h1>
+                            <h1>Page {page} of { Math.ceil(ProductCount/10) }</h1>
                         </div>
                         <Pagination
-                            count={Math.ceil(ProductCount/5)}
+                            count={Math.ceil(ProductCount/10)}
                             defaultPage={1}
                             page={page}
                             color="primary"

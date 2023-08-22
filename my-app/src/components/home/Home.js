@@ -12,14 +12,14 @@ import { getproduct } from '../../actions/ProductActions'
 const Home = () => {
 
 
-  const {loading , products }= useSelector(state => state.AllProducts)
+  // const {loading , products }= useSelector(state => state.AllProducts)
+  const loading = false;
   const dispatch = useDispatch();
   const key = ''
-  useEffect(() => {
-    dispatch(getproduct(key))
-    window.scrollTo(0,0)
-  }, [ dispatch])
-  
+  // useEffect(() => {
+  //   dispatch(getproduct(key))
+  //   window.scrollTo(0,0)
+  // }, [ dispatch])
   return (
     <div className=' -z-50'>
       <Category />
@@ -35,12 +35,12 @@ const Home = () => {
             </div>
             :
             <>
-              <Productslider />
-              <Productslider />
+              <Productslider category={"electronics"}  />
+              <Productslider category={"women's clothing"}/>
               {/* <Dealcontainer />
               <Dealcontainer />
               <Dealcontainer /> */}
-              <Productslider />
+              <Productslider category={"men's clothing"}/>
             </>
         }
 

@@ -22,10 +22,15 @@ const ProductDetials = () => {
      
 
     const AddToCart = () => {
-       dispatch(AddCart(product))
+       dispatch(AddCart(product , 1))
        navigate('/cart')
     }
 
+
+    const buynow = () =>{
+       dispatch(AddCart(product ,1));
+       navigate('/checkout')
+    } 
     
     
     useEffect(() => {
@@ -51,7 +56,7 @@ const ProductDetials = () => {
                                         <img className=' mx-auto w-80' src={ product && product.images && product.images[0].url} alt="" />
                                         <div className=' my-8 flex items-center gap-2 justify-between'>
                                             <button onClick={() =>AddToCart()} className='w-full bg-[#ff9f00] text-lg font-bold text-white py-3'> <ShoppingCartIcon /> Add to cart</button>
-                                            <button onClick={()=> navigate('/checkout')} className='w-full  bg-[#fb641b] text-lg font-bold py-3 text-white'><ShoppingBagIcon /> Buy Now</button>
+                                            <button onClick={()=> buynow()} className='w-full  bg-[#fb641b] text-lg font-bold py-3 text-white'><ShoppingBagIcon /> Buy Now</button>
                                         </div>
                                     </div>
 
@@ -83,10 +88,11 @@ const ProductDetials = () => {
                                         <h1 className=' text-sm font-bold text-green-600 '>Special Price</h1>
                                         <h1 className=' font-bold text-3xl'>Rs. {product.price}
 
-                                            <span className=' mx-4 text-gray-500 font-bold text-sm' >Rs. 69000</span>
+                                            <del className=' mx-4 text-gray-500 font-bold text-sm' > Rs.{product.cureted_price}</del>
                                             <span className=' text-green-600 text-base'>69% off</span>
                                         </h1>
-                                        <p className=' capitalize text-red-500'>Hurry, Only 1 left!</p>
+                                        <p className='  text-lg font-bold capitalize '><span>Stock : </span> { product.stock } </p>
+                                        <p className='  text-lg font-bold capitalize '><span>category : </span> { product.category } </p>
 
                                     </div>
                                     {/* <!-- Heading container> */}
@@ -193,9 +199,9 @@ const ProductDetials = () => {
                                 {/* <!-- right container ends> */}
 
                             </div>
-                            <Productslider />
+                            <Productslider category={product.category} page={1} title={product.category}/>
 
-                            <Productslider />
+                            {/* <Productslider category={product.category} page={2} /> */}
 
                         </div>
 

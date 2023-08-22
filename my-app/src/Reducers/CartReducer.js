@@ -1,20 +1,19 @@
-import { RemoveToCart } from "../constants/CartConstants";
+import { ClearCartItems, RemoveToCart } from "../constants/CartConstants";
 
 const initialState = {
   Products :  localStorage.getItem('cartItems') ? JSON.parse( localStorage.getItem("cartItems")) : []
 } 
 
 export const CartReducer = ( state = initialState , action )=>{
-  const item = action.product
+    const item = action.product
     switch(action.type){
        case "AddToCart" : 
-         const isExist = state.Products.find((e)=>e._id === item._id);
-
+         const isExist = state.Products.find((e)=>e.data._id === item.data._id);
          if(isExist){
              return{
               ...state,
                 Products : state.Products.map((e)=>
-                e.product === isExist.product ? item : e
+                  e.data._id === isExist.data._id ? item : e
               )
              }
          }else{
@@ -28,10 +27,13 @@ export const CartReducer = ( state = initialState , action )=>{
       case RemoveToCart :
          return{
           ...state,
-          Products: state.Products.filter((e)=>e._id !== item)
+          Products: state.Products.filter((e)=>e.data._id !== item)
          }
         
-          
+      case ClearCartItems : 
+          return {
+            Products : []
+          }    
        
       
 

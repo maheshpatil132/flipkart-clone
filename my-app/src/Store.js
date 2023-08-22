@@ -1,9 +1,10 @@
 
 import { configureStore } from '@reduxjs/toolkit'
-import { CreateProduct, ProductReducer, Product_detial_reducer } from './Reducers/ProductReducer';
+import { CreateProduct, ProductsReducer, Product_detial_reducer , ProductReducer} from './Reducers/ProductReducer';
 import { CartReducer } from './Reducers/CartReducer';
 import { wishReducer } from './Reducers/WishReducer';
 import { AlluserReducer, UserReducer } from './Reducers/UserReducer';
+import {  AdminOrdersReducer, MyordersReducer, NewOrderReducer, OrderDetialReducer } from './Reducers/OrderReducer';
 
 
 
@@ -11,14 +12,18 @@ import { AlluserReducer, UserReducer } from './Reducers/UserReducer';
 const store = configureStore({
     
     reducer:{
-       AllProducts : ProductReducer,
+       AllProducts : ProductsReducer,
        ProductDetial : Product_detial_reducer,
        Cart : CartReducer,
        WishList: wishReducer,
        User:UserReducer,
        AllUser : AlluserReducer,
-       CreateProduct : CreateProduct
-
+       CreateProduct : CreateProduct,
+       Product : ProductReducer,
+       Neworder : NewOrderReducer,
+       Myorders : MyordersReducer,
+       OrderDetial : OrderDetialReducer,
+       AllOrders : AdminOrdersReducer
     },
     
 

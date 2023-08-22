@@ -9,7 +9,7 @@ exports.CreateUser = app.post('/create/user', createuser)
 exports.LoginUser = app.post('/login/user', loginuser)
 exports.UpdateUser = app.put('/update/user', Authorization, updateuser)
 exports.LogoutUser = app.get('/logout/user', Authorization, logoutuser)
-exports.GetUser = app.get('/user',Authorization,getuser)
+exports.GetUser = app.get('/me/user',Authorization,getuser)
 
 // admin routes
 exports.AdminUpdateuser = app.put('/admin/update/user/:id', Authorization, authorizerole('admin'), adminupdateuser)

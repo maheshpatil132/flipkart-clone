@@ -11,13 +11,13 @@ const ProductList = () => {
 
 
 
-  console.log(products);
   const rows = products.map((elem) => ({
       id: elem._id,
       ProductName: elem.title, 
       category: elem.category, 
       stock: elem.stock ,
-      price:elem.price
+      price:elem.price,
+      curetedPrice :elem.cureted_price
      }),
 )
 
@@ -51,6 +51,13 @@ const ProductList = () => {
     {
       field: 'price',
       headerName: 'Price',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 100,
+    },
+    {
+      field: 'curtedPrice',
+      headerName: 'curtedPrice',
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 160,
