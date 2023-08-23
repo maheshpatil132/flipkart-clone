@@ -88,6 +88,8 @@ const CheckoutOrder = () => {
             amount : taxprice + itemsprices + shippingprice
          })
 
+         console.log(key);
+
          var options = {
             key: `${key}`, // Enter the Key ID generated from the Dashboard
             amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
@@ -96,7 +98,7 @@ const CheckoutOrder = () => {
             description: "Test Transaction",
             // image: "https://example.com/your_logo",
             order_id: `${order.id}`, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            callback_url: "https://flipkart-clone-ui.vercel.app/paymentverification",
+            callback_url: "https://flipkart-api.vercel.app/paymentverification",
             prefill: {
                 name: "Gaurav Kumar",
                 email: "gaurav.kumar@example.com",

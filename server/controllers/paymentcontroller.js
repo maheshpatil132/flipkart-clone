@@ -24,12 +24,12 @@ exports.processpayment = aysnchandler(async(req,res, next)=>{
 
 exports.paymentverification = aysnchandler(async(req,res,next)=>{
    
-    const { razorpay_order_id,razorpay_payment_id , razorpay_signature }  = req.body
+    const { razorpay_order_id , razorpay_payment_id , razorpay_signature }  = req.body
      
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-    const expected = crypto.createHmac('sha256' , process.env.Razor_secret)
+    const expected = crypto.createHmac('sha256' , process.env.Razor_Secure)
                             .update(body.toString())
                             .digest("hex")
     

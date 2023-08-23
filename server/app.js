@@ -27,9 +27,7 @@ app.use(cookieParser())
 
 dotenv.config({path:'./config/app.env'})
 
-app.use(fileUpload({
-    useTempFiles : true,
-}));
+app.use(fileUpload());
 
 cloudinary.config({ 
     cloud_name: `${process.env.cloud_name}`, 
