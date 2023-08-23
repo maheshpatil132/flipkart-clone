@@ -4,6 +4,7 @@ import OrderSidebar from './OrderSidebar'
 import { useDispatch, useSelector } from 'react-redux'
 import { Myorders } from '../../actions/OrderActions'
 import { NavLink } from 'react-router-dom'
+import Loader from '../layout/Loader/Loader'
 
 
 const Orders = () => {
@@ -21,7 +22,18 @@ const Orders = () => {
 
 
   return (
-    <div className=' flex p-8 gap-10'>
+    <>
+     
+     {
+      loading ? 
+        
+      <Loader/>
+
+      :
+      
+      <>
+
+<div className=' flex p-8 gap-10'>
       <OrderSidebar />
 
       {/* right side */}
@@ -55,6 +67,11 @@ const Orders = () => {
       </div>
       {/* right side */}
     </div>
+
+      </>
+     }
+    
+    </>
   )
 }
 
