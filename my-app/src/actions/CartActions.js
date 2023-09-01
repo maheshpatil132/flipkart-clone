@@ -1,5 +1,4 @@
-import { Axios } from "../Axios"
-import { AddToCart, ClearCartItems, RemoveToCart } from "../constants/CartConstants"
+import { AddToCart, ClearCartItems, ClearError, RemoveToCart, Save_ShipingInfo } from "../constants/CartConstants"
 
 
 export const AddCart = (data , quantity = 1) => async(dispatch ,getState)=> {
@@ -36,6 +35,23 @@ export const ClearCart = () => (dispatch , getState)=>{
             type:ClearCartItems
       })
       localStorage.removeItem("cartItems")
+}
+
+
+export const ClearErrors = () => (dispatch , getState)=>{
+      dispatch({
+            type:ClearError
+      })
+}
+
+
+export const save_shippingindfo = (data) =>(dispatch)=> {
+    dispatch({
+      type : Save_ShipingInfo,
+      payload : data
+    })
+
+    localStorage.setItem('shippingInfo', JSON.stringify(data));
 }
 
 

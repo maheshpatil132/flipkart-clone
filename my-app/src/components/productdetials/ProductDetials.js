@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import dslr from '../../assets/dslr.webp'
+import React, { useEffect, useState } from 'react'
 import StarIcon from '@mui/icons-material/Star';
 import SellIcon from '@mui/icons-material/Sell';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
@@ -9,30 +8,101 @@ import { Avatar } from '@mui/material';
 import Category from '../layout/categories/Category';
 import Productslider from '../home/productslider/Productslider';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getproddetials } from '../../actions/ProductActions';
+import { ClearError, Reset_Review, getproddetials, newReview } from '../../actions/ProductActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../layout/Loader/Loader';
 import MetaData from '../layout/MetaData';
 import { AddCart } from '../../actions/CartActions';
+import { useSnackbar } from 'notistack'
+import { Box, Typography } from '@mui/material'
+import Modal from '@mui/material/Modal';
+import Rating from '@mui/material/Rating';
+
 const ProductDetials = () => {
+    const [open, setOpen] = useState(false)
+    const [review, setReview] = useState('')
+    const [value, setValue] = React.useState(2);
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { product, loading } = useSelector(state => state.ProductDetial)
-     
+    const { product, loading  , error} = useSelector(state => state.ProductDetial)
+    const { success, error: reviewError } = useSelector((state) => state.newReview);
+    const { user } = useSelector((state) => state.User);
+    const { enqueueSnackbar } = useSnackbar()
 
     const AddToCart = () => {
-       dispatch(AddCart(product , 1))
-       navigate('/cart')
+        dispatch(AddCart(product, 1))
+        enqueueSnackbar("Product Added in Cart", { variant: 'success' })
+        navigate('/cart')
     }
 
 
-    const buynow = () =>{
-       dispatch(AddCart(product ,1));
-       navigate('/checkout')
-    } 
-    
-    
+    const buynow = () => {
+        dispatch(AddCart(product, 1));
+        navigate('/checkout')
+    }
+
+    const handleReview = (e) => {
+       setReview(e.target.value)
+    }
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '0.01px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
+    const submitreview = () => {
+
+        if (value === 0 || !review.trim()) {
+            enqueueSnackbar("Empty Review", { variant: "error" });
+            return;
+        }
+
+        if( user === null){
+            enqueueSnackbar("Please Login First to Submit the Review", { variant: "error" });
+            setReview('')
+            setOpen(false)
+            return;
+        }
+        const formData = new FormData();
+        formData.set("rating", value);
+        formData.set("comment", review);
+        formData.set("productid", product._id);
+        formData.set("name", user.name);
+
+        dispatch(newReview(formData))
+        setReview('')
+        setOpen(false);
+    }
+
+
+    useEffect(() => {
+        if (error) {
+            enqueueSnackbar(error, { variant: "error" });
+            dispatch(ClearError())
+        }
+        if (reviewError) {
+            enqueueSnackbar(reviewError, { variant: "error" });
+            dispatch(ClearError())
+        }
+        if (success) {
+            enqueueSnackbar("Review Submitted Successfully", { variant: "success" });
+            dispatch(Reset_Review())
+        }
+        dispatch(getproddetials(id))
+        // eslint-disable-next-line
+    }, [dispatch, id, error, reviewError, success, enqueueSnackbar]);
+
     useEffect(() => {
         dispatch(getproddetials(id))
         window.scrollTo(0, 0)
@@ -51,12 +121,19 @@ const ProductDetials = () => {
                                 {/* <left part start> */}
                                 <div className=' w-[35%]  flex-1 flex flex-col p-6'>
                                     {/* img container */}
-                                    
+
                                     <div className=' top-20 sticky'>
-                                        <img className=' mx-auto w-80' src={ product && product.images && product.images[0].url} alt="" />
+                                        <img className='hover:scale-105 cursor-pointer transition-all mx-auto w-80' src={product && product.images && product.images[0].url} alt="" />
                                         <div className=' my-8 flex items-center gap-2 justify-between'>
-                                            <button onClick={() =>AddToCart()} className='w-full bg-[#ff9f00] text-lg font-bold text-white py-3'> <ShoppingCartIcon /> Add to cart</button>
-                                            <button onClick={()=> buynow()} className='w-full  bg-[#fb641b] text-lg font-bold py-3 text-white'><ShoppingBagIcon /> Buy Now</button>
+                                            <button 
+                                                disabled={ product && product.stock === 0 } 
+                                                onClick={() => AddToCart()} 
+                                                className={` ${product && product.stock === 0 ? 'bg-slate-400' : 'bg-[#fb641b]' } w-full bg-[#ff9f00] text-lg font-bold text-white py-3`}> <ShoppingCartIcon /> Add to cart
+                                            </button>
+                                            <button  
+                                            disabled={ product && product.stock === 0 } 
+                                            onClick={() => buynow()} 
+                                            className={`w-full ${product && product.stock === 0 ? 'bg-slate-400' : 'bg-[#fb641b]' }   text-lg font-bold py-3 text-white`}><ShoppingBagIcon /> Buy Now</button>
                                         </div>
                                     </div>
 
@@ -89,10 +166,14 @@ const ProductDetials = () => {
                                         <h1 className=' font-bold text-3xl'>Rs. {product.price}
 
                                             <del className=' mx-4 text-gray-500 font-bold text-sm' > Rs.{product.cureted_price}</del>
-                                            <span className=' text-green-600 text-base'>69% off</span>
+                                            <span className=' text-green-600 text-base'>
+                                            { (((product.cureted_price - product.price)/product.cureted_price) * 100).toFixed(2) }%
+                                            </span>
                                         </h1>
-                                        <p className='  text-lg font-bold capitalize '><span>Stock : </span> { product.stock } </p>
-                                        <p className='  text-lg font-bold capitalize '><span>category : </span> { product.category } </p>
+                                        <p className='  text-lg font-bold capitalize '><span>Stock : </span> 
+                                        
+                                        { product.stock === 0 ? <span className='text-red-400'>out of stock</span> : product.stock} </p>
+                                        <p className='  text-lg font-bold capitalize '><span>category : </span> {product.category} </p>
 
                                     </div>
                                     {/* <!-- Heading container> */}
@@ -124,16 +205,16 @@ const ProductDetials = () => {
 
                                     {/* <!-- features container> */}
                                     <div className=' my-4'>
-                                        <h1 className=' my-3 text-lg font-bold capitalize'>Key Feaures</h1>
+                                        <h1 className=' my-3 text-lg font-bold capitalize'>Key Features</h1>
                                         <ul className='flex flex-col gap-2'>
                                             {
                                                 product.features &&
                                                     product.features.length > 0 ?
                                                     product.features.map((elem, index) => {
                                                         return (
-                                                            <li className=' flex gap-3 items-center'>
+                                                            <li key={index} className=' flex gap-3 items-center'>
                                                                 <RadioButtonCheckedIcon className=' text-gray-600' />
-                                                                <p>Buy this Product and Get Extra ₹500 Off on Two-Wheelers</p>
+                                                                <p>{elem}</p>
                                                             </li>
                                                         )
                                                     })
@@ -150,24 +231,62 @@ const ProductDetials = () => {
                                     <div className=' border border-b-0 my-4'>
                                         <div className=' flex border-b p-4 font-bold items-center justify-between'>
                                             <h1 className=' text-xl'>Reviews And Ratings</h1>
-                                            <button className=' px-8 py-2 bg-[#fb641b] text-white '>Rate Product</button>
+                                            <button onClick={handleOpen} className=' px-8 py-2 bg-[#fb641b] text-white '>Rate Product</button>
                                         </div>
+
+                                        <Modal
+                                            open={open}
+                                            onClose={handleClose}
+                                            aria-labelledby="modal-modal-title"
+                                            aria-describedby="modal-modal-description"
+                                        >
+                                            <Box sx={style}>
+                                                <Typography id="modal-modal-title" variant="h5" component="h2">
+                                                    Add Reviews and Ratings
+                                                </Typography>
+
+                                                <Rating
+                                                    name="simple-controlled"
+                                                    value={value}
+                                                    onChange={(event, newValue) => {
+                                                        setValue(newValue);
+                                                    }}
+                                                />
+
+                                                <textarea 
+                                                value={review} 
+                                                rows={5}
+                                                onChange={(e)=>handleReview(e)}
+                                                className=' p-2 border-black border-2 w-full'  />
+                                                <button 
+                                                    onClick={submitreview}
+                                                    className=' bg-orange-400 text-white rounded p-1 px-6 my-2'>
+                                                    submit
+                                                </button>
+                                                <button 
+                                                 onClick={handleClose}
+                                                 className=' mx-4 bg-red-500 text-white rounded p-1 px-6 my-2'>cancel</button>
+
+                                            </Box>
+                                        </Modal>
 
                                         {
                                             product.reviews &&
                                                 product.reviews.length > 0 ?
                                                 product.reviews.map((elem, index) => {
                                                     return (
-                                                        <div className=' p-4 flex flex-col gap-4 border-b'>
+                                                        <div key={index} className=' p-4 flex flex-col gap-4 border-b'>
                                                             <div className=' flex items-center gap-3'>
                                                                 <Avatar />
-                                                                <h1 className=' font-bold'> Mahesh Patil </h1>
+                                                                <h1 className=' font-bold capitalize'> {elem.name} </h1>
                                                                 <div className=' font-bold flex gap-1 w-fit items-center text-sm bg-green-700 text-white py-[.1rem] px-2 rounded-sm'>
-                                                                    <h1>4.5</h1>
+                                                                    <h1>{elem.rate}</h1>
                                                                     <StarIcon fontSize='24px' />
                                                                 </div>
                                                             </div>
-                                                            <p className=' text-sm font-medium'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Iste, excepturi?</p>
+                                                            <p className=' text-sm font-medium'>
+                                                                {elem.Comment}
+                                                            </p>
                                                         </div>
 
                                                     )
@@ -199,16 +318,16 @@ const ProductDetials = () => {
                                 {/* <!-- right container ends> */}
 
                             </div>
-                            <Productslider category={product.category} page={1} title={product.category}/>
+                            <Productslider category={product.category} title={product.category} />
 
                             {/* <Productslider category={product.category} page={2} /> */}
 
                         </div>
 
-                        
+
 
                     </>)
-                
+
             }
 
         </>

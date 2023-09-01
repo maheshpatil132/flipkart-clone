@@ -12,6 +12,7 @@ const { CreateUser, UpdateUser, LoginUser, LogoutUser, AdminUpdateuser, GetAllUS
 const { CreateProduct, GetAllProduct, AddReview, UpdateProduct, GetProduct, DeleteReview , GetAllReview ,DeleteProduct, AdminGetAllProducts} = require('./routes/productroutes');
 const { CreateOrder, UpdateOrder, DeleteOrder, MyOrders, Getorder, GetAllOrders } = require('./routes/orderroutes');
 const { ProcessPayment, PublishKey, PaymentVerification, GenerateIvoice } = require('./routes/paymentroute');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -24,10 +25,14 @@ const corsOptions ={
 }
 app.use(cors(corsOptions));
 app.use(cookieParser())
+app.use(bodyParser.json({limit: '50mb'}))
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(express.json()); 
 
 dotenv.config({path:'./config/app.env'})
-
-app.use(fileUpload());
+app.use(fileUpload( {
+    limits: { fileSize: 100 * 1024 * 1024 },
+  } ));
 
 cloudinary.config({ 
     cloud_name: `${process.env.cloud_name}`, 
@@ -38,9 +43,7 @@ cloudinary.config({
 
 
 const Port = process.env.PORT
-app.use(body.urlencoded({extended:false}))
-app.use(body.json())
-express.json()
+
 
 
 

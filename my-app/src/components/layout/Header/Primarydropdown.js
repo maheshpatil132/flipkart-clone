@@ -46,7 +46,7 @@ const Primarydropdown = ({setToggleprimary , toggleprimary}) => {
        
             nav.map((elem,index)=>{
                 return(
-                       <NavLink to={elem.redirect}>
+                       <NavLink key={index} to={elem.redirect}>
                        <div className=' p-4 border-b font-semibold hover:bg-slate-100  gap-4 text-primary flex items-center'>
                             <div>{elem.icon}</div>
                             <h6 className=' text-[#212121]'>{elem.title}</h6>

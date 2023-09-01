@@ -1,10 +1,11 @@
 import { TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector, useStore } from 'react-redux'
-import { RemoveCart } from '../../actions/CartActions'
+import React, { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import CheckoutItem from './CheckoutItem'
-import { useNavigate} from 'react-router-dom'
+import { useSnackbar } from 'notistack';
 import { Axios } from '../../Axios'
+import { save_shippingindfo } from '../../actions/CartActions';
+import { NavLink } from 'react-router-dom';
 
 
 
@@ -13,67 +14,75 @@ import { Axios } from '../../Axios'
 
 const CheckoutOrder = () => {
 
-    const { Products } = useSelector(state => state.Cart)
-    const dispatch = useDispatch()
+    const { Products, shipinginfo } = useSelector(state => state.Cart)
+    const { user } = useSelector(state => state.User)
     const [address, setAddress] = useState()
     const [pincode, setPincode] = useState()
     const [city, setCity] = useState()
     const [state, setState] = useState()
     const [country, setCountry] = useState()
     const [itemsprices, setItemsPrices] = useState(0)
-    const [quatity, setQuatity] = useState(1)
     const [step, setStep] = useState(1)
-    const [shippingInfo , setShippingInfo] = useState({})
-    const navigate = useNavigate() 
+    const { enqueueSnackbar } = useSnackbar();
 
+    const dispatch = useDispatch();
+
+
+    const sum = useRef(0)
     const shippingprice = 100;
     const taxprice = 100;
-    const remove = (e) => {
-        dispatch(RemoveCart(e._id))
-    }
+
 
     // let shippingInfo = {} ;
-    
-    
-    const savedelivery = (e) =>{
+
+
+    const savedelivery = (e) => {
         e.preventDefault()
-        if(step === 1){
-         setShippingInfo( {
-                address,
-                pincode,
-                city,
-                state,
-                country
-            } )
-            setStep(2);       
+        if (step === 1) {
+            console.log(address , pincode , city , state , country);
+            const shipinng_data = {
+                address : address,
+                pincode :  pincode,
+                city : city,
+                state : state,
+                country :  country
+            }
+            dispatch(save_shippingindfo(shipinng_data))
+            setStep(2);
         }
+
+        enqueueSnackbar(' Detials saved Sucessfully', { variant: 'success' })
     }
 
 
 
-    const Checkout = async() =>{
-         
-        if(step != 2){
-            return alert('Step 2 Is Remaining')
+    const Checkout = async () => {
+
+        if (!user) {
+            return enqueueSnackbar('Please Login First before placing the order', { variant: 'info' })
         }
 
-        if(Products.length < 1){
+        if (!shipinginfo) {
+            return enqueueSnackbar('Please Fill The Address Detials', { variant: 'info' })
+        }
+
+        if (Products.length < 1) {
             return;
         }
 
 
         const orderinfo = {
-            shipinginfo: shippingInfo,
+            shipinginfo: shipinginfo,
             itemsprice: itemsprices,
-            shipingprice:shippingprice,
-            taxprice:taxprice,
-            totalprice : itemsprices + shippingprice + taxprice,
+            shipingprice: shippingprice,
+            taxprice: taxprice,
+            totalprice: itemsprices + shippingprice + taxprice,
 
-            orderitems : Products.map((e)=>{
+            orderitems: Products.map((e) => {
                 return {
-                    name : e.data.title,
-                    product:e.data._id,
-                    quantity:e.quantity,
+                    name: e.data.title,
+                    product: e.data._id,
+                    quantity: e.quantity,
                     image: e.data.images[0].url,
                     price: e.data.price
                 }
@@ -81,16 +90,16 @@ const CheckoutOrder = () => {
 
         }
 
-        sessionStorage.setItem('order' , JSON.stringify(orderinfo));
+        sessionStorage.setItem('order', JSON.stringify(orderinfo));
 
-         const {data : {key}} = await Axios.get('/process/publishkey')
-         const {data:{order}} = await Axios.post('/process/payment', {
-            amount : taxprice + itemsprices + shippingprice
-         })
+        const { data: { key } } = await Axios.get('/process/publishkey')
+        const { data: { order } } = await Axios.post('/process/payment', {
+            amount: taxprice + itemsprices + shippingprice
+        })
 
-         console.log(key);
+        console.log(key);
 
-         var options = {
+        var options = {
             key: `${key}`, // Enter the Key ID generated from the Dashboard
             amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             currency: "INR",
@@ -99,6 +108,7 @@ const CheckoutOrder = () => {
             // image: "https://example.com/your_logo",
             order_id: `${order.id}`, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
             callback_url: "https://flipkart-api.vercel.app/paymentverification",
+            // callback_url: "http://localhost:5000/paymentverification",
             prefill: {
                 name: "Gaurav Kumar",
                 email: "gaurav.kumar@example.com",
@@ -117,22 +127,24 @@ const CheckoutOrder = () => {
         // navigate('/login?redirect=shipping')
     }
 
-    let sum
-    useEffect(() => { 
-    //  if(Products.length > 0){
-    //      setItemsPrices(()=> Products.reduce(( acc , {price}) => {
-    //         console.log(price);
-    //         return acc.price + price
-    //    } ))  
-    //  }
-     sum =0;
-     for(let i=0; i<Products.length; i++){
-        sum += Products[i].data.price * Products[i].quantity
-     }
+    useEffect(() => {
+        sum.current = 0;
+        for (let i = 0; i < Products.length; i++) {
+            sum.current += Products[i].data.price * Products[i].quantity
+        }
+        setItemsPrices(sum.current)
 
-     setItemsPrices(sum)
-//    window.scrollTo(0,0)
-}, [Products])
+        if(shipinginfo){
+            setAddress(shipinginfo.address)
+            setCountry(shipinginfo.country)
+            setCity(shipinginfo.city)
+            setPincode(shipinginfo.pincode)
+            setState(shipinginfo.state)
+        }
+
+
+
+    }, [Products , shipinginfo])
 
     return (
         <div className=' flex  p-6  gap-8 '>
@@ -146,11 +158,25 @@ const CheckoutOrder = () => {
                     </div>
 
                     <div className=' flex flex-col items-start'>
-                        <h1 className=' text-lg font-bold text-gray-500'>Mahesh</h1>
+                        <h1 className=' text-lg font-bold text-gray-500'>{user ? user.name : "Login"}</h1>
                     </div>
 
                     <div className=' ml-auto '>
-                        <button className='px-8 border border-primary text-primary rounded-sm text-lg py-1.5'>Change</button>
+                        {
+                            !user ?
+                                <NavLink to={'/login'}>
+                                    <button
+                                        className='px-8 border border-primary text-primary rounded-sm text-lg py-1.5
+                                        hover:bg-primary hover:text-white transition-colors'>
+                                        Login
+                                    </button>
+                                </NavLink>
+                                :
+
+                                <button className='px-8 border border-primary text-primary rounded-sm text-lg py-1.5'>
+                                    Change
+                                </button>
+                        }
                     </div>
                 </div>
                 {/* <!-- Login Detials> */}
@@ -173,7 +199,7 @@ const CheckoutOrder = () => {
 
                     <div className='p-5 py-2'>
 
-                        <form onSubmit={(e)=>savedelivery(e)} action="" className=' p-6 flex flex-col gap-6 mt-4 w-3/4'>
+                        <form onSubmit={(e) => savedelivery(e)} action="" className=' p-6 flex flex-col gap-6 mt-4 w-3/4'>
                             <h1 className=' text-lg font-bold'>Add Adress</h1>
 
                             <div className=' flex gap-4'>
@@ -238,27 +264,6 @@ const CheckoutOrder = () => {
                                     InputProps={{ className: 'bg-white' }}
 
                                 />
-
-
-                            </div>
-
-
-
-                            <div className=' flex flex-col gap-2 p-2'>
-                                <h1 className=' font-bold text-gray-500'>Address type</h1>
-                                <div className=' flex gap-10'>
-
-                                    <div className=' flex gap-3'>
-                                        <input type="radio" readOnly/>
-                                        <label htmlFor="Home">Home (All day Delivery)</label>
-                                    </div>
-                                    <div className=' flex gap-3'>
-                                        <input type="radio" readOnly />
-                                        <label htmlFor="Home">Work (All day Delivery)</label>
-                                    </div>
-
-                                </div>
-
                             </div>
 
                             <button type='submit' className=' px-12 rounded uppercase w-fit  bg-[#fb641b] text-lg font-bold py-3 text-white'>
@@ -294,7 +299,7 @@ const CheckoutOrder = () => {
                         {
                             Products && Products.map((elem) => {
                                 return (
-                                    <CheckoutItem quantity={elem.quantity} elem={elem.data}/>
+                                    <CheckoutItem quantity={elem.quantity} elem={elem.data} />
                                 )
                             })
                         }
@@ -318,7 +323,7 @@ const CheckoutOrder = () => {
                     </div>
 
                     <div className=' bg-white p-5 py-4'>
-                        <button type='submit' onClick={()=>Checkout()} className='px-8 border border-primary text-primary rounded-sm text-lg py-1.5'>
+                        <button type='submit' onClick={() => Checkout()} className='px-8 border border-primary text-primary rounded-sm text-lg py-1.5'>
                             Paytm
                         </button>
                     </div>
@@ -336,7 +341,7 @@ const CheckoutOrder = () => {
                 <div className=' p-4'>
                     <ul className=' border-dashed border-b border-black p-3'>
                         <li className=' flex justify-between py-2  text-lg'>
-                            <h1>Price ( { Products.length} )</h1>
+                            <h1>Price ( {Products.length} )</h1>
                             <h1> Rs. {itemsprices} </h1>
                         </li>
                         <li className=' flex justify-between  py-2  text-lg'>

@@ -36,14 +36,15 @@ const CartItem = ({data , quantities}) => {
             <div className='  flex flex-col gap-3'>
               <img className=' mx-auto my-2 w-28' src={ data && data.images && data.images[0].url  } alt="" />
               <div className=' mx-auto w-1/2 rounded-2xl overflow-hidden flex'>
-                <button onClick={()=>{  increaseQuatity() }} className='  p-1 px-4 bg-slate-300 border-black'>+</button>
+                <button onClick={()=>{ quantity < data.stock && increaseQuatity() }} className='  p-1 px-4 bg-slate-300 border-black'>+</button>
                 <input onChange={(e)=>setQuantity( Number(e.target.value))} value={quantity} type="text" className=' px-3 border w-full' />
-                <button onClick={()=>{ setQuantity(quantity - 1) }} className='p-1 px-4 bg-slate-300 border-black'>-</button>
+                <button onClick={()=>{ quantity > 0 && setQuantity(quantity - 1) }} className='p-1 px-4 bg-slate-300 border-black'>-</button>
               </div>
             </div>
 
-            <div className=' flex flex-col  gap-3 justify-between p-2'>
-              <div className='flex flex-col gap-3 justify-center'>
+            <div className=' flex  gap-3 w-full justify-between items-start p-2'>
+
+              <div className='flex flex-col gap-3 '>
                 <h1 className=' font-semibold  text-base'>{data.title}</h1>
                 <div className=' flex gap-4 items-center'>
                   <div className=' font-bold flex gap-1 w-fit items-center text-sm bg-green-700 text-white py-[.1rem] px-2 rounded-sm'>
@@ -54,10 +55,11 @@ const CartItem = ({data , quantities}) => {
                 </div>
 
                 <h1 className=' font-bold text-base'>Rs. {data.price}
-
                   <span className=' mx-2 text-gray-500 font-bold text-sm' >Rs. 69000</span>
                   <span className=' text-green-600 text-base'>69% off</span>
                 </h1>
+
+                <h1 className=' textxl font-bold'>stock : {data.stock} </h1>
               </div>
 
 

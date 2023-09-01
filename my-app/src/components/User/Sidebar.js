@@ -4,19 +4,24 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PersonIcon from '@mui/icons-material/Person';
 import React from 'react'
 import { NavLink } from 'react-router-dom';
-
+import { useDispatch} from 'react-redux'
+import { logoutUser } from '../../actions/UserActions';
 
 const Sidebar = ({ user }) => {
+    const dispatch = useDispatch()
 
-
+  const logoutfun = () => {
+    dispatch(logoutUser())
+  }
 
     return (
 
         <div className=' w-80  flex flex-col gap-3'>
             {/* <!-- heading> */}
-            <div className=' p-4   rounded bg-white flex gap-4 items-center'>
+            <div className=' p-3 rounded bg-white flex gap-4 items-center'>
                 <Avatar sx={{ height: 40, width: 40 }} />
-                <h1 className=' text-xl capitalize font-bold'>{user.name}</h1>
+                <h1 className=' text-xl capitalize font-bold'>{user && user.name}</h1>
+                <button onClick={logoutfun} className=' bg-red-500 text-white ml-auto px-5 py-1 rounded'>Log out</button>
             </div>
             {/* <!-- heading> */}
 

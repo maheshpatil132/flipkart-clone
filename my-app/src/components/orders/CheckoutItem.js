@@ -26,7 +26,7 @@ const CheckoutItem = ({elem , quantity}) => {
 
       useEffect(()=>{
         dispatch(AddCart(elem , quatity))
-      } , [quatity])
+      } , [quatity ,elem , dispatch])
 
 
     return (
@@ -36,7 +36,7 @@ const CheckoutItem = ({elem , quantity}) => {
                 <div className=' flex flex-col w-[150px] gap-3 '>
                     <img className=' w-28 mx-auto' src={elem.images && elem.images[0].url} alt="" />
                     <div className=' border w-full rounded-2xl overflow-hidden flex'>
-                        <button onClick={() => increaseQuatity()} className='  p-1 px-4 bg-slate-300 border-black'>+</button>
+                        <button onClick={() => quantity < elem.stock && increaseQuatity()} className='  p-1 px-4 bg-slate-300 border-black'>+</button>
                         {/* <input value= type="text" className=' px-3 border w-full' /> */}
                         <h1 className='w-full text-center my-auto'>{quatity}</h1>
                         <button onClick={() => quatity > 1 && decreaseQuatity()} className='p-1 px-4 bg-slate-300 border-black'>-</button>
@@ -51,6 +51,7 @@ const CheckoutItem = ({elem , quantity}) => {
                             <span className=' mx-2 text-gray-500 font-bold text-sm' >Rs. 69000</span>
                             <span className=' text-green-600 text-base'>69% off</span>
                         </h1>
+                        <h1 className=' font-bold'> stock : {elem.stock}</h1>
                     </div>
                 </div>
 

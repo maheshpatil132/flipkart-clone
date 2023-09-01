@@ -36,7 +36,7 @@ exports.createorder = aysnchandler(async(req,res,next)=>{
 exports.getorder = aysnchandler(async(req,res,next)=>{
     const id = req.params.id
 
-    const order = await OrderModel.findById(id)
+    const order = await OrderModel.findById(id).populate('user', {name : true})
 
     if(!order){
         return next(new ErrorHandler("order not found", 404))

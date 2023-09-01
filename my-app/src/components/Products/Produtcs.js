@@ -7,8 +7,7 @@ import { useState } from 'react';
 import Product from './Product';
 import './products.css'
 import MetaData from '../layout/MetaData';
-import { Link, NavLink, useParams, useSearchParams } from 'react-router-dom';
-import Productslider from '../home/productslider/Productslider';
+import {  NavLink, useParams, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getproduct } from '../../actions/ProductActions';
 
@@ -20,22 +19,25 @@ function valuetext(value) {
 
 const Produtcs = () => {
 
-    const [value, setValue] = React.useState([20, 37]);
+    const [value, setValue] = React.useState([0, 2000]);
     const [page, setPage] = useState(1)
-    const [min , setMin] = useState()
-    const [max , setMax] = useState()
+    const [min , setMin] = useState(0)
+    const [max , setMax] = useState(20000)
     const [ratings, setRatings] = useState(true);
     const [query , setQuery] = useSearchParams()
-    const {keyword} = useParams()
     const dispatch = useDispatch()
     const {loading , products ,error , ProductCount }= useSelector(state => state.AllProducts)
     
     const key = query.get('name')
+    let resultsperpage = 10;
      
-    console.log(products);
     
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        setTimeout(()=>{
+            setMax(newValue[1])
+            setMin(newValue[0])
+        } , 1000)
     };
 
     const togglerating = ()=>{
@@ -53,12 +55,12 @@ const Produtcs = () => {
 
       
 
+        
     useEffect(() => {
-       
         dispatch(getproduct(key , min , max , page))
         window.scrollTo(0,0)
 
-    }, [min, dispatch , key ,page])
+    }, [min, dispatch , key ,page , max ])
     
     return (
         <>
@@ -91,7 +93,7 @@ const Produtcs = () => {
 
                     <div className=' flex items-center justify-between'>
                         <div className=' border w-fit p-1 capitalize '>
-                            <select onChange={(e)=>changemin(e)} name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
+                            <select value={min} onChange={(e)=>changemin(e)} name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
                                 <option defaultValue={0}  >0</option>
                                 <option value="5000">5000</option>
                                 <option value="10000">10000</option>
@@ -100,7 +102,7 @@ const Produtcs = () => {
                         </div>
                         <p>To</p>
                         <div className=' border w-fit p-1 capitalize '>
-                            <select onChange={(e)=>changemax(e)} name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
+                            <select value={max} onChange={(e)=>changemax(e)} name="min" className='capitalize font-semibold text-sm outline-none w-20 px-2' id="">
                                 <option value="one">5000</option>
                                 <option value="two">10000</option>
                                 <option value="three">100000</option>
@@ -141,6 +143,38 @@ const Produtcs = () => {
                     }
                 </div>
 
+
+                <div className=' p-4 border-b'>
+                    <div className=' flex justify-between items-center'>
+                        <h1 className=' text-sm font-bold'>CUSTOMER RATINGS</h1>
+                        <div className=' cursor-pointer' onClick={togglerating}>
+                            { ratings && <ExpandLessIcon /> }
+                            { !ratings && <ExpandMoreIcon/> }
+                        </div>
+                    </div>
+{
+      ratings && 
+                    <div>
+                        <div className=' flex items-center'>
+                            <Checkbox />
+                            <p className='font-semibold text-sm'>Electronics</p>
+                        </div>
+                        <div className=' flex items-center'>
+                            <Checkbox />
+                            <p className='font-semibold text-sm'> shoes </p>
+                        </div>
+                        <div className=' flex items-center'>
+                            <Checkbox />
+                            <p className='font-semibold text-sm'> clothes </p>
+                        </div>
+                        <div className=' flex items-center'>
+                            <Checkbox />
+                            <p className='font-semibold text-sm'>  </p>
+                        </div>
+                    </div>
+                    }
+                </div>
+
             </div>
             {/* <!-- left side part> */}
 
@@ -158,12 +192,14 @@ const Produtcs = () => {
 
                     {/* <!-- Heading> */}
                     <div className=' bg-white p-4 border-b'>
-                        <h1 className=' text-base font-bold'>Showing {page} - {page+4} of {ProductCount} results for "{key}"</h1>
+                        <h1 className=' text-base font-bold'>
+                            Showing { (page -1)*resultsperpage + 1 } - { products.SearchProducts ? ProductCount - (page -1)*resultsperpage + 1 > resultsperpage ? resultsperpage : ProductCount : resultsperpage } of { ProductCount} results for "{key}"
+                        </h1>
                     </div>
                     {/* <!-- Heading> */}
 
                     {/* <!-- Products Conatiner> */}
-                    <div className='grid border-b bg-white grid-cols-4 p-4'>
+                    <div className='grid border-b gap-3 bg-white grid-cols-4 p-4'>
                     {
                       products && products.SearchProducts &&  products.SearchProducts.length > 0  ?
                       products.SearchProducts.map((elem , index)=>{
@@ -185,7 +221,7 @@ const Produtcs = () => {
                     {/* <!-- Pagination bar> */}
                     <div className=' p-4  bg-white flex items-center justify-between'>
                         <div>
-                            <h1>Page {page} of { Math.ceil(ProductCount/10) }</h1>
+                            <h1>Page {page} of { Math.ceil(ProductCount/resultsperpage) }</h1>
                         </div>
                         <Pagination
                             count={Math.ceil(ProductCount/10)}

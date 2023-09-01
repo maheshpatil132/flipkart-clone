@@ -4,6 +4,7 @@ import Sidebar from './Sidebar'
 import { useSelector } from 'react-redux';
 import Loader from '../layout/Loader/Loader';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Account = () => {
 
@@ -12,15 +13,19 @@ const Account = () => {
    const [name, setName] = useState('')
    const [mobile, setMobile] = useState('')
    const [email, setEmail] = useState('')
+   const navigate = useNavigate()
    
 
   useEffect(()=>{
     if(user){
+     if(user.role === 'admin') navigate('/admin/dashboard')
      setName(user.name)
      setEmail(user.email)
      setMobile(user.mobile)
+    }else{
+      navigate('/login')
     }
-  },[user])
+  },[ user , navigate])
 
   return (
 

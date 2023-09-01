@@ -1,4 +1,5 @@
 import React from 'react'
+import {NavLink} from 'react-router-dom'
 import empty from '../../assets/empty.webp'
 
 const EmptyCart = () => {
@@ -8,8 +9,8 @@ const EmptyCart = () => {
             <img className=' h-52 mx-auto' src={empty} alt="" />
         </div>
         <h1 className=' text-base font-bold'>Look Like your cart is Empty !</h1>
-        <button className=' bg-primary text-white px-8 rounded py-2'>Shop Now</button>
-
+        <NavLink to={'/'}><button className=' bg-primary text-white px-8 rounded py-2'>Shop Now</button></NavLink>
+    
     </div>
   )
 }

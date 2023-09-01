@@ -1,4 +1,4 @@
-import { Admin_Orders_Fail, Admin_Orders_Request, Admin_Orders_Sucess, Clear_Error, My_Order_Fail, My_Order_Request, My_Order_Sucess, New_Order_Fail, New_Order_Request, New_Order_Success, Order_Detial_Fail, Order_Detial_Request, Order_Detial_Sucess } from "../constants/OrderConstants";
+import { Admin_Orders_Fail, Admin_Orders_Request, Admin_Orders_Sucess, Clear_Error, Delete_Order_Fail, Delete_Order_Request, Delete_Order_Sucess, My_Order_Fail, My_Order_Request, My_Order_Sucess, New_Order_Fail, New_Order_Request, New_Order_Success, Order_Detial_Fail, Order_Detial_Request, Order_Detial_Sucess, Update_Order_Fail, Update_Order_Request, Update_Order_Sucess } from "../constants/OrderConstants";
 
 
 export const NewOrderReducer = (state = { order:{}}  , action)=>{
@@ -96,6 +96,36 @@ export const OrderDetialReducer = (state = { order : {} } , action) =>{
             }
         }
 
+        case Update_Order_Request : {
+            return {
+                loading : true,
+                isUpdated : false
+            }
+        }
+
+        case Update_Order_Sucess : {
+            return {
+                ...state,
+                loading : false,
+                isUpdated : true
+            }
+        }
+
+        case Update_Order_Fail : {
+            return {
+                loading : false,
+                error : action.payload , 
+                isUpdated : false
+            }
+        }
+
+        case Clear_Error : {
+            return{
+                loading : false,
+                error : null
+            }
+        }
+
         default : return state
 
     }
@@ -109,7 +139,7 @@ export const AdminOrdersReducer = (state = { orders : [] } , action) =>{
         case Admin_Orders_Request : 
             return {
                 loading : true,
-                orders : []
+                orders : [  ]
             }
 
         case Admin_Orders_Sucess : {
@@ -125,6 +155,30 @@ export const AdminOrdersReducer = (state = { orders : [] } , action) =>{
                 ...state,
                 loading : false,
                 error : action.payload
+            }
+        }
+
+        case Delete_Order_Request : return {
+            loading : true,
+            isDeleted : false,
+            orders : []
+        }
+    
+        case Delete_Order_Sucess : {
+            return{
+                ...state ,
+                loading : false,
+                isDeleted : true,
+                orders : []
+            }
+        }
+    
+        case Delete_Order_Fail : {
+            return{
+                ...state ,
+                loading : false,
+                isDeleted : false, 
+                orders : []
             }
         }
 

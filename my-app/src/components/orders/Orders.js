@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Order from './Order'
 import OrderSidebar from './OrderSidebar'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,19 +6,29 @@ import { Myorders } from '../../actions/OrderActions'
 import { NavLink } from 'react-router-dom'
 import Loader from '../layout/Loader/Loader'
 
-
 const Orders = () => {
   
-   const { orders , loading ,error } = useSelector((state) => state.Myorders)
-   const [orderscontainer, SetOrderscontainer] = useState([])
+   const { orders , loading  } = useSelector((state) => state.Myorders)
+   const [orderlist, setOrderlist] = useState([])
+
    const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(Myorders()) 
+  },[dispatch])
 
 
   useEffect(()=>{
-    dispatch(Myorders())
-    
-  },[dispatch])
-  console.log(orders);
+    window.scrollTo(0,0)
+  },[orderlist])
+
+
+
+  useEffect(() => {
+    if (orders) {
+        setOrderlist(orders);
+    }
+}, [orders]);
 
 
   return (
@@ -34,24 +44,28 @@ const Orders = () => {
       <>
 
 <div className=' flex p-8 gap-10'>
-      <OrderSidebar />
+      <OrderSidebar orders={orders} orderlist={orderlist} setOrderlist={setOrderlist} />
 
       {/* right side */}
       <div className=' flex-1  flex flex-col'>
 
         {/* <!--search bar> */}
-        <div className='flex w-full mb-4'>
+        {/* <div className='flex w-full mb-4'>
           <input type="text" placeholder='search...' className=' border shadow-sm w-full px-4' />
           <button className=' rounded-sm px-10 py-1.5 text-lg bg-primary text-white'>search</button>
-        </div>
+        </div> */}
         {/* <!--search bar> */}
+
+        <div className='p-3 bg-white border'>
+          <h1 className=' text-lg uppercase font-bold'>orders ( {orderlist.length} )</h1>
+        </div>
 
         {/* <!--order items container> */}
 
         {
-         orders && orders.length > 0 ? orders.map((elem ,index)=>{
+         orderlist && orderlist.length > 0 ? orderlist.map((elem ,index)=>{
             return(       
-              <Order order = {elem}/>
+              <Order key={index} order = {elem}/>
             )
           }) 
 

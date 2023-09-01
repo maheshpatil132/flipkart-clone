@@ -1,21 +1,17 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import Category from '../layout/categories/Category'
 import BannerSlider from './Bannerslider/BannerSlider'
-import Dealcontainer from './dealcontainer/dealcontainer'
 import Productslider from './productslider/Productslider'
+
 import { CircularProgress } from '@mui/material'
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
-import { getproduct } from '../../actions/ProductActions'
 
-
+const SliderComponent = React.lazy(() => import('./productslider/Productslider'));
 const Home = () => {
 
 
   // const {loading , products }= useSelector(state => state.AllProducts)
   const loading = false;
-  const dispatch = useDispatch();
-  const key = ''
+
   // useEffect(() => {
   //   dispatch(getproduct(key))
   //   window.scrollTo(0,0)
@@ -28,21 +24,17 @@ const Home = () => {
 
         <BannerSlider />
         {/* deal container */}
-        {
-          loading ?
-            <div className=' p-10 justify-center items-center flex flex-1 bg-white w-full border'>
-              <CircularProgress />
-            </div>
-            :
-            <>
-              <Productslider category={"electronics"}  />
-              <Productslider category={"women's clothing"}/>
-              {/* <Dealcontainer />
-              <Dealcontainer />
-              <Dealcontainer /> */}
-              <Productslider category={"men's clothing"}/>
-            </>
-        }
+
+        <Suspense fallback={<div>Loading...</div>}>
+          <section>
+            <SliderComponent  category={"electronics"} />
+            <SliderComponent category={"women's clothing"}/>
+            {/* <SliderComponent category={"men's clothing"}/> */}
+          </section>
+        </Suspense>
+
+
+
 
         {/* footer  */}
 

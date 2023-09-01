@@ -2,7 +2,6 @@ import React from 'react'
 import data from './footer.json'
 
 const Footer = () => {
-    console.log(data);
     return (
         <div className=' mt-4 flex flex-col w-full bg-secondary text-sm'>
         <div className=' flex p-14'>
@@ -14,13 +13,13 @@ const Footer = () => {
                     data.map((elem, index) => {
                         return (
 
-                            <div className=' flex flex-col gap-2'>
+                            <div key={index} className=' flex flex-col gap-2'>
                                 <h1 className=' text-sm uppercase text-gray-500'>{elem.menu}</h1>
                                 <ul className=' flex-col flex gap-2'>
                                     {
                                         elem.suboption.map((e, i) => {
                                             return (
-                                                <li>{e.title}</li>
+                                                <li key={i}>{e.title}</li>
                                             )
                                         })
                                     }

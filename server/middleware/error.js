@@ -13,7 +13,7 @@ const errorhandle = (err, req, res, next) => {
 
     if (err.code == 11000) {
         const message = `This ${Object.keys(err.keyValue)} are alreadey Exist`
-        err = new ErrorHandler(message, 200)
+        err = new ErrorHandler(message, 400)
     }
 
     res.status(err.status).json({

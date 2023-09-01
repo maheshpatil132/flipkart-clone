@@ -1,12 +1,15 @@
 import React from 'react'
-import dslr from '../../assets/dslr.webp'
 import { NavLink } from 'react-router-dom'
 
 const Order = ({order}) => {
 
-   
+   const colors = {
+     processing : 'bg-orange-100 text-orange-500',
+     delivered : 'bg-green-100 text-green-500'
+   }
+
     return (
-        <div className=' bg-white p-6 flex mt-4 shadow-md'>
+        <div className=' bg-white p-6 flex  shadow-md'>
             <div className=' flex flex-1 items-start gap-10'>
 
                 <div>
@@ -28,13 +31,13 @@ const Order = ({order}) => {
             <div className=' flex w-96'>
 
                 {/* <!-- Total Amount> */}
-                <h1 className=' text-xl font-bold'>Rs. {order.totalprice}</h1>
+                <h1 className={ ` text-xl font-bold`}>Rs. {order.totalprice}</h1>
                 {/* <!-- Total Amount> */}
 
                 {/* order status */}
-                <div className=' ml-auto capitalize space-y-3'>
+                <div className=' ml-auto flex flex-col items-center capitalize space-y-3'>
                     <h1 className=' text-xl font-bold'>status</h1>
-                    <h2 className=' text-orange-400 text-base font-bold'>{order.orderstatus}</h2>
+                    <h2 className={` ${colors[order.orderstatus]} px-4 rounded-full py-[0.30rem] text-sm font-bold`}>{order.orderstatus}</h2>
                 </div>  
                 {/* order status */}
 

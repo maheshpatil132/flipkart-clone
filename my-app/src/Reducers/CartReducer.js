@@ -1,7 +1,8 @@
-import { ClearCartItems, RemoveToCart } from "../constants/CartConstants";
+import { ClearCartItems, ClearError, RemoveToCart, Save_ShipingInfo } from "../constants/CartConstants";
 
 const initialState = {
-  Products :  localStorage.getItem('cartItems') ? JSON.parse( localStorage.getItem("cartItems")) : []
+  Products :  localStorage.getItem('cartItems') ? JSON.parse( localStorage.getItem("cartItems")) : [],
+  shipinginfo :localStorage.getItem('shippingInfo') ? JSON.parse( localStorage.getItem("shippingInfo")) : {}
 } 
 
 export const CartReducer = ( state = initialState , action )=>{
@@ -33,8 +34,16 @@ export const CartReducer = ( state = initialState , action )=>{
       case ClearCartItems : 
           return {
             Products : []
-          }    
-       
+          }   
+          
+      case ClearError :
+        return {
+          error : null 
+        }
+      case Save_ShipingInfo : return {
+        ...state,
+        shipinginfo : action.payload
+      }
       
 
        default : return state

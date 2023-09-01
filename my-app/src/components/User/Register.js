@@ -4,6 +4,8 @@ import register from '../../assets/register.png'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Clear_Errors, RegisterUser } from '../../actions/UserActions'
+import { useSnackbar } from 'notistack';
+
  
 
 
@@ -16,6 +18,8 @@ const Register = () => {
 
   const dispatch = useDispatch();
   const {loading , isAuthenticated , error } = useSelector(state => state.User)
+
+  const {enqueueSnackbar}  = useSnackbar()
   
   const submit = (e) => {
 
@@ -30,20 +34,23 @@ const Register = () => {
    }
 
    dispatch(RegisterUser(form))
-  
+   if(isAuthenticated){
+     enqueueSnackbar('Register Successfully' , { variant:'success' })
+   }
   }
 
 
   useEffect(() => {
     window.scrollTo(0,0)
     if(error){
+      enqueueSnackbar(error , { variant:'error' })
       dispatch(Clear_Errors())
     }
    if(isAuthenticated){
     navigate('/account')
    }
     
-   }, [])
+   }, [dispatch , error , isAuthenticated , navigate , enqueueSnackbar])
   return (
     <div className='flex p-4 w-1/2 mx-auto rounded'>
 

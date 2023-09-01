@@ -15,7 +15,8 @@ const Header = () => {
   const [toggleprimary, setToggleprimary] = useState(false)
   const [togglesecondary, setToggleSecondary] = useState(false)
 
-  const { Products } = useSelector( state => state.Cart)
+  const { Products } = useSelector(state => state.Cart)
+  const { user } = useSelector(state => state.User)
 
 
   const primarytoggle = () => {
@@ -23,18 +24,18 @@ const Header = () => {
   }
   const secondarytoggle = () => {
     setToggleSecondary(!togglesecondary)
-  } 
+  }
 
-   const {pathname} =  useLocation()
-   
-  
+  const { pathname } = useLocation()
+
+
   useEffect(() => {
-     setToggleprimary(false)
-     setToggleSecondary(false)
+    setToggleprimary(false)
+    setToggleSecondary(false)
   }, [pathname])
-  
 
-  
+
+
 
   return (
     <div className=' sticky z-50 top-0 p-1.5 capitalize w-full justify-center gap-6 flex items-center text-white bg-primary '>
@@ -52,7 +53,22 @@ const Header = () => {
 
       {/* right container start */}
       <div className=' flex items-center gap-10 font-bold relative'>
-        <button onClick={primarytoggle} className=' px-10 py-1 bg-white font-semibold rounded-sm text-primary'>Login</button>
+        {
+          user ?
+            <div onClick={primarytoggle} className=' cursor-pointer flex gap-1'>
+              <h1 className='capitalize'> {user.name}</h1>
+              <span  className=' relative  cursor-pointer'>       
+                  {toggleprimary ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+              </span>
+            </div>
+            :
+            <>
+              <button onClick={primarytoggle} className=' px-10 py-1 bg-white font-semibold rounded-sm text-primary'>
+                Login
+              </button>
+            </>
+
+        }
         {toggleprimary && <Primarydropdown toggleprimary={toggleprimary} setToggleSecondary={setToggleprimary} />}
 
         <a href="/">Beacome a Seller</a>
@@ -66,11 +82,11 @@ const Header = () => {
 
         {togglesecondary && <Secondarydropdown />}
 
-        
+
         <NavLink to={'/cart'} className='cursor-pointer'>
-            <span className=' px-1'> <Badge badgeContent = { Products ? Products.length : 1 } color='secondary'  ><ShoppingCartIcon fontSize='small'/></Badge> </span>
-             cart
-          </NavLink>
+          <span className=' px-1'> <Badge badgeContent={Products ? Products.length : 1} color='secondary'  ><ShoppingCartIcon fontSize='small' /></Badge> </span>
+          cart
+        </NavLink>
 
 
       </div>

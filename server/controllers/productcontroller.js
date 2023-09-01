@@ -6,7 +6,6 @@ const cloudinary = require('cloudinary').v2
 
 
 exports.createproduct = aysnchandler(async(req,res,next)=>{
-    
     let images = [];
     if (typeof req.body.images === "string") {
         images.push(req.body.images);
@@ -17,6 +16,7 @@ exports.createproduct = aysnchandler(async(req,res,next)=>{
     const imagesLink = [];
 
     for (let i = 0; i < images.length; i++) {
+
         const result = await cloudinary.uploader.upload(images[i], {
             folder: "products",
         });
@@ -47,7 +47,7 @@ exports.getproduct = aysnchandler(async(req,res,next)=>{
 
     const id = req.params.id
 
-    const product = await ProductModel.findById(id);
+    const product = await ProductModel.findById({_id :id}).populate('reviews.user' , { name : true})
 
     if(!product){
         return next(new ErrorHandler('product does not exist', 404))
@@ -66,8 +66,7 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
     const querystr = req.query
     const resultperpage = 10
     
-    
-    const featured = new ApiFeatures( ProductModel.find(), querystr).search()
+    const featured = new ApiFeatures( ProductModel.find(), querystr).search().filter()
     
     const apifeatures = new ApiFeatures( ProductModel.find(), querystr).search().filter().pagination(resultperpage)
 
@@ -93,29 +92,29 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
 // Add or update the reviews
 
 exports.addreview = aysnchandler(async(req,res,next)=>{
-    const {comment , rating , productid} = req.body
+    const {comment , rating , productid , name} = req.body
 
     const review = {
         user : req.user._id,
         rate : rating ,
         Comment : comment ,
+        name : name
     }
     const product = await ProductModel.findById(productid)
-
-    const isReviewed = product.reviews.find((elem)=> elem.user.toString() === req.user._id.toString())
 
     if(!product){
         return next(new ErrorHandler("product not found", 404))
     }
+    const isReviewed = product.reviews.find((elem)=> elem.user.toString() === req.user._id.toString())
 
-    const index = product.reviews.findIndex(elem => elem.user.toString() === req.user._id.toString())
 
+    
     if(!isReviewed){
-       product.reviews.push(review)
+        product.reviews.push(review)
+    }else{
+        const index = product.reviews.findIndex(elem => elem.user.toString() === req.user._id.toString())
+        product.reviews[index] = review
     }
-
-    product.reviews[index] = review
-
         let sum = 0
 
         let numrevs = product.reviews.length
@@ -143,8 +142,6 @@ exports.addreview = aysnchandler(async(req,res,next)=>{
 // update product
 exports.updateproduct = aysnchandler(async(req,res,next)=>{
     const id = req.params.id
-      
-    console.log(req.body);
       let prod = await ProductModel.findById(req.params.id);
       
     //   console.log(req.body);
@@ -204,7 +201,7 @@ exports.deleteproduct = aysnchandler(async(req,res,next)=>{
 
     res.status(200).json({
         sucess:true,
-        message:"product deleted successfully"
+        message:"product deleted successfully",
     })
 })
 

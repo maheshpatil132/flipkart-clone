@@ -29,7 +29,7 @@ const Category = () => {
                                 {
                                     elem.sub.map((e,i)=>{
                                         return(
-                                             <p className=' text-gray-800 text-sm font-medium p-1'>{e}</p>
+                                             <p key={i} className=' text-gray-800 text-sm font-medium p-1'>{e}</p>
                                         )
                                     })
                                 }

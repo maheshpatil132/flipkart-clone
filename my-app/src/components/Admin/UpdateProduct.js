@@ -2,15 +2,16 @@ import { IconButton, TextField } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import dslr from '../../assets/dslr.webp'
 import './createproduct.css'
-
+import {useSnackbar} from 'notistack'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { UpdateProducts, getproddetials } from '../../actions/ProductActions';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import Loader from '../layout/Loader/Loader';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
+
 
 const UpdateProduct = () => {
 
@@ -26,13 +27,16 @@ const UpdateProduct = () => {
   const [files, setFiles] = useState([])
   const [value, setValue] = useState([])
   const [oldimgs, setOldimgs] = useState([])
+  const [features, setFeatures] = useState([])
+  const [featurevalue, setFeatureValue] = useState('')
+
   const dispatch = useDispatch()
+  const {enqueueSnackbar}  = useSnackbar()
   const { id } = useParams()
 
   const { product } = useSelector(state => state.ProductDetial)
-  const { isUpdated } = useSelector(state => state.Product)
+  const { isUpdated , loading } = useSelector(state => state.ProductDetial)
 
-  let loading = true
 
   const submit = (e) => {
     e.preventDefault();
@@ -53,8 +57,11 @@ const UpdateProduct = () => {
         formData.append("images", image);
       });
     }
-    
 
+    features.forEach((feature) => {
+      formData.append("features", feature);
+    });
+    
     dispatch(UpdateProducts(formData , id))
   }
 
@@ -79,11 +86,25 @@ const UpdateProduct = () => {
     })
 
   }
+ 
 
+  const addfeature = () => {
+    if (featurevalue.length === 0) {
+      return enqueueSnackbar('Please enter a feature', { variant: 'error' })
+    }
+    setFeatures((prev) => [...prev, featurevalue]);
+    setFeatureValue('')
+  }
+
+
+  const removefeature = (e, key) => {
+    console.log(key);
+    setFeatures((prev) => prev.filter((elem, i) => i !== key))
+  }
 
 
   useEffect(() => {
-
+   if(product){
     if(product._id !== id){
       dispatch(getproddetials(id))
     }else{
@@ -96,14 +117,15 @@ const UpdateProduct = () => {
          setBrand(product.brand)
          setCurted(product.cureted_price)
          setOldimgs(product.images)
+         setFeatures(product.features)
     }
+  }
 
    if(isUpdated){
-    
+      enqueueSnackbar("Update done" , {variant: 'success'})
    }
-
     
-  }, [id, dispatch , product])
+  }, [id, dispatch , product , isUpdated , enqueueSnackbar])
 
 
 
@@ -114,7 +136,13 @@ const UpdateProduct = () => {
     <form onSubmit={(e) => submit(e)} className=' rounded'>
       {/* <!-- Heading> */}
       <div className=' flex justify-between items-center my-2 mb-6'>
-        <h1 className=' text-2xl font-medium'>Update Product</h1>
+        <NavLink to={'/admin/products'}>
+        <button className='bg-primary flex items-center gap-1 text-white p-3 py-1 rounded-full'>
+          <KeyboardBackspaceIcon/>
+            <span>Back</span>
+        </button>
+        </NavLink>
+        <h1 className=' text-2xl font-semibold'>Update Product</h1>
         <button type='submit' className=' bg-primary text-white py-2 px-10 font-bold rounded-sm hover:bg-blue-600'>Save</button>
       </div>
       {/* <!-- Heading> */}
@@ -262,30 +290,35 @@ const UpdateProduct = () => {
               size='small'
               label='Features....'
               fullWidth
+              value={featurevalue}
+              onChange={(e) => setFeatureValue(e.target.value)}
             />
-            <button className=' bg-primary text-white py-1 px-6 rounded-sm rounded-l-none'>Add</button>
+            <button 
+            onClick={addfeature}
+            type='button'
+            className=' bg-primary text-white py-1 px-6 rounded-sm rounded-l-none'>Add</button>
           </div>
           {/* <!-- Features Container> */}
           <div>
             <ul className=' flex flex-col gap-2'>
-              <li className=' bg-sky-100 rounded-sm p-2 px-4 flex justify-between items-center'>
-                <h1>Features 1</h1>
-                <IconButton sx={{ background: 'lightblue' }}>
-                  <DeleteIcon />
-                </IconButton>
-              </li>
-              <li className=' bg-sky-100 rounded-sm p-2 px-4 flex justify-between items-center'>
-                <h1>Features 1</h1>
-                <IconButton sx={{ background: 'lightblue' }}>
-                  <DeleteIcon />
-                </IconButton>
-              </li>
-              <li className=' bg-sky-100 rounded-sm p-2 px-4 flex justify-between items-center'>
-                <h1>Features 1</h1>
-                <IconButton sx={{ background: 'lightblue' }}>
-                  <DeleteIcon />
-                </IconButton>
-              </li>
+            {
+                      features.length > 0 ?
+                        features.map((elem, index) => {
+                          return (
+                            <li key={index} className=' bg-sky-100 rounded-sm p-2 px-4 flex justify-between items-center'>
+                              <h1>{elem}</h1>
+                              <IconButton
+                                onClick={(e) => { removefeature(e, index) }}
+                                sx={{ background: 'lightblue' }}>
+                                <DeleteIcon />
+                              </IconButton>
+                            </li>
+                          )
+                        })
+
+                        :
+                        <h1 className='  text-gray-500 text-xl text-center italic'>No Features Added</h1>
+                    }
             </ul>
           </div>
           {/* <!-- Features Container> */}

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Bar, Doughnut, Line, Pie } from "react-chartjs-2";
-import { Chart } from 'chart.js/auto';
+import { Chart, elements } from 'chart.js/auto';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import { Avatar, IconButton } from '@mui/material'
@@ -9,27 +9,43 @@ import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import { useDispatch, useSelector } from 'react-redux';
 import { AdminGetProducts } from '../../actions/ProductActions';
 import { AdminGetUsers } from '../../actions/UserActions';
+import { AdminGetOrders } from '../../actions/OrderActions';
 
 
 
 const MainData = () => {
 
 
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  const dispatch = useDispatch()
+  const {products, ProductCount} = useSelector(state=>state.AllProducts)
+  const { users} = useSelector(state=>state.AllUser)
+  const { orders} = useSelector(state=>state.AllOrders)
+  
 
+  let totalamount = orders?.reduce((total, order) => total + order.totalprice, 0);
+
+
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  
+  const lables = ['processing', 'delivered' , 'canceled']
 
   const data = {
-    labels: ['preparing', 'shiped', 'delivered'],
+    labels: lables,
     // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
     datasets: [
       {
         label: 'Popularity of colours',
-        data: [23, 23, 96],
+        data: lables.map((elem , index)=> orders && orders.reduce((total , curr)=> {
+          if(curr.orderstatus === elem){
+            total++;
+          }
+          return total
+        } , 0) ),
         // you can set indiviual colors for each bar
         backgroundColor: [
-          'purple',
           'orange',
-          'lightgreen',
+          '#98fb98',
+          '#f1807e',
         ],
         borderWidth: 1,
         width: 1,
@@ -37,15 +53,19 @@ const MainData = () => {
 
       }
     ]
-  }
+  } 
 
+  let date = new Date()
+
+  
   const bardata = {
     labels: months,
     // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
     datasets: [
       {
-        label: '2022',
-        data: [55, 23, 96, 50, 55, 45, 70, 65, 56, 23, 45, 65],
+        label: `Sales in ${date.getFullYear()}`,
+        data: months.map((m, i) => orders?.filter((od) => new Date(od.createdAt).getMonth() === i && new Date(od.createdAt).getFullYear() === date.getFullYear()).reduce((total, od) => total + od.totalprice, 0))
+        ,
         // you can set indiviual colors for each bar
         backgroundColor: [
           'lightblue'
@@ -55,8 +75,8 @@ const MainData = () => {
 
       },
       {
-        label: '2023',
-        data: [57, 99, 80],
+        label:  `Sales in ${date.getFullYear() - 1}`,
+        data: months.map((m, i) => orders?.filter((od) => new Date(od.createdAt).getMonth() === i && new Date(od.createdAt).getFullYear() === date.getFullYear() - 2).reduce((total, od) => total + od.totalPrice, 0)),
         // you can set indiviual colors for each bar
         backgroundColor: [
           'blue'
@@ -70,13 +90,21 @@ const MainData = () => {
   }
 
 
+  let outofstock = 0;
+  products && !Array.isArray(products[0]) && products.forEach((elem)=>{
+    if(elem.stock<=0){
+      outofstock = outofstock + 1;
+    }
+  })
+  
+
   const piedata = {
     labels: ['stock', 'Out of stock'],
     // datasets is an array of objects where each object represents a set of data to display corresponding to the labels above. for brevity, we'll keep it at one object
     datasets: [
       {
         label: 'Popularity of colours',
-        data: [56, 23],
+        data: [products.length - outofstock, outofstock],
         // you can set indiviual colors for each bar
         backgroundColor: [
           'lightblue',
@@ -92,15 +120,13 @@ const MainData = () => {
     
   }
 
-  const dispatch = useDispatch()
-  const { ProductCount} = useSelector(state=>state.AllProducts)
-  const { users} = useSelector(state=>state.AllUser)
-
+  
 
 
   useEffect(()=>{
     dispatch(AdminGetProducts())
     dispatch(AdminGetUsers())
+    dispatch(AdminGetOrders())
   },[dispatch])
 
   return (
@@ -117,7 +143,7 @@ const MainData = () => {
           </IconButton>
           <div>
             <h1 className='text-[1rem]'>Total Revenuse</h1>
-            <h2 className='text-lg '>&#8377; 28000</h2>
+            <h2 className='text-lg '>&#8377; {totalamount}</h2>
           </div>
         </div>
         {/* <!-- box> */}
@@ -131,7 +157,7 @@ const MainData = () => {
           </IconButton>
           <div>
             <h1 className='text-[1rem]'>Total Orders</h1>
-            <h2 className='text-lg '>2000</h2>
+            <h2 className='text-lg '>{orders.length}</h2>
           </div>
         </div>
         {/* <!-- box> */}

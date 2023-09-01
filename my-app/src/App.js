@@ -20,19 +20,23 @@ import UpdateProduct from "./components/Admin/UpdateProduct";
 import UsersList from "./components/Admin/UsersList";
 import PaymentSucess from "./components/orders/PaymentSucess";
 import OrderDetial from "./components/orders/OrderDetial";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { LoadUser } from "./actions/UserActions";
+import { Clear_Errors, LoadUser } from "./actions/UserActions";
+import Invoice from "./components/Invoice/Invoice";
 
 
 
 function App() {
-
+  
    const dispatch = useDispatch();
 
    useEffect(()=>{
+     
      dispatch(LoadUser())
-   })
+
+    
+   },[dispatch])
 
 
   return (
@@ -40,6 +44,7 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={ <Home/>}/>
+        <Route path="/invoice/:id" element={ <Invoice/>}/>
         <Route path="/product/:id" element={<ProductDetials/>}/>
         <Route path="/search" element={<Produtcs/>}/>
         <Route path="/cart" element={<Cart/>}/>

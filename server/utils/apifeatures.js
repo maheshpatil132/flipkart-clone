@@ -30,7 +30,7 @@ class ApiFeatures {
 
         let querystr = JSON.stringify(querycopy)
         
-        querystr =  querystr.replace(/\b(gt|gte|lt|lte)\b/ , key=> `$${key}`)
+        querystr =  querystr.replace(/\b(gt|gte|lt|lte)\b/g , key=> `$${key}`)
 
         this.query = this.query.find(JSON.parse(querystr))
        

@@ -16,3 +16,16 @@ export const Create_Product_Fail = "Create_Product_Fail"
 export const Update_Product_Request = "Update_Product_Request"
 export const Upadate_Product_Success = "Update_Product_Success"
 export const Update_Product_Fail = "Update_Product_Fail"
+
+export const New_Review_Request = "New_Review_Request"
+export const New_Review_Sucess = "New_Review_Sucess"
+export const New_Review_Fail = "New_Review_Fail"
+export const New_Review_Reset = "New_Review_Reset"
+
+export const Delete_Product_Request = "Delete_Product_Request"
+export const Delete_Product_Sucess = "Delete_Product_Sucess"
+export const Delete_Product_Fail = "Delete_Product_Fail"
+
+
+
+export const Clear_Error = "CLear_Error"

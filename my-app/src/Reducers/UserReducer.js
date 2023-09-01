@@ -1,4 +1,4 @@
-import { Login_Req , Login_Success , Login_Fail, Register_Req, Register_Success, Register_Fail , Clear_Error, Admin_User_Request, All_User_Request, All_User_Fail, All_User_Success, Load_User_Request, Load_User_Sucess, Load_User_Fail} from '../constants/UserConstants'
+import { Login_Req , Login_Success , Login_Fail, Register_Req, Register_Success, Register_Fail , Clear_Error, All_User_Request, All_User_Fail, All_User_Success, Load_User_Request, Load_User_Sucess, Load_User_Fail, Logout_User_Sucess, Logout_User_Fail} from '../constants/UserConstants'
 
 export const UserReducer =  ( state = { user : {} } , action)=>{
    switch(action.type){
@@ -8,18 +8,14 @@ export const UserReducer =  ( state = { user : {} } , action)=>{
         isAuthenticated : false
       }
 
-      case Login_Success: return{
+      case Login_Success: 
+      case Load_User_Sucess:
+      case Register_Success :
+      return{
         ...state,
         loading : false,
         user : action.payload,
         isAuthenticated : true
-      }
-
-      case Login_Fail : return {
-        ...state,
-        loading : false,
-        error : action.payload,
-        isAuthenticated : false
       }
 
       case Register_Req : 
@@ -27,18 +23,12 @@ export const UserReducer =  ( state = { user : {} } , action)=>{
         loading : true,
         isAuthenticated : false
       }
-
-      case Register_Success: return {
-        ...state,
-        loading : false,
-        user : action.payload.user,
-        isAuthenticated : true
-      }
-
+      case Login_Fail :
       case Register_Fail : return{
         ...state,
         loading : false,
-        error : action.payload.data
+        error : action.payload,
+        isAuthenticated : false
       }
 
       case Load_User_Request : 
@@ -47,19 +37,25 @@ export const UserReducer =  ( state = { user : {} } , action)=>{
         isAuthenticated : false
       }
 
-      case Load_User_Sucess : return{
-        ...state,
-        loading : false,
-        user : action.payload,
-        isAuthenticated : true
-      }
-
       case Load_User_Fail : return {
-        ...state,
         loading : false,
+        user : null,
         error : action.payload,
         isAuthenticated : false
       }
+
+      case Logout_User_Sucess : return{
+        user : null,
+        isAuthenticated : false,
+        loading : false
+      }
+      
+      case Logout_User_Fail:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload,
+            }
 
 
 

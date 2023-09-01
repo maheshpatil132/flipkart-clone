@@ -7,8 +7,7 @@ const { sendtoken } = require("../utils/jsonwebtoken");
 
 
 exports.createuser = aysnchandler(async (req, res, next) => {
-
-
+    
     const user = new UserModel({
         ...req.body
     })

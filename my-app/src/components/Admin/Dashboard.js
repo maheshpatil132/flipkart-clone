@@ -1,14 +1,18 @@
-import Inventory from '@mui/icons-material/Inventory'
-import { Avatar, IconButton } from '@mui/material'
-import React, { Children } from 'react'
+import React, {  useEffect } from 'react'
 import AdminSideBar from './AdminSideBar'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
-import MainData from './MainData';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 const Dashboard = ({children ,activeTab}) => {
-  
+   const navigate = useNavigate()
+   const {user} = useSelector(state=>state.User);
+
+   useEffect(()=>{
+      if(!user){
+         navigate('/login')
+      }
+   } , [navigate , user])
    return (
       <div className=' min-h-screen flex'>
          <AdminSideBar activeTab={activeTab} />

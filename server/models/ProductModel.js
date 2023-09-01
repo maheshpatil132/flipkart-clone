@@ -35,6 +35,10 @@ const ProductModel = new mongoose.Schema({
             ref:'user',
             required:true
         },
+        name:{
+          type :String,
+          required : true
+        },
         rate:{
             type:Number,
             required:true

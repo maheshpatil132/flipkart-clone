@@ -1,3 +1,5 @@
 export const AddToCart = "AddToCart"
 export const RemoveToCart = "RemoveToCart"
 export const ClearCartItems = "ClearCartItems"
+export const ClearError = "ClearError"
+export const Save_ShipingInfo = "Save_ShipingInfo"
