@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material'
+import { CircularProgress, TextField } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import register from '../../assets/register.png'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,7 +16,7 @@ const Login = () => {
   const location = useLocation()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { isAuthenticated, error } = useSelector(state => state.User)
+  const { isAuthenticated, error, loading } = useSelector(state => state.User)
   const submit = (e) => {
     e.preventDefault();
 
@@ -25,14 +25,19 @@ const Login = () => {
       password: password
     }
     dispatch(LoginUser(form))
-    if(isAuthenticated){ enqueueSnackbar("Login Sucessfully", { variant: 'success' })}
+    if (isAuthenticated) { enqueueSnackbar("Login Sucessfully", { variant: 'success' }) }
 
   }
 
   const redirect = location.search ? location.search.split('=')[1] : 'account'
 
+
+
+  const Buttoncontent = loading ? <div> <CircularProgress /> "Please wait..." </div> : "Login";
+  console.log(Buttoncontent);
+
   useEffect(() => {
-    
+
     window.scrollTo(0, 0)
 
     if (error) {
@@ -78,7 +83,19 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className='bg-[#fb641b] mt-6 font-bold p-2 px-6 text-white text-lg'>Submit</button>
+          <button disabled={loading ? true : false} 
+          className={` ${ loading ? 'bg-slate-400' : 'bg-[#fb641b]'  }  mt-6 font-bold p-2 px-6 text-white text-lg`}>
+            {loading ? 
+            <div className=' flex gap-1 justify-center items-center'> 
+              <CircularProgress size={25} style={{ 'color': 'white' }} />
+              <h1>Please wait...</h1>
+            </div>
+             : "Login"}
+            
+
+            
+
+          </button>
         </form>
         <div className=' mt-5'>
 

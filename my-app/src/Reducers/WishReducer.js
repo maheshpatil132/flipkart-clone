@@ -12,7 +12,8 @@ export const wishReducer =(state = initialState , action) => {
         if(isExist){
            return{
             ...state,
-            wishItems : state.wishItems.filter((e)=> e._id != item._id)
+            wishItems : state.wishItems.filter((e)=> e._id !== item._id),
+            
            }
         }else{
             return{

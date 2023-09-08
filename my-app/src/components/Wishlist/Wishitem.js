@@ -30,8 +30,10 @@ const Wishitem = ({data}) => {
                     </div>
 
                     <h1 className=' font-bold text-xl'>Rs. {data.price}
-                        <span className=' mx-2 text-gray-500 font-bold text-sm' >Rs. 69000</span>
-                        <span className=' text-green-600 text-base'>69% off</span>
+                        <del className=' mx-2 text-gray-500 font-bold text-sm' >Rs.{data.cureted_price}</del>
+                        <span className=' text-green-600 text-base'>
+                        {(((data.cureted_price - data.price) / data.cureted_price) * 100).toFixed(2)}%
+                        </span>
                     </h1>
                 </div>
 

@@ -8,21 +8,34 @@ import {enqueueSnackbar} from 'notistack'
 
 const ProductList = () => {
 
-  const { products, loading  , isDeleted , error} = useSelector(state => state.AllProducts)
+  const { adminproducts, loading  , isDeleted , error} = useSelector(state => state.AllProducts)
   const dispatch = useDispatch()
+   
+  useEffect(() => {
+    dispatch(AdminGetProducts())
+    if(isDeleted){
+      enqueueSnackbar('Deleted Sucessfully ' , { variant : 'success'})
+    }
+    if(error){
+      enqueueSnackbar(error, { variant : 'success'})
+    }
+  }, [dispatch , error , isDeleted ])
 
 
 
-  const rows = products.map((elem) => ({
+  const rows = adminproducts ? adminproducts.map((elem) => ({
     id: elem._id,
     ProductName: elem.title,
     category: elem.category,
     stock: elem.stock,
     price: 'Rs.' + elem.price,
     curetedPrice: 'Rs.' + elem.cureted_price,
-    image: elem.images
+    image: elem.images,
+    sell : elem.sell
   }),
-  )
+  ) : []
+
+
 
 
 
@@ -31,10 +44,10 @@ const ProductList = () => {
     {
       field: "image",
       headerName: 'Image',
-      width: 100,
+      width: 80,
       renderCell: (params) => {
         return (<div className='flex justify-center'>{
-          params.row.image.map((elem) => {
+             params.row.image.map((elem) => {
             return (
               <img className='h-10 mx-1' src={elem.url} alt="imagess" />
             )
@@ -44,7 +57,7 @@ const ProductList = () => {
       },
     },
     {
-      field: 'id', headerName: 'ID', width: 90, flex: 1,
+      field: 'id', headerName: 'ID', width: 80,
       renderCell: (params) => {
         return (<NavLink to={`/admin/update-product/${params.row.id}`}>`${params.row.id}`</NavLink>)
         // 
@@ -54,7 +67,7 @@ const ProductList = () => {
     {
       field: 'ProductName',
       headerName: ' Product Name',
-      width: 150,
+      width: 120,
       editable: true,
     },
     {
@@ -66,7 +79,7 @@ const ProductList = () => {
     {
       field: 'stock',
       headerName: 'Stock',
-      width: 90,
+      width: 70,
       editable: true,
     },
     {
@@ -82,6 +95,13 @@ const ProductList = () => {
       description: 'This column has a value getter and is not sortable.',
       sortable: false,
       width: 100,
+    },
+    {
+      field: 'sell',
+      headerName: 'Sell',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: true,
+      width: 80,
     },
     {
       field: "Action",
@@ -111,15 +131,7 @@ const ProductList = () => {
   }
 
 
-  useEffect(() => {
-    dispatch(AdminGetProducts())
-    if(isDeleted){
-      enqueueSnackbar('Deleted Sucessfully ' , { variant : 'success'})
-    }
-    if(error){
-      enqueueSnackbar(error, { variant : 'success'})
-    }
-  }, [dispatch , error , isDeleted ])
+  
 
 
   return (

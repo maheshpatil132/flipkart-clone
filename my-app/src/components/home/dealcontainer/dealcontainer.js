@@ -50,36 +50,36 @@ const Dealcontainer = () => {
                 <button className=' bg-primary text-white py-1.5 px-8 rounded-sm'>view All</button>
             </div>
             {/* right side */}
-            <div className=' flex-1 py-2 overflow-hidden'>
+            <div className=' flex-1 py-4 overflow-hidden'>
 
                 <Slider {...settings}>
 
-                    <div className=' text-center gap-2 capitalize flex flex-col justify-center items-center'>
-                        <img className='h-40 mx-auto object-cover' src={Dslr} alt="" />
+                    <div className=' text-center gap-2 border capitalize flex flex-col justify-center items-center'>
+                        <img className='h-36 mx-auto object-cover' src={Dslr} alt="" />
                         <div className=' p-2'>
                             <h1 className=' font-bold my-2 text-lg'>Top microless cameras</h1>
                             <h3 className=' text-green-500'>shop now !</h3>
                         </div>
                     </div>
                     
-                    <div className=' text-center gap-2 capitalize flex flex-col justify-center items-center'>
-                        <img className='h-40 mx-auto object-cover' src={Dslr} alt="" />
+                    <div className=' text-center gap-2 border capitalize flex flex-col justify-center items-center'>
+                        <img className='h-36 mx-auto object-cover' src={Dslr} alt="" />
                         <div className=' p-2'>
                             <h1 className=' font-bold my-2 text-lg'>Top microless cameras</h1>
                             <h3 className=' text-green-500'>shop now !</h3>
                         </div>
                     </div>
 
-                    <div className=' text-center gap-2 capitalize flex flex-col justify-center items-center'>
-                        <img className='h-40 mx-auto object-cover' src={Dslr} alt="" />
+                    <div className=' text-center border gap-2 capitalize flex flex-col justify-center items-center'>
+                        <img className='h-36 mx-auto object-cover' src={Dslr} alt="" />
                         <div className=' p-2'>
                             <h1 className=' font-bold my-2 text-lg'>Top microless cameras</h1>
                             <h3 className=' text-green-500'>shop now !</h3>
                         </div>
                     </div>
 
-                    <div className=' text-center gap-2 capitalize flex flex-col justify-center items-center'>
-                        <img className='h-40 mx-auto object-cover' src={Dslr} alt="" />
+                    <div className=' text-center gap-2 border  capitalize flex flex-col justify-center items-center'>
+                        <img className='h-36 mx-auto object-cover' src={Dslr} alt="" />
                         <div className=' p-2'>
                             <h1 className=' font-bold my-2 text-lg'>Top microless cameras</h1>
                             <h3 className=' text-green-500'>shop now !</h3>

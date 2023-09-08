@@ -6,11 +6,12 @@
 
 html{
     font-size: 95%;
+    scroll-behavior: smooth;
 }
 
 body{
     font-family: 'Roboto', sans-serif;
-    background-color: #e8e9eb;
+    background-color: #f4f5f7;
 }
 
     

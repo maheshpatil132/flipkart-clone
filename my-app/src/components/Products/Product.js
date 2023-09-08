@@ -9,7 +9,7 @@ const Product = ({data}) => {
          
          <div className='p-2 gap-1 capitalize flex flex-col justify-center items-center'>
             <div className=' h-56 flex'>
-              <img className='h-44 m-auto object-cover hover:scale-[1.07] transition-all' src={data.images[0].url} alt="images" />
+              <img className='h-36 m-auto object-cover hover:scale-[1.07] transition-all' src={data.images[0].url} alt="images" />
             </div>
               <div className=' p-2 flex flex-col gap-1 justify-center items-start'>
                 <h1 className=' font-semibold my-2 text-sm'>{ data.title.length > 40 ? data.title.slice(0 , 40)+'...' : data.title}</h1>

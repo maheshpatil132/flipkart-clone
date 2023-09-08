@@ -3,6 +3,7 @@ const errorhandle = require("../middleware/error");
 const UserModel = require('../models/usermodel')
 const ErrorHandler = require("../utils/errorhandler");
 const { sendtoken } = require("../utils/jsonwebtoken");
+const { sendEmail } = require("../utils/sendEmails");
 
 
 

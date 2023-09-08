@@ -128,6 +128,7 @@ const updatestock = async(id,quantity)=>{
     const product = await ProductModel.findById(id)
 
     product.stock -= quantity
+    product.sell += quantity
 
     await product.save()
 }

@@ -48,8 +48,10 @@ const CheckoutItem = ({elem , quantity}) => {
                     <div className='flex flex-col gap-3 justify-center'>
                         <h1 className=' font-semibold  text-base'>{elem.title}</h1>
                         <h1 className=' font-bold text-base'>Rs. {elem.price}
-                            <span className=' mx-2 text-gray-500 font-bold text-sm' >Rs. 69000</span>
-                            <span className=' text-green-600 text-base'>69% off</span>
+                            <del className=' mx-2 text-gray-500 font-bold text-sm' >Rs. {elem.cureted_price}</del>
+                            <span className=' text-green-600 text-base'>
+                            {(((elem.cureted_price - elem.price) / elem.cureted_price) * 100).toFixed(2)}%
+                            </span>
                         </h1>
                         <h1 className=' font-bold'> stock : {elem.stock}</h1>
                     </div>

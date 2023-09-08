@@ -17,7 +17,7 @@ const MainData = () => {
 
 
   const dispatch = useDispatch()
-  const {products, ProductCount} = useSelector(state=>state.AllProducts)
+  const {adminproducts, ProductCount} = useSelector(state=>state.AllProducts)
   const { users} = useSelector(state=>state.AllUser)
   const { orders} = useSelector(state=>state.AllOrders)
   
@@ -91,7 +91,7 @@ const MainData = () => {
 
 
   let outofstock = 0;
-  products && !Array.isArray(products[0]) && products.forEach((elem)=>{
+  adminproducts &&  adminproducts.forEach((elem)=>{
     if(elem.stock<=0){
       outofstock = outofstock + 1;
     }
@@ -104,7 +104,7 @@ const MainData = () => {
     datasets: [
       {
         label: 'Popularity of colours',
-        data: [products.length - outofstock, outofstock],
+        data: [ adminproducts && adminproducts.length - outofstock, outofstock],
         // you can set indiviual colors for each bar
         backgroundColor: [
           'lightblue',
@@ -143,7 +143,7 @@ const MainData = () => {
           </IconButton>
           <div>
             <h1 className='text-[1rem]'>Total Revenuse</h1>
-            <h2 className='text-lg '>&#8377; {totalamount}</h2>
+            <h2 className='text-lg '>&#8377; {totalamount.toFixed(2)}</h2>
           </div>
         </div>
         {/* <!-- box> */}

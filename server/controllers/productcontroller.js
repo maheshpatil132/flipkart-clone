@@ -277,3 +277,22 @@ exports.Admingetallproducts = aysnchandler(async(req,res,next)=>{
         products:products,
     })
 })
+
+
+
+
+// get to selled products
+exports.gettopproducts = aysnchandler(async(req,res,next)=>{
+
+const products = await ProductModel.find({}).sort({'sell' : -1})
+
+if(!products){
+    return next(new ErrorHandler('no products found',404))
+}
+
+
+res.json({
+    sucess:true,
+    products
+})
+})

@@ -5,7 +5,7 @@ import CheckoutItem from './CheckoutItem'
 import { useSnackbar } from 'notistack';
 import { Axios } from '../../Axios'
 import { save_shippingindfo } from '../../actions/CartActions';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 
 
@@ -26,6 +26,7 @@ const CheckoutOrder = () => {
     const { enqueueSnackbar } = useSnackbar();
 
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
 
     const sum = useRef(0)
@@ -107,7 +108,7 @@ const CheckoutOrder = () => {
             description: "Test Transaction",
             // image: "https://example.com/your_logo",
             order_id: `${order.id}`, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            callback_url: "https://flipkart-api.vercel.app/paymentverification",
+            callback_url: `${process.env.REACT_APP_BACKEND_URL}paymentverification`,
             // callback_url: "http://localhost:5000/paymentverification",
             prefill: {
                 name: "Gaurav Kumar",
@@ -141,10 +142,13 @@ const CheckoutOrder = () => {
             setPincode(shipinginfo.pincode)
             setState(shipinginfo.state)
         }
+         
+        if(Products.length <= 0){
+            navigate('/cart')
+        }
 
 
-
-    }, [Products , shipinginfo])
+    }, [Products , shipinginfo , navigate])
 
     return (
         <div className=' flex  p-6  gap-8 '>
@@ -332,7 +336,8 @@ const CheckoutOrder = () => {
                 {/* <!-- Payment Options> */}
 
             </div>
-
+{  
+    Products.length > 0 &&
             <div className=' bg-white w-96 h-fit sticky top-20'>
                 <div className=' p-4 border-b'>
                     <h1 className=' text-lg font-bold text-gray-500'>Price Description</h1>
@@ -361,7 +366,7 @@ const CheckoutOrder = () => {
                         <p>you will save Rs.2000 on this order</p>
                     </div>
                 </div>
-            </div>
+            </div>}
         </div>
     )
 }

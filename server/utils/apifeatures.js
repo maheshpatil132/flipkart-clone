@@ -10,12 +10,19 @@ class ApiFeatures {
         
         const keyword = this.querystr.name ?
             {
-                title : {
-                    $regex: this.querystr.name,
-                    $options: 'i'
-                }
+                // title : {
+                //     $regex: this.querystr.name,
+                //     $options: 'i'
+                // }
+
+                $or: [
+                    { title: { $regex: this.querystr.name, $options: "i" }},
+                    { brand: { $regex: this.querystr.name, $options: "i" }},
+                    { category: { $regex: this.querystr.name, $options: "i" }},
+                  ]
             }
             : {}    
+
        this.query = this.query.find({...keyword })
        return this
     }

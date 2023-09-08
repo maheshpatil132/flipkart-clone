@@ -1,4 +1,4 @@
-import { Admin_Product_FAil, Admin_Product_Request, Admin_Product_Success, Create_Product_Fail, Create_Product_Request, Create_Product_Success, Product_Detials_Fail, Product_Detials_Request, Product_Detials_Success, Product_Fail, Product_Request, Product_Success, Update_Product_Request ,Upadate_Product_Success , Update_Product_Fail, New_Review_Request, New_Review_Sucess, New_Review_Fail, New_Review_Reset, Clear_Error, Delete_Product_Request, Delete_Product_Sucess, Delete_Product_Fail } from "../constants/ProductConstants";
+import { Admin_Product_FAil, Admin_Product_Request, Admin_Product_Success, Create_Product_Fail, Create_Product_Request, Create_Product_Success, Product_Detials_Fail, Product_Detials_Request, Product_Detials_Success, Product_Fail, Product_Request, Product_Success, Update_Product_Request ,Upadate_Product_Success , Update_Product_Fail, New_Review_Request, New_Review_Sucess, New_Review_Fail, New_Review_Reset, Clear_Error, Delete_Product_Request, Delete_Product_Sucess, Delete_Product_Fail, Top_Product_Request, Top_Product_Success, Top_Product_Fail } from "../constants/ProductConstants";
 
 
 
@@ -29,17 +29,17 @@ export const ProductsReducer = ( state = { products : [] } , action  )=>{
     }
     case Admin_Product_Request : return {
         loading : true,
-        products : []
+        adminproducts : []
     }
     case Admin_Product_Success : return {
         ...state,
         loading : false,
-        products : action.payload.products,
+        adminproducts :   action.payload.products,
         ProductCount : action.payload.productCount
     }
     case Admin_Product_FAil : return {
         loading : false,
-        products : [],
+        adminproducts : [],
         error : action.payload
     }
 
@@ -78,25 +78,30 @@ export const Product_detial_reducer = ( state = { product:[] } , action) =>{
         case Product_Detials_Request : return{
           ...state,
           loading : true,
+          isUpdated:false
           
         }
         case Product_Detials_Success : return {
             loading:false,
-            product : action.payload
+            product : action.payload,
+            isUpdated:false
         }
         case Product_Detials_Fail : return {
             loading:false,
-            error : action.error
+            error : action.error,
+            isUpdated:false
         }
 
         case Update_Product_Request : return {
+            ...state,
             loading : true,
+            isUpdated: action.isUpdated
         }
     
         case Upadate_Product_Success  : return{
             ...state,
             loading:false,
-            isUpdated: true,
+            isUpdated: action.isUpdated,
             product : action.payload
         }
     
@@ -178,31 +183,27 @@ export const newReviewReducer = (state = {}, { type, payload }) => {
 }
 
 
-// export const ProductReducer = (state = { product : {}},action)=>{
-//     switch(action.type){
-//      case Update_Product_Request : return {
-//          loading : true,
-//      }
- 
-//      case Upadate_Product_Success  : return{
-//          ...state,
-//          loading:false,
-//          isUpdated: true,
-//          product : action.payload
-//      }
- 
-//      case Update_Product_Fail  : return{
-//          ...state,
-//          loading:false,
-//          isUpdated:false,
-//          error : action.payload
-//      }
- 
-//      default : return state
- 
-//     }
- 
+
+export const Top_Product_Reducer = ( state = { products:[] } , action) =>{
+
+    switch (action.type) {
+        case Top_Product_Request : return{
+          loading : true,
+          products: []
+        }
+        case Top_Product_Success : return {
+            loading:false,
+            products : action.payload
+        }
+        case Top_Product_Fail : return {
+            loading:false,
+            error : action.error
+        }
+
     
-//  }
+        default : return state
+    
+    }
+}
 
  

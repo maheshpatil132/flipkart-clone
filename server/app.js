@@ -9,7 +9,7 @@ const { connect } = require('./config/database');
 const errorhandle = require('./middleware/error');
 const cookieParser = require('cookie-parser');
 const { CreateUser, UpdateUser, LoginUser, LogoutUser, AdminUpdateuser, GetAllUSer } = require('./routes/userroutes');
-const { CreateProduct, GetAllProduct, AddReview, UpdateProduct, GetProduct, DeleteReview , GetAllReview ,DeleteProduct, AdminGetAllProducts} = require('./routes/productroutes');
+const { CreateProduct, GetAllProduct, AddReview, UpdateProduct, GetProduct, DeleteReview , GetAllReview ,DeleteProduct, AdminGetAllProducts, GetTopSellProducts} = require('./routes/productroutes');
 const { CreateOrder, UpdateOrder, DeleteOrder, MyOrders, Getorder, GetAllOrders } = require('./routes/orderroutes');
 const { ProcessPayment, PublishKey, PaymentVerification, GenerateIvoice } = require('./routes/paymentroute');
 const bodyParser = require('body-parser');
@@ -21,15 +21,19 @@ const corsOptions ={
     // origin:'http://localhost:3000', 
     credentials:true,            
     optionSuccessStatus:200,
-    //access-control-allow-credentials:true
 }
 app.use(cors(corsOptions));
 app.use(cookieParser())
 app.use(bodyParser.json({limit: '50mb'}))
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json()); 
+ 
 
-dotenv.config({path:'./config/app.env'})
+if(process.env.Node_Env !== 'Production'){
+    dotenv.config({path:'./config/app.env'})
+}
+
+
 app.use(fileUpload( {
     limits: { fileSize: 100 * 1024 * 1024 },
   } ));
@@ -72,6 +76,7 @@ app.use(DeleteReview)
 app.use(GetAllReview)
 app.use(DeleteProduct)
 app.use(AdminGetAllProducts)
+app.use(GetTopSellProducts)
 
 
 // 3. order routes

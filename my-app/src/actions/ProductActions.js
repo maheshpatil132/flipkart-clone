@@ -1,7 +1,7 @@
 import { Axios } from '../Axios'
-import { Admin_Product_FAil, Admin_Product_Request, Admin_Product_Success, Clear_Error, Create_Product_Fail, Create_Product_Request, Create_Product_Success, Delete_Product_Fail, Delete_Product_Request, Delete_Product_Sucess, New_Review_Fail, New_Review_Request, New_Review_Reset, New_Review_Sucess, Product_Detials_Fail, Product_Detials_Request, Product_Detials_Success ,Product_Fail, Product_Request, Product_Success, Upadate_Product_Success, Update_Product_Fail, Update_Product_Request} from '../constants/ProductConstants'
+import { Admin_Product_FAil, Admin_Product_Request, Admin_Product_Success, Clear_Error, Create_Product_Fail, Create_Product_Request, Create_Product_Success, Delete_Product_Fail, Delete_Product_Request, Delete_Product_Sucess, New_Review_Fail, New_Review_Request, New_Review_Reset, New_Review_Sucess, Product_Detials_Fail, Product_Detials_Request, Product_Detials_Success ,Product_Fail, Product_Request, Product_Success, Top_Product_Fail, Top_Product_Request, Top_Product_Success, Upadate_Product_Success, Update_Product_Fail, Update_Product_Request} from '../constants/ProductConstants'
 
-export const getproduct = (key = " " , min , max ,page=1 , category) => async ( dispatch )=>{
+export const getproduct = (key = " " , min , max , page=1 , category , rating , prodtype ) => async ( dispatch )=>{
     try {
         dispatch({
             type : Product_Request
@@ -10,7 +10,7 @@ export const getproduct = (key = " " , min , max ,page=1 , category) => async ( 
         if(category){
              link = `/getall/products?name=${key}&page=${page}&category=${category}`
         }else{
-            link = `/getall/products?name=${key}&page=${page}&price[gte]=${min}&price[lte]=${max}`
+            link = `/getall/products?name=${key}&page=${page}&price[gte]=${min}&price[lte]=${max}&rating[gte]=${rating}`
         }
         const {data} = await Axios.get(link)
 
@@ -18,7 +18,7 @@ export const getproduct = (key = " " , min , max ,page=1 , category) => async ( 
         dispatch({
             type:Product_Success,
             payload:data,
-            producttype: category ? category : "SearchProducts"
+            producttype: prodtype 
         })
         
     } catch (error) {
@@ -53,6 +53,27 @@ export const getproddetials = (id) => async(dispatch)=>{
 
 
 
+// get top products
+export const GetTopProducts = () => async(dispatch)=>{
+    try {
+      dispatch({
+          type : Top_Product_Request
+      })
+  
+      const {data} = await Axios.get(`/top/products`)
+  
+      dispatch({
+          type:Top_Product_Success,
+          payload:data.products,
+      })
+    } catch (error) {
+      dispatch({
+          type: Top_Product_Fail,
+          error:error
+      })
+    }
+  } 
+
 
 
 
@@ -67,9 +88,10 @@ export const AdminGetProducts = () =>async(dispatch)=>{
         
         let link = `/admin/products`
         const {data} = await Axios.get(link)
+        
         dispatch({
             type:Admin_Product_Success,
-            payload:data
+            payload:data,
         })
         
     } catch (error) {
@@ -132,16 +154,18 @@ export const UpdateProducts = (formdata ,id) => async(dispatch)=>{
     try {
           
         dispatch({
-            type: Update_Product_Request
+            type: Update_Product_Request,
+            isUpdated : false
         })
         
         // const config = { headers : { "Content-Type" :  "application/json" } } 
 
         const {data} = await Axios.put(`/update/product/${id}`, formdata )
-        
+        console.log(data);
         dispatch({
             type: Upadate_Product_Success,
-            payload : data.product
+            payload : data.product,
+            isUpdated : true
         })
     } catch (error) {
          dispatch({

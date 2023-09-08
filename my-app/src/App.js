@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Clear_Errors, LoadUser } from "./actions/UserActions";
 import Invoice from "./components/Invoice/Invoice";
+import ProtectedRoutes from "./Routes/ProtectedRoutes";
 
 
 
@@ -44,26 +45,86 @@ function App() {
       <Header/>
       <Routes>
         <Route path="/" element={ <Home/>}/>
-        <Route path="/invoice/:id" element={ <Invoice/>}/>
+  
+        <Route path="/invoice/:id" element={ <ProtectedRoutes> <Invoice/> </ProtectedRoutes> }/>
         <Route path="/product/:id" element={<ProductDetials/>}/>
         <Route path="/search" element={<Produtcs/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/account" element={<Account/>}/>
+        <Route path="/account" element={ <ProtectedRoutes><Account/></ProtectedRoutes>}/>
         <Route path="/wishlist" element={<Wishlist/>}/>
-        <Route path="/account/orders" element={<Orders/>}/>
-        <Route path="/account/order/:id" element={<OrderDetial/>}/>
+        <Route path="/account/orders" element={ <ProtectedRoutes><Orders/></ProtectedRoutes>}/>
+        <Route path="/account/order/:id" element={<ProtectedRoutes><OrderDetial/></ProtectedRoutes>}/>
         <Route path="/checkout" element={<CheckoutOrder/>}/>
-        <Route path="/paymentsucess" element={<PaymentSucess/>}/>
-        <Route path="/admin/dashboard" element={<Dashboard activeTab={0} ><MainData/></Dashboard>}/>
-        <Route path="/admin/orders" element={<Dashboard activeTab={1}><OrderList/></Dashboard>}/>
-        <Route path="/admin/updateorder" element={<Dashboard activeTab={1}><MainData/></Dashboard>}/>
-        <Route path="/admin/products" element={<Dashboard activeTab={2}><ProductList/></Dashboard>}/>
-        <Route path="/admin/add-product" element={<Dashboard activeTab={3} ><CreateProduct/></Dashboard>}/>
-        <Route path="/admin/update-product/:id" element={<Dashboard activeTab={2} ><UpdateProduct/></Dashboard>}/>
-        <Route path="/admin/users" element={<Dashboard activeTab={4}><UsersList/></Dashboard>}/>
-        <Route path="/admin/all/reviews" element={<Dashboard activeTab={5}><MainData/></Dashboard>}/>
+        <Route path="/paymentsucess" element={<ProtectedRoutes><PaymentSucess/></ProtectedRoutes>}/>
+        <Route path="/admin/dashboard" 
+         element={ <ProtectedRoutes>
+                     <Dashboard activeTab={0} >
+                       <MainData/>
+                      </Dashboard>
+                    </ProtectedRoutes>}
+        />
+
+        <Route path="/admin/orders" 
+        element={
+              <ProtectedRoutes>
+                <Dashboard activeTab={1}>
+                  <OrderList/>
+                </Dashboard>
+              </ProtectedRoutes>}
+        />
+        <Route path="/admin/updateorder" 
+        element={
+                  <ProtectedRoutes>
+                    <Dashboard activeTab={1}>
+                      <MainData/>
+                    </Dashboard>
+                  </ProtectedRoutes>
+                    }
+        />
+        <Route path="/admin/products" 
+        element={
+            <ProtectedRoutes>
+              <Dashboard activeTab={2}>
+                <ProductList/>
+              </Dashboard>
+            </ProtectedRoutes>
+        }/>
+        <Route path="/admin/add-product" 
+        element={
+          <ProtectedRoutes>
+                <Dashboard activeTab={3} >
+                  <CreateProduct/>
+                </Dashboard>
+          </ProtectedRoutes>
+        }/>
+
+        <Route path="/admin/update-product/:id" 
+        element={
+            <ProtectedRoutes>
+              <Dashboard activeTab={2} >
+                <UpdateProduct/>
+              </Dashboard>
+            </ProtectedRoutes>
+      }/>
+
+        <Route path="/admin/users" 
+        element={
+              <ProtectedRoutes>
+                <Dashboard activeTab={4}>
+                  <UsersList/>
+                </Dashboard>
+              </ProtectedRoutes>
+      }/>
+        <Route path="/admin/all/reviews" 
+        element={
+          <ProtectedRoutes>
+            <Dashboard activeTab={5}>
+              <MainData/>
+              </Dashboard>
+          </ProtectedRoutes>
+      }/>
         
       </Routes>
       <Footer/>
