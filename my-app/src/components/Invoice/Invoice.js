@@ -4,11 +4,12 @@ import InvoiceContent from './InvoiceContent';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useParams } from 'react-router-dom';
 import { OrderDetialaction } from '../../actions/OrderActions';
+import Loader from '../layout/Loader/Loader'
 
 const Invoice = () => {
    
   const componentRef = useRef();
-  const { order , error} = useSelector(state => state.OrderDetial)
+  const { order , error , loading} = useSelector(state => state.OrderDetial)
   const { id } = useParams();
   const dispatch = useDispatch()
 
@@ -55,9 +56,16 @@ const Invoice = () => {
         content={() => componentRef.current}
       />
       </div>
+
+      {
+        loading ? 
+          <Loader/>
+          :
+
        <div  ref={componentRef}>
         <InvoiceContent invoiceData={dummyInvoiceData} />
        </div>
+      }
     </div>
   )
 }

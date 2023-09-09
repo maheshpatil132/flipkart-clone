@@ -68,20 +68,20 @@ const InvoiceContent = ({ invoiceData }) => {
               <td></td>
               <td></td>
               <td className=' font-bold py-2 border text-center'>Tax</td>
-              <td className=' py-2 border text-center'>Rs.{ 100}</td>
+              <td className=' py-2 border text-center'>Rs.{ invoiceData.shipingprice}</td>
             </tr>
             <tr>
               <td></td>
               <td></td>
               <td className=' font-bold py-2 border text-center'>Delivery</td>
-              <td className=' py-2 border text-center'>Rs.{100}</td>
+              <td className=' py-2 border text-center'>Rs.{invoiceData.taxprice}</td>
             </tr>
             <tr>
               <td></td>
               <td></td>
               <td className=' font-bold py-2 border text-center'>Total</td>
               <td className=' py-2 border text-center'>
-                Rs.{totalamount + invoiceData && invoiceData.taxprice + invoiceData && invoiceData.shipingprice}
+                Rs.{totalamount +  invoiceData.taxprice + invoiceData.shipingprice}
                 </td>
             </tr>
           </tbody>

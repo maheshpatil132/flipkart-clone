@@ -31,8 +31,8 @@ const CheckoutOrder = () => {
 
 
     const sum = useRef(0)
-    let shippingprice = 100;
-    let taxprice = 100;
+    let shippingprice = itemsprices * 5/100;
+    let taxprice = itemsprices*18/100;
 
 
     // let shippingInfo = {} ;
