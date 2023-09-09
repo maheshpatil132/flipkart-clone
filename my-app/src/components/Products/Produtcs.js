@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Product from './Product';
 import './products.css'
 import MetaData from '../layout/MetaData';
-import { NavLink, useParams, useSearchParams } from 'react-router-dom';
+import { NavLink, useSearchParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getproduct } from '../../actions/ProductActions';
 import NoProduct from './NoProduct';
@@ -20,7 +20,7 @@ function valuetext(value) {
 
 const Produtcs = () => {
     const [SearchProducts, setSearchProducts] = useState([])
-    const [value, setValue] = React.useState([0, 10000]);
+    const [value, setValue] = React.useState([0, 150000]);
     const [page, setPage] = useState(1)
     const [min, setMin] = useState(value[0])
     const [max, setMax] = useState(value[1])

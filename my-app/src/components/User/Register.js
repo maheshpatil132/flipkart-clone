@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Clear_Errors, RegisterUser } from '../../actions/UserActions'
 import { useSnackbar } from 'notistack';
+import MetaData from '../layout/MetaData'
 
 
 
@@ -53,7 +54,7 @@ const Register = () => {
   }, [dispatch, error, isAuthenticated, navigate, enqueueSnackbar])
   return (
     <div className='flex p-4 w-1/2 mx-auto rounded'>
-
+     <MetaData title={'Register'}/>
       {/* <!-- left Part> */}
       <div className=' w-72 flex flex-col justify-between bg-primary p-8 text-white'>
         <div>

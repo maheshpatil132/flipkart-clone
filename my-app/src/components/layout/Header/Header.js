@@ -27,7 +27,7 @@ const Header = () => {
   }
 
   const { pathname } = useLocation()
-
+   
 
   useEffect(() => {
     setToggleprimary(false)
@@ -38,11 +38,12 @@ const Header = () => {
 
 
   return (
-    <div className=' sticky z-50 top-0 p-1.5 capitalize w-full justify-center gap-6 flex items-center text-white bg-primary '>
+    <div className=' sticky z-50 py-3 top-0 p-1.5 capitalize w-full justify-center gap-10 flex items-center text-white bg-primary '>
 
+    {/* bg-[#923ca1] */}
 
       {/* logo and search container starts */}
-      <div className=' flex items-center gap-4'>
+      <div className=' flex gap-8  justify-around items-center '>
         <div className='italic font-bold'>
           <Link to={'/'}><h1 className='font-extrabold text-[1.32rem]'>Flipkart</h1></Link>
           <h6 className=' text-xs'>Explore <span className=' text-yellow-300'>plus <StarOutlineIcon fontSize='small' /></span>  </h6>
@@ -63,7 +64,7 @@ const Header = () => {
             </div>
             :
             <>
-              <button onClick={primarytoggle} className=' px-10 py-1 bg-white font-semibold rounded-sm text-primary'>
+              <button onClick={primarytoggle} className=' px-10 py-1 bg-white font-semibold rounded-sm  text-primary'>
                 Login
               </button>
             </>

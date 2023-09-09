@@ -107,14 +107,13 @@ export const AdminGetProducts = () =>async(dispatch)=>{
 export const CreateProducts = (formdata) => async(dispatch)=>{
     try {
           
-        console.log(formdata);
         dispatch({
             type: Create_Product_Request
         })
         
-        const config = { headers : { "Content-Type" :  "application/json" } } 
+        // const config = { headers : { "Content-Type" :  "application/json" } } 
 
-        const {data} = await Axios.post('/create/product', formdata  , config)
+        const {data} = await Axios.post('/create/product', formdata )
         
         dispatch({
             type:Create_Product_Success,

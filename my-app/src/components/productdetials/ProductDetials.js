@@ -124,16 +124,18 @@ const ProductDetials = () => {
 
                                     <div className=' top-20 sticky'>
                                         <img className='hover:scale-105 cursor-pointer transition-all mx-auto w-80' src={product && product.images && product.images[0].url} alt="" />
-                                        <div className=' my-8 flex items-center gap-2 justify-between'>
+                                        <div className=' my-8 flex items-center gap-4 justify-between'>
                                             <button 
                                                 disabled={ product && product.stock === 0 } 
                                                 onClick={() => AddToCart()} 
-                                                className={` ${product && product.stock === 0 ? 'bg-slate-400' : 'bg-[#fb641b]' } w-full bg-[#ff9f00] text-lg font-bold text-white py-3`}> <ShoppingCartIcon /> Add to cart
+                                                className={` ${product && product.stock === 0 ? 'bg-slate-400' : 'bg-[#fb641b]' } rounded w-full bg-[#ff9f00] text-lg font-bold text-white py-3`}> 
+                                                <ShoppingCartIcon /> Add to cart
                                             </button>
                                             <button  
                                             disabled={ product && product.stock === 0 } 
                                             onClick={() => buynow()} 
-                                            className={`w-full ${product && product.stock === 0 ? 'bg-slate-400' : 'bg-[#fb641b]' }   text-lg font-bold py-3 text-white`}><ShoppingBagIcon /> Buy Now</button>
+                                            className={`w-full ${product && product.stock === 0 ? 'bg-slate-400' : 'bg-[#fb641b]' } rounded text-lg font-bold py-3 text-white`}><ShoppingBagIcon /> Buy Now
+                                            </button>
                                         </div>
                                     </div>
 
@@ -179,9 +181,9 @@ const ProductDetials = () => {
                                     {/* <!-- Heading container> */}
 
                                     {/* <!-- offer continer> */}
-                                    <div>
-                                        <h1 className=' my-3 text-lg font-bold capitalize'>Available offers</h1>
-                                        <ul className='flex flex-col gap-2'>
+                                    <div className=' border my-4'>
+                                        <h1 className=' border-b p-3 text-lg font-bold capitalize'>Available offers</h1>
+                                        <ul className='flex flex-col p-4 gap-3'>
                                             <li className=' flex gap-3 items-center'>
                                                 <SellIcon className=' text-green-600' />
                                                 <p>Buy this Product and Get Extra ₹500 Off on Two-Wheelers</p>
@@ -204,17 +206,17 @@ const ProductDetials = () => {
                                     {/* <!-- offer continer> */}
 
                                     {/* <!-- features container> */}
-                                    <div className=' my-4'>
-                                        <h1 className=' my-3 text-lg font-bold capitalize'>Key Features</h1>
-                                        <ul className='flex flex-col gap-2'>
+                                    <div className=' border my-4'>
+                                        <h1 className='border-b p-3  text-lg font-bold capitalize'>Key Features</h1>
+                                        <ul className='flex flex-col p-3 gap-2'>
                                             {
                                                 product.features &&
                                                     product.features.length > 0 ?
                                                     product.features.map((elem, index) => {
                                                         return (
-                                                            <li key={index} className=' flex gap-3 items-center'>
-                                                                <RadioButtonCheckedIcon className=' text-gray-600' />
-                                                                <p>{elem}</p>
+                                                            <li key={index} className=' flex gap-3 items-start'>
+                                                                <RadioButtonCheckedIcon fontSize='small' color='success' className=' text-gray-600' />
+                                                                <p className=' text-base'>{elem}</p>
                                                             </li>
                                                         )
                                                     })
@@ -231,7 +233,7 @@ const ProductDetials = () => {
                                     <div className=' border border-b-0 my-4'>
                                         <div className=' flex border-b p-4 font-bold items-center justify-between'>
                                             <h1 className=' text-xl'>Reviews And Ratings</h1>
-                                            <button onClick={handleOpen} className=' px-8 py-2 bg-[#fb641b] text-white '>Rate Product</button>
+                                            <button onClick={handleOpen} className=' rounded px-8 py-2 bg-[#fb641b] text-white '>Rate Product</button>
                                         </div>
 
                                         <Modal

@@ -6,6 +6,7 @@ import { Clear_Errors, LoginUser } from '../../actions/UserActions'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css';
 import { useSnackbar } from 'notistack'
+import MetaData from '../layout/MetaData'
 
 
 const Login = () => {
@@ -53,6 +54,7 @@ const Login = () => {
   }, [dispatch, error, isAuthenticated, navigate, redirect, enqueueSnackbar])
   return (
     <div className='flex p-4 w-1/2 mx-auto rounded'>
+      <MetaData title={"Login"}/>
       {/* <!-- left Part> */}
       <div className=' w-72 flex flex-col gap-10 justify-between bg-primary p-7 text-white'>
         <div>

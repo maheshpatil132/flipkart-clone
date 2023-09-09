@@ -53,10 +53,11 @@ const CreateProduct = () => {
     value.forEach((image) => {
       formData.append("images", image);
     });
-
+    
     features.forEach((feature) => {
       formData.append("features", feature);
     });
+    
     dispatch(CreateProducts(formData))
   }
 

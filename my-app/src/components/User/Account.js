@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import Loader from '../layout/Loader/Loader';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import MetaData from '../layout/MetaData'
 const Account = () => {
 
 
@@ -31,7 +31,7 @@ const Account = () => {
 
 
     <>
-
+       <MetaData title={"Account"} />
       {loading ? <Loader />
         :
         <>

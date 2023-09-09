@@ -6,6 +6,7 @@ const cloudinary = require('cloudinary').v2
 
 
 exports.createproduct = aysnchandler(async(req,res,next)=>{
+
     let images = [];
     if (typeof req.body.images === "string") {
         images.push(req.body.images);
@@ -284,7 +285,7 @@ exports.Admingetallproducts = aysnchandler(async(req,res,next)=>{
 // get to selled products
 exports.gettopproducts = aysnchandler(async(req,res,next)=>{
 
-const products = await ProductModel.find({}).sort({'sell' : -1})
+const products = await ProductModel.find({}).sort({'sell' : -1}).limit(15)
 
 if(!products){
     return next(new ErrorHandler('no products found',404))

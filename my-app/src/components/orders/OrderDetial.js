@@ -122,8 +122,10 @@ const OrderDetial = () => {
               </Box>
             </Modal>
             {/* order Modal end */}
+
+
             <div className=' flex justify-between'>
-            <NavLink to={'/account/orders'}>
+            <NavLink to={ user.role !== 'admin' ? '/account/orders' : '/admin/orders'}>
               <button className=' py-2 px-6 bg-primary text-white rounded-full'>
                 <KeyboardBackspaceIcon /> Back
               </button>

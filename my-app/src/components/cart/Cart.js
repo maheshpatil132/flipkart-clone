@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux'
 import Loader from '../layout/Loader/Loader'
 import { ClearErrors } from '../../actions/CartActions'
 import { NavLink } from 'react-router-dom'
+import MetaData from '../layout/MetaData'
 
 
 
@@ -18,6 +19,8 @@ const Cart = () => {
   })
   return (
     <>
+
+     <MetaData title={'Flipkart | Cart'}/>
       {
         loading ?
           <Loader />
