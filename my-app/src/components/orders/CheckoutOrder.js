@@ -27,11 +27,12 @@ const CheckoutOrder = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
+    
 
 
     const sum = useRef(0)
-    const shippingprice = 100;
-    const taxprice = 100;
+    let shippingprice = 100;
+    let taxprice = 100;
 
 
     // let shippingInfo = {} ;

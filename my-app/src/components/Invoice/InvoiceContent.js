@@ -11,6 +11,8 @@ const InvoiceContent = ({ invoiceData }) => {
     };
     calculateTotal()
   },[invoiceData])
+
+
   return (
     <div>
       <div className="bg-white px-12 py-8 shadow-md rounded-md capitalize">
@@ -78,7 +80,9 @@ const InvoiceContent = ({ invoiceData }) => {
               <td></td>
               <td></td>
               <td className=' font-bold py-2 border text-center'>Total</td>
-              <td className=' py-2 border text-center'>${totalamount + 100 + 100}</td>
+              <td className=' py-2 border text-center'>
+                Rs.{totalamount + invoiceData && invoiceData.taxprice + invoiceData && invoiceData.shipingprice}
+                </td>
             </tr>
           </tbody>
         </table>

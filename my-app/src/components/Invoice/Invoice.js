@@ -32,7 +32,9 @@ const Invoice = () => {
       }
     }),
     paymentinfo : order && order.paymentinfo,
-    shiping : order && order.shipinginfo && order.shipinginfo
+    shiping : order && order.shipinginfo && order.shipinginfo,
+    taxprice : order && order.taxprice,
+    shipingprice : order && order.shipingprice
   };
 
 
