@@ -359,7 +359,7 @@ const CheckoutOrder = () => {
                     </ul>
                     <div className='border-dashed border-b border-black p-3 font-bold text-xl flex items-center justify-between'>
                         <h1>Total Amount</h1>
-                        <h1>Rs. {itemsprices + shippingprice + taxprice}</h1>
+                        <h1>Rs. {(itemsprices + shippingprice + taxprice).toFixed(2)}</h1>
                     </div>
                     <div className=' p-3 text-green-400 text-base capitalize font-bold'>
                         <p>you will save Rs.2000 on this order</p>
