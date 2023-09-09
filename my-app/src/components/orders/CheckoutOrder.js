@@ -346,15 +346,15 @@ const CheckoutOrder = () => {
                     <ul className=' border-dashed border-b border-black p-3'>
                         <li className=' flex justify-between py-2  text-lg'>
                             <h1>Price ( {Products.length} )</h1>
-                            <h1> Rs. {itemsprices} </h1>
+                            <h1> Rs. {itemsprices.toFixed(2)} </h1>
                         </li>
                         <li className=' flex justify-between  py-2  text-lg'>
                             <h1>Dilivery Charges</h1>
-                            <h1>Rs. {shippingprice}</h1>
+                            <h1>Rs. {shippingprice.toFixed(2)}</h1>
                         </li>
                         <li className=' flex justify-between  py-2 text-lg'>
                             <h1>Tax</h1>
-                            <h1>Rs. {taxprice}</h1>
+                            <h1>Rs. {taxprice.toFixed(2)}</h1>
                         </li>
                     </ul>
                     <div className='border-dashed border-b border-black p-3 font-bold text-xl flex items-center justify-between'>
