@@ -60,11 +60,10 @@ const CheckoutOrder = () => {
     const Checkout = async () => {
 
         if (!user) {
-            return enqueueSnackbar('Please Login First before placing the order', { variant: 'info' })
+            return enqueueSnackbar('Please Login First before placing the order', { variant: 'error' })
         }
-
-        if (!shipinginfo) {
-            return enqueueSnackbar('Please Fill The Address Detials', { variant: 'info' })
+        if (!shipinginfo.hasOwnProperty('address' , 'city' , 'pincode' , 'state')) {
+            return enqueueSnackbar('Please Fill The Address Detials', { variant: 'error' })
         }
 
         if (Products.length < 1) {
@@ -98,7 +97,6 @@ const CheckoutOrder = () => {
             amount: taxprice + itemsprices + shippingprice
         })
 
-        console.log(key);
 
         var options = {
             key: `${key}`, // Enter the Key ID generated from the Dashboard

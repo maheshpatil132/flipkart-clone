@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
-   const [keyword, setKeyword] = useState('sdsad')
+   const [keyword, setKeyword] = useState('')
    
    const {pathname} = useLocation()
    
