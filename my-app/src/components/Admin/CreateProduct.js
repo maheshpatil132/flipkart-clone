@@ -2,7 +2,6 @@ import { Backdrop, CircularProgress, IconButton, TextField } from '@mui/material
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import dslr from '../../assets/dslr.webp'
 import './createproduct.css'
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';

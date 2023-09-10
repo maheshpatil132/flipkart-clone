@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import dslr from '../../assets/dslr.webp'
 import StarIcon from '@mui/icons-material/Star';
 import { useDispatch } from 'react-redux';
 import { AddCart, RemoveCart } from '../../actions/CartActions';
