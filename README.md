@@ -26,9 +26,13 @@ Welcome to the Flipkart Clone project, a comprehensive e-commerce platform built
 
 **Deployed On:**
 
-![heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
+<br/>
+
+![Vercel](https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 **Image Management:** [Cloudinary](https://cloudinary.com/)
+
+<br/>
 
 ## Features ✨
 - Login/Signup User Account
