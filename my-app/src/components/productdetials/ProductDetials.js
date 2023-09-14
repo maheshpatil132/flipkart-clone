@@ -123,7 +123,7 @@ const ProductDetials = () => {
                                     {/* img container */}
 
                                     <div className=' top-20 sticky'>
-                                        <img className='hover:scale-105 cursor-pointer transition-all mx-auto w-80' src={product && product.images && product.images[0].url} alt="" />
+                                        <img loading='lazy' className='hover:scale-105 cursor-pointer transition-all mx-auto w-80' src={product && product.images && product.images[0].url} alt="" />
                                         <div className=' my-8 flex items-center gap-4 justify-between'>
                                             <button 
                                                 disabled={ product && product.stock === 0 } 
@@ -186,19 +186,19 @@ const ProductDetials = () => {
                                         <ul className='flex flex-col p-4 gap-3'>
                                             <li className=' flex gap-3 items-center'>
                                                 <SellIcon className=' text-green-600' />
-                                                <p>Buy this Product and Get Extra ₹500 Off on Two-Wheelers</p>
+                                                <p>Buy this Product and Get Extra ₹500 Off </p>
                                             </li>
                                             <li className=' flex gap-3 items-center'>
                                                 <SellIcon className=' text-green-600' />
-                                                <p>Buy this Product and Get Extra ₹500 Off on Two-Wheelers</p>
+                                                <p>Buy this Product and Get Extra 10% cashback </p>
                                             </li>
                                             <li className=' flex gap-3 items-center'>
                                                 <SellIcon className=' text-green-600' />
-                                                <p>Buy this Product and Get Extra ₹500 Off on Two-Wheelers</p>
+                                                <p>Bank OfferFlat ₹200 off on HDFC Bank Credit/Debit Card on 3 months EMI Txns, Min Txn Value ₹10,000</p>
                                             </li>
                                             <li className=' flex gap-3 items-center'>
                                                 <SellIcon className=' text-green-600' />
-                                                <p>Buy this Product and Get Extra ₹500 Off on Two-Wheelers</p>
+                                                <p>Partner OfferSign-up for Flipkart Pay Later & get free Times Prime Benefits worth ₹10,000* </p>
                                             </li>
 
                                         </ul>

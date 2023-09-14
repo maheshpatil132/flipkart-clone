@@ -27,7 +27,7 @@ const Product = ({ elem, index }) => {
             <Link to={`/product/${elem._id}`}>
                 <div key={index} className='p-2 gap-2 capitalize flex flex-col justify-center items-center'>
                     <div className=' flex flex-col relative justify-center items-center'>
-                        <img className='h-32  hover:scale-[1.07] transition-all' src={`${elem.images[0].url}`} alt="img" />
+                        <img loading='lazy' className='h-32  hover:scale-[1.07] transition-all' src={`${elem.images[0].url}`} alt="img" />
                         <CircularProgress className=' absolute -z-50' />
                     </div>
                     <div className=' p-2 flex flex-col gap-3 justify-center items-start'>

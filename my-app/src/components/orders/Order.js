@@ -31,7 +31,7 @@ const Order = ({order}) => {
             <div className=' flex w-96'>
 
                 {/* <!-- Total Amount> */}
-                <h1 className={ ` text-xl font-bold`}>Rs. {order.totalprice}</h1>
+                <h1 className={ ` text-xl font-bold`}>Rs. {order.totalprice.toFixed(2)}</h1>
                 {/* <!-- Total Amount> */}
 
                 {/* order status */}

@@ -16,26 +16,20 @@ const Login = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { enqueueSnackbar } = useSnackbar()
-
   const { isAuthenticated, error, loading } = useSelector(state => state.User)
+
+
   const submit = (e) => {
     e.preventDefault();
-
     const form = {
       email: email,
       password: password
     }
     dispatch(LoginUser(form))
     if (isAuthenticated) { enqueueSnackbar("Login Sucessfully", { variant: 'success' }) }
-
   }
 
   const redirect = location.search ? location.search.split('=')[1] : 'account'
-
-
-
-  const Buttoncontent = loading ? <div> <CircularProgress /> "Please wait..." </div> : "Login";
-  console.log(Buttoncontent);
 
   useEffect(() => {
 

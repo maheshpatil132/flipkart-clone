@@ -20,12 +20,6 @@ const CartItem = ({data , quantities}) => {
     dispatch(AddCart(data , quantity))
   }
 
-
-  // useEffect(() => {
-    
-  //   dispatch(AddCart(data , quantity));
-
-  // }, [quantity])
   
 
 
