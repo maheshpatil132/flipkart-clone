@@ -2,7 +2,6 @@ import { Checkbox, CircularProgress, Pagination, Slider, FormControlLabel, FormG
 import React, { useEffect } from 'react'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import StarIcon from '@mui/icons-material/Star';
 import { useState } from 'react';
 import Product from './Product';
 import './products.css'
@@ -195,7 +194,7 @@ const Produtcs = () => {
 
                     <div className=' p-4 border-b'>
                         <div className=' flex justify-between items-center'>
-                            <h1 className=' text-sm font-bold'>CUSTOMER RATINGS</h1>
+                            <h1 className=' text-sm font-bold'>Product Category</h1>
                             <div className=' cursor-pointer' onClick={togglerating}>
                                 {ratings && <ExpandLessIcon />}
                                 {!ratings && <ExpandMoreIcon />}

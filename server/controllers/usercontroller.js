@@ -15,6 +15,10 @@ exports.createuser = aysnchandler(async (req, res, next) => {
 
     await user.save()
 
+    // send Email Funtion
+    // sendEmail( user.email , user.name) 
+
+
     sendtoken(user,200 , res)
 
 })
@@ -28,7 +32,7 @@ exports.loginuser = aysnchandler(async(req,res,next)=>{
 
     // check email or password is enterde or not
     if (!email || !password) {
-      return next(new Errorhandler('please enter email or paswwrod', 401))
+      return next(new ErrorHandler('please enter email or paswwrod', 401))
     }
 
     const user = await UserModel.findOne({email:email})
@@ -42,6 +46,7 @@ exports.loginuser = aysnchandler(async(req,res,next)=>{
     if(!match){
         return next(new ErrorHandler('wrong Email or Password', 404))
     }
+    
 
     sendtoken(user , 200 , res)
 

@@ -25,8 +25,15 @@ const Register = () => {
   const submit = (e) => {
 
     e.preventDefault();
+     
+    if(mobile.length !== 10){
+      return enqueueSnackbar("Please Write valid mobile number" , {variant: 'error'})
+    }
 
-
+    if(password.length < 6){
+      return enqueueSnackbar("Password should have minimum length six" , {variant: 'error'})
+    }
+   
     const form = {
       name: name,
       email: email,
@@ -35,6 +42,7 @@ const Register = () => {
     }
 
     dispatch(RegisterUser(form))
+
     if (isAuthenticated) {
       enqueueSnackbar('Register Successfully', { variant: 'success' })
     }
@@ -76,6 +84,7 @@ const Register = () => {
             id="standard-basic"
             label="Name"
             variant="standard"
+            required
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -83,17 +92,21 @@ const Register = () => {
             label="Email"
             variant="standard"
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             label="Mobile"
             variant="standard"
             value={mobile}
+            required
             onChange={(e) => setMobile(e.target.value)}
           />
           <TextField
             label="Password"
             variant="standard"
+            type='password'
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
