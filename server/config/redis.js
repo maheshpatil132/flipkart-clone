@@ -1,5 +1,11 @@
-const {Redis} = require("ioredis");
+const { createClient }  = require('redis');
 
-const redis = new Redis(process.env.REDIS_ENDPOINT_URI);
+const redis = createClient({
+    password: 'bmsuwA5x5wuD74LBpRNjiV5vbljHG2Jm',
+    socket: {
+        host: 'redis-13449.c8.us-east-1-4.ec2.cloud.redislabs.com',
+        port: 13449
+    }
+});
 
 module.exports = redis

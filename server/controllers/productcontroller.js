@@ -4,6 +4,11 @@ const ProductModel = require('../models/ProductModel');
 const ApiFeatures = require("../utils/apifeatures");
 const ErrorHandler = require('../utils/errorhandler')
 const cloudinary = require('cloudinary').v2
+const util = require('util'); 
+
+
+const getAsync = util.promisify(redis.get).bind(redis);
+const setAsync = util.promisify(redis.set).bind(redis);
 
 
 exports.createproduct = aysnchandler(async(req,res,next)=>{
@@ -70,7 +75,7 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
     const resultperpage = 10
 
     if(querystr.category){
-        cachedData = await redis.get(`category:${querystr.category}:products`);
+        cachedData = await getAsync(`category:${querystr.category}:products`);
     }
 
     if (cachedData) {
@@ -96,8 +101,7 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
 
     
     if(querystr.category){
-        await redis.set(`category:${querystr.category}:products`, JSON.stringify(products));
-        await redis.expire(`category:${querystr.category}:products`, 600); // Set TTL
+        await setAsync(`category:${querystr.category}:products`, JSON.stringify(products) , 'EX', 3600);
     }
 
     res.status(200).json({
