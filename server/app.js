@@ -17,7 +17,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const corsOptions ={
-    origin:'*', 
+    origin:'https://flipkart-api.vercel.app', 
     // origin:'http://localhost:3000', 
     credentials:true,            
     optionsSuccessStatus: 200,
