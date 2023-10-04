@@ -17,9 +17,12 @@ const bodyParser = require('body-parser');
 const app = express();
 
 const corsOptions ={
-    origin:'https://flipkart-clone-git-main-maheshpatil132.vercel.app', 
-    // origin:'http://localhost:3000', 
-    credentials:true,            
+  origin: "https://flipkart-clone-ui.vercel.app",
+  // origin: "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  credentials: true,
+  optionsSuccessStatus: 204           
 }
 app.use(cors(corsOptions));
 
