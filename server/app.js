@@ -20,14 +20,8 @@ const corsOptions ={
     origin:'https://flipkart-clone-ui.vercel.app', 
     // origin:'http://localhost:3000', 
     credentials:true,            
-    optionsSuccessStatus: 200,
 }
-// app.use(cors(corsOptions));
-
-app.use(cors({
-    [Access-Control-Allow-Origin]: 'https://flipkart-clone-ui.vercel.app',
-    [Access-Control-Allow-Methods] :[ GET,HEAD,PUT,PATCH,POST,DELETE]
-}));
+app.use(cors(corsOptions));
 
 
 app.use(cookieParser())
