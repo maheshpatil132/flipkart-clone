@@ -22,7 +22,7 @@ const corsOptions ={
     credentials:true,            
     optionsSuccessStatus: 200,
 }
-app.options(cors());
+app.use(cors(corsOptions));
 
 app.use(cookieParser())
 app.use(bodyParser.json({limit: '50mb'}))
