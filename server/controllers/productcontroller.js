@@ -1,11 +1,11 @@
 
+const { connectToRedis } = require("../config/redis");
 const aysnchandler = require("../middleware/aysnchandler");
 const ProductModel = require('../models/ProductModel');
 const ApiFeatures = require("../utils/apifeatures");
 const ErrorHandler = require('../utils/errorhandler')
 const cloudinary = require('cloudinary').v2
 const util = require('util'); 
-const redis = require('../config/redis')
 
 
 
@@ -68,10 +68,11 @@ exports.getproduct = aysnchandler(async(req,res,next)=>{
 // getall product
 
 exports.getallproduct = aysnchandler(async(req,res,next)=>{
-
     const querystr = req.query
     let cachedData = null
     const resultperpage = 10
+    
+    const redis = await connectToRedis()
 
     if(querystr.category){
         cachedData = await redis.get(`category:${querystr.category}:products`);
@@ -302,6 +303,7 @@ exports.Admingetallproducts = aysnchandler(async(req,res,next)=>{
 // get to selled products
 exports.gettopproducts = aysnchandler(async(req,res,next)=>{
 
+const redis = await connectToRedis()
 let topselled = await redis.get('Top');
 
 if(topselled){

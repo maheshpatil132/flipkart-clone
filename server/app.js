@@ -39,10 +39,10 @@ app.use(bodyParser.json({limit: '50mb'}))
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.json()); 
  
-
 if(process.env.Node_Env !== 'Production'){
     dotenv.config({path:'./config/app.env'})
 }
+
 
 
 app.use(fileUpload( {
