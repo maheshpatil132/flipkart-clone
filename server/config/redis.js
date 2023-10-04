@@ -2,9 +2,9 @@ const {Redis} = require('ioredis');
 
 
 const redis = new Redis({
-    port: 13449,
-    host: "redis-13449.c8.us-east-1-4.ec2.cloud.redislabs.com",
-    password: 'bmsuwA5x5wuD74LBpRNjiV5vbljHG2Jm',
+    port: process.env.Redis_Port,
+    host: `${process.env.Redis_host}`,
+    password: `${process.env.Redis_Password}`,
 })
 
 module.exports = redis
