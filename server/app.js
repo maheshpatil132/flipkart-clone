@@ -28,6 +28,7 @@ const app = express();
 
 app.use(cors({
   origin:'https://flipkart-clone-ui.vercel.app',
+  // origin:'http://localhost:3000',
   credentials:true,
   optionsSuccessStatus:200
 }))

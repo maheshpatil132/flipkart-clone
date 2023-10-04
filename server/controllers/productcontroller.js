@@ -1,14 +1,13 @@
-const redis = require("../config/redis");
+
 const aysnchandler = require("../middleware/aysnchandler");
 const ProductModel = require('../models/ProductModel');
 const ApiFeatures = require("../utils/apifeatures");
 const ErrorHandler = require('../utils/errorhandler')
 const cloudinary = require('cloudinary').v2
 const util = require('util'); 
+const redis = require('../config/redis')
 
 
-const getAsync = util.promisify(redis.get).bind(redis);
-const setAsync = util.promisify(redis.set).bind(redis);
 
 
 exports.createproduct = aysnchandler(async(req,res,next)=>{
@@ -75,8 +74,10 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
     const resultperpage = 10
 
     if(querystr.category){
-        cachedData = await getAsync(`category:${querystr.category}:products`);
+        cachedData = await redis.get(`category:${querystr.category}:products`);
     }
+   
+   
 
     if (cachedData) {
         const products = JSON.parse(cachedData);
@@ -84,6 +85,7 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
             products : products
         });
       } else{ 
+        console.log("endsdas");
     const featured = new ApiFeatures( ProductModel.find(), querystr).search().filter()
     
     const apifeatures = new ApiFeatures( ProductModel.find(), querystr).search().filter().pagination(resultperpage)
@@ -99,11 +101,11 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
         return next(new ErrorHandler('no products found',404))
     }
 
-    
+    console.log("products");
     if(querystr.category){
-        await setAsync(`category:${querystr.category}:products`, JSON.stringify(products) , 'EX', 3600);
+        await redis.set(`category:${querystr.category}:products`, JSON.stringify(products));
     }
-
+    console.log("emd");
     res.status(200).json({
         sucess:true,
         products:products,
