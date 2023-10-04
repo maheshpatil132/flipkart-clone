@@ -96,8 +96,8 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
 
     
 
-    redis.set(`category:${querystr.category}:products`, JSON.stringify(products));
-    redis.expire(`category:${querystr.category}:products`, 600); // Set TTL
+   await redis.set(`category:${querystr.category}:products`, JSON.stringify(products));
+   await redis.expire(`category:${querystr.category}:products`, 600); // Set TTL
 
     res.status(200).json({
         sucess:true,
