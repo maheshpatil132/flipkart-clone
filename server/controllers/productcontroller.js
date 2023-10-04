@@ -76,8 +76,6 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
     if(querystr.category){
         cachedData = await redis.get(`category:${querystr.category}:products`);
     }
-   
-   
 
     if (cachedData) {
         const products = JSON.parse(cachedData);
@@ -85,7 +83,6 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
             products : products
         });
       } else{ 
-        console.log("endsdas");
     const featured = new ApiFeatures( ProductModel.find(), querystr).search().filter()
     
     const apifeatures = new ApiFeatures( ProductModel.find(), querystr).search().filter().pagination(resultperpage)
@@ -104,8 +101,8 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
     console.log("products");
     if(querystr.category){
         await redis.set(`category:${querystr.category}:products`, JSON.stringify(products));
+        await redis.expire(`category:${querystr.category}:products` , 40)
     }
-    console.log("emd");
     res.status(200).json({
         sucess:true,
         products:products,
@@ -321,7 +318,7 @@ if(!products){
 }
 
 await redis.set('TOP' , JSON.stringify(products));
-await redis.expire('TOP', 30);
+await redis.expire('TOP', 40);
 
 
 res.json({
