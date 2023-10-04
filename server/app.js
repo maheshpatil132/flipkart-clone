@@ -22,7 +22,13 @@ const corsOptions ={
     credentials:true,            
     optionsSuccessStatus: 200,
 }
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+app.use(cors({
+    [Access-Control-Allow-Origin]: 'https://flipkart-clone-ui.vercel.app',
+    [Access-Control-Allow-Methods] :[ GET,HEAD,PUT,PATCH,POST,DELETE]
+}));
+
 
 app.use(cookieParser())
 app.use(bodyParser.json({limit: '50mb'}))
