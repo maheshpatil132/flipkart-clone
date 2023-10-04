@@ -58,6 +58,7 @@
     "ieee754": "^1.2.1",
     "ignore-by-default": "^1.0.1",
     "inherits": "^2.0.4",
+    "ioredis": "^5.3.2",
     "ip": "^2.0.0",
     "ipaddr.js": "^1.9.1",
     "is-binary-path": "^2.1.0",

@@ -35,7 +35,7 @@ const Product = ({ elem, index }) => {
                         <div className=' flex gap-4 items-center'>
                             <div 
                             className=' font-bold flex gap-1 w-fit items-center text-sm bg-green-700 text-white py-[.1rem] px-2 rounded-sm'>
-                                <h1>{elem.rating}</h1>
+                                <h1>{elem.rating.toFixed(2)}</h1>
                                 <StarIcon fontSize='24px' />
                             </div>
                             <h1 className=' text-gray-500 text-sm font-bold'>({elem.numrev})</h1>

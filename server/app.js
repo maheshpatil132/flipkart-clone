@@ -20,7 +20,7 @@ const corsOptions ={
     origin:'https://flipkart-clone-ui.vercel.app', 
     // origin:'http://localhost:3000', 
     credentials:true,            
-    optionSuccessStatus:200,
+    optionsSuccessStatus: 200,
 }
 app.use(cors(corsOptions));
 app.use(cookieParser())
@@ -36,7 +36,7 @@ if(process.env.Node_Env !== 'Production'){
 
 app.use(fileUpload( {
     limits: { fileSize: 100 * 1024 * 1024 },
-  } ));
+  }));
 
 cloudinary.config({ 
     cloud_name: `${process.env.cloud_name}`, 
@@ -96,7 +96,8 @@ app.use(GenerateIvoice)
 
 app.get('/' ,(req,res,next)=>{
     console.log("server in running");
-    
+    // console.log(req);
+    res.send("Hi, From bacakend")
 })
 
 app.use(errorhandle)

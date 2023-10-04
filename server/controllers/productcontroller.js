@@ -1,3 +1,4 @@
+const redis = require("../config/redis");
 const aysnchandler = require("../middleware/aysnchandler");
 const ProductModel = require('../models/ProductModel');
 const ApiFeatures = require("../utils/apifeatures");
@@ -65,8 +66,19 @@ exports.getproduct = aysnchandler(async(req,res,next)=>{
 exports.getallproduct = aysnchandler(async(req,res,next)=>{
 
     const querystr = req.query
+    let cachedData = null
     const resultperpage = 10
-    
+
+    if(querystr.category){
+        cachedData = await redis.get(`category:${querystr.category}:products`);
+    }
+
+    if (cachedData) {
+        const products = JSON.parse(cachedData);
+        res.json({
+            products : products
+        });
+      } else{ 
     const featured = new ApiFeatures( ProductModel.find(), querystr).search().filter()
     
     const apifeatures = new ApiFeatures( ProductModel.find(), querystr).search().filter().pagination(resultperpage)
@@ -76,18 +88,24 @@ exports.getallproduct = aysnchandler(async(req,res,next)=>{
     const productCount = featuredproducts.length
 
     const products = await apifeatures.query
-
     // const productCount = products.length
     
     if(!products){
         return next(new ErrorHandler('no products found',404))
     }
 
+    
+
+    redis.set(`category:${querystr.category}:products`, JSON.stringify(products));
+    redis.expire(`category:${querystr.category}:products`, 600); // Set TTL
+
     res.status(200).json({
         sucess:true,
         products:products,
         productCount
     })
+
+  }
 })
 
 // Add or update the reviews
@@ -144,8 +162,7 @@ exports.addreview = aysnchandler(async(req,res,next)=>{
 exports.updateproduct = aysnchandler(async(req,res,next)=>{
     const id = req.params.id
       let prod = await ProductModel.findById(req.params.id);
-      
-    //   console.log(req.body);
+
     if (req.body.images !== undefined) {
         let images = [];
 
@@ -154,10 +171,6 @@ exports.updateproduct = aysnchandler(async(req,res,next)=>{
         } else {
             images = req.body.images;
         }
-
-        // for (let i = 0; i < prod.images.length; i++) {
-        //     await cloudinary.v2.uploader.destroy(product.images[i].public_id);
-        // }
 
         const imagesLink = [];
 
@@ -285,15 +298,31 @@ exports.Admingetallproducts = aysnchandler(async(req,res,next)=>{
 // get to selled products
 exports.gettopproducts = aysnchandler(async(req,res,next)=>{
 
-const products = await ProductModel.find({}).sort({'sell' : -1}).limit(15)
+let topselled = await redis.get('Top');
+
+if(topselled){
+    res.json({
+        sucess:true,
+        products : JSON.parse(topselled)
+    })
+}else{
+
+    const products = await ProductModel.find({}).sort({'sell' : -1}).limit(15)
 
 if(!products){
     return next(new ErrorHandler('no products found',404))
 }
+
+await redis.set('TOP' , JSON.stringify(products));
+await redis.expire('TOP', 30);
 
 
 res.json({
     sucess:true,
     products
 })
+
+}
+
+
 })

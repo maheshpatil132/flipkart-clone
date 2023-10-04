@@ -1,5 +1,4 @@
 import React from 'react'
-import Dslr from '../../assets/dslr.webp'
 import StarIcon from '@mui/icons-material/Star';
 
 
@@ -15,7 +14,7 @@ const Product = ({data}) => {
                 <h1 className=' font-semibold my-2 text-sm'>{ data.title.length > 40 ? data.title.slice(0 , 40)+'...' : data.title}</h1>
                 <div className=' flex gap-4 items-center'>
                   <div className=' font-bold flex gap-1 w-fit items-center text-sm bg-green-700 text-white py-[.1rem] px-2 rounded-sm'>
-                    <h1>{data.rating}</h1>
+                    <h1>{data.rating &&data.rating.toFixed(2)}</h1>
                     <StarIcon fontSize='24px' />
                   </div>
                   <h1 className=' text-gray-500 text-sm font-bold'> Reviews ({data.reviews.length})</h1>
